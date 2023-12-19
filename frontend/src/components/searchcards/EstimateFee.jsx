@@ -4,11 +4,30 @@ const EstimateFee = () => {
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
+  const [cities1, setCities1] = useState([]);
+  const [districts1, setDistricts1] = useState([]);
+  const [wards1, setWards1] = useState([]);
   const [isDone, setIsDone] = useState(false);
-  const [city_from, setCityFrom] = useState('');
-  const [city_to, setCityTo] = useState('');
-  const [district_from, setDistrictFrom] = useState('');
-  const [district_to, setDistrictTo] = useState('');
+  const [city_from, setCityFrom] = useState("");
+  const [city_to, setCityTo] = useState("");
+  const [district_from, setDistrictFrom] = useState("");
+  const [district_to, setDistrictTo] = useState("");
+
+  const handleSelectCityFrom = (e) => {
+    setCityFrom(e.target.value);
+  };
+
+  const handleSelectCityTo = (e) => {
+    setCityTo(e.target.value);
+  };
+
+  const handleSelectDistrictFrom = (e) => {
+    setDistrictFrom(e.target.value);
+  };
+
+  const handleSelectDistrictTo = (e) => {
+    setDistrictTo(e.target.value);
+  };
   useEffect(() => {
     // Thực hiện yêu cầu HTTP khi component được mount
     const fetchData = async () => {
@@ -28,6 +47,7 @@ const EstimateFee = () => {
 
   const renderCity = (data) => {
     setCities(data);
+    setCities1(data);
     const handleCityChangeFrom = (selectedCityId) => {
       const selectedCity = data.find((city) => city.Id === selectedCityId);
       setDistricts(selectedCity.Districts);
@@ -36,8 +56,8 @@ const EstimateFee = () => {
 
     const handleCityChangeTo = (selectedCityId) => {
       const selectedCity = data.find((city) => city.Id === selectedCityId);
-      setDistricts(selectedCity.Districts);
-      setWards([]);
+      setDistricts1(selectedCity.Districts);
+      setWards1([]);
     };
 
     const handleDistrictChangeFrom = (selectedDistrictId) => {
@@ -53,34 +73,49 @@ const EstimateFee = () => {
       const selectedDistrict = selectedCity.Districts.find(
         (district) => district.Id === selectedDistrictId
       );
-      setWards(selectedDistrict.Wards);
+      setWards1(selectedDistrict.Wards);
     };
-      
+
     document.getElementById("city_from").onchange = function () {
       handleCityChangeFrom(this.value);
-      setCityFrom(this.value);
     };
 
     document.getElementById("district_from").onchange = function () {
       handleDistrictChangeFrom(this.value);
-      setDistrictFrom(this.value);
     };
 
     document.getElementById("city_to").onchange = function () {
       handleCityChangeTo(this.value);
-      setCityTo(this.value);
     };
 
     document.getElementById("district_to").onchange = function () {
       handleDistrictChangeTo(this.value);
-      setDistrictTo(this.value);
     };
   };
 
-  const fullForm = () => {
-    setIsDone(true)
-  }
+  const findNameById = (cities, id) => {
+    const findCity = cities.find((city) => city.Id === id);
+    return findCity ? findCity.Name : null;
+  };
   
+  const fullForm = () => {
+    const cf = findNameById(cities, city_from);
+    const df = findNameById(districts, district_from);
+    const ct = findNameById(cities1, city_to);
+    const dt = findNameById(districts1, district_to);
+    console.log(cf)
+    if (
+      cf === "Thành phố Hà Nội" &&
+      df === "Quận Hà Đông" &&
+      ct === "Thành phố Hồ Chí Minh" &&
+      dt === "Quận 1"
+    ) {
+      setIsDone(true);
+    } else {
+      setIsDone(false);
+    }
+  };
+
   return (
     <div className="p-10">
       <div className="flex justify-between">
@@ -88,12 +123,11 @@ const EstimateFee = () => {
           <div className="flex items-center justify-between flex-col lg:flex-row ">
             <h4 className="pt-5">Gửi từ *</h4>
             <div className="lg:w-[600px] pl-20 md:w-1/2 sm:w-1/3 ">
-              <label
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Select an option
               </label>
               <select
+                onChange={handleSelectCityFrom}
                 id="city_from"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
@@ -119,6 +153,7 @@ const EstimateFee = () => {
                 Select an option
               </label>
               <select
+                onChange={handleSelectDistrictFrom}
                 id="district_from"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
@@ -144,13 +179,14 @@ const EstimateFee = () => {
                 Select an option
               </label>
               <select
+                onChange={handleSelectCityTo}
                 id="city_to"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option value="" selected>
                   Chọn tỉnh thành
                 </option>
-                {cities.map((city) => (
+                {cities1.map((city) => (
                   <option key={city.Id} value={city.Id}>
                     {city.Name}
                   </option>
@@ -169,13 +205,14 @@ const EstimateFee = () => {
                 Select an option
               </label>
               <select
+                onChange={handleSelectDistrictTo}
                 id="district_to"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option value="" selected>
                   Chọn quận huyện
                 </option>
-                {districts.map((district) => (
+                {districts1.map((district) => (
                   <option key={district.Id} value={district.Id}>
                     {district.Name}
                   </option>
@@ -225,12 +262,21 @@ const EstimateFee = () => {
                   required
                 />
               </form>
-            </div>            
+            </div>
           </div>
-          {isDone ? <h1 className="pt-10 text-xl text-red-600 font-bold">Ước tính phí khoảng: 50.000 VNĐ</h1> : ''}
-          
+          {isDone ? (
+            <h1 className="pt-10 text-xl text-red-600 font-bold">
+              Ước tính phí khoảng: 50.000 VNĐ
+            </h1>
+          ) : (
+            ""
+          )}
+
           <div>
-            <button onClick={fullForm} className="flex items-center mt-20 py-3 px-8 bg-secondary font-semibold text-white rounded hover:bg-white hover:text-primary hover:border hover:border-primary transition-all duration-300">
+            <button
+              onClick={fullForm}
+              className="flex items-center mt-20 py-3 px-8 bg-secondary font-semibold text-white rounded hover:bg-white hover:text-primary hover:border hover:border-primary transition-all duration-300"
+            >
               <span className="mr-3">Tra cứu </span>
               <HiArrowSmRight />
             </button>

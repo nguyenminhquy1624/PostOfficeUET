@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;600;700&family=MuseoModerno&display=swap");
+
+body {
+  font-family: "MuseoModerno";
+}
+
+nav {
+  z-index: 10001 !important;
+}
+
+.gradientBg {
+  background: linear-gradient(99deg, #ee9ae5 0%, #5961f9 100%);
+}
+
+.tab {
+  background-color: rgb(230, 230, 230);
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.tab:hover {
+  background-color: #f3f3f3;
+}
+
+.tab.active {
+  background-color: #58b9fa;
+  color: #fff;
+}

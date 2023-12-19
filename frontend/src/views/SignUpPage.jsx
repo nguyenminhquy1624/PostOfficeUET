@@ -1,18 +1,25 @@
 import { TERipple } from "tw-elements-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {motion} from 'framer-motion'
+import { motion } from "framer-motion";
 import { fadeIn } from "../components/effect/variants";
-import { Button } from 'flowbite-react';
+import { Button } from "flowbite-react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 const SignUp = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
   const [error, seterror] = useState("");
-
-  let navigate = useNavigate(); 
-
+  const [role, setrole] = useState("");
+  let navigate = useNavigate();
+  const roles = [
+    { Id: "1", Name: "Lãnh đạo" },
+    { Id: "2", Name: "Trưởng điểm giao dịch" },
+    { Id: "3", Name: "Giao dịch viên" },
+    { Id: "4", Name: "Nhân viên giao hàng" },
+    { Id: "5", Name: "Trưởng điểm tập kết" },
+    { Id: "6", Name: "Tập kết viên" },
+  ];
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -29,28 +36,42 @@ const SignUp = () => {
       return;
     }
 
+    // setrole(findNameById(roles, role));
+
     alert("Form submitted successfully.");
     console.log("Email: ", email);
     console.log("Password: ", password);
     console.log("Confirm Password: ", confirmPassword);
-
+    console.log("Role", findNameById(roles, role));
     // empty the input fields after submitting the form
     setemail("");
     setpassword("");
     setconfirmPassword("");
     seterror("");
+    setrole("");
   };
-
+  const findNameById = (cities, id) => {
+    const findCity = cities.find((city) => city.Id === id);
+    return findCity ? findCity.Name : null;
+  };
   const backToHome = () => {
-    navigate('/');
-  }
+    navigate("/");
+  };
   return (
     <section className="h-screen">
       <div className="m-5 h-1/3 px-24 py-10 ">
-        <Button className="rounded-full " color="blue" onClick={backToHome}><IoMdArrowRoundBack className=""/></Button>
+        <Button className="rounded-full " color="blue" onClick={backToHome}>
+          <IoMdArrowRoundBack className="" />
+        </Button>
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
           {/* <!-- Left column container with background--> */}
-          <motion.div variants={fadeIn("down", 0.2)} initial="hidden" whileInView={"show"} viewport={{once:false, amount:0.7}} className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
+          <motion.div
+            variants={fadeIn("down", 0.2)}
+            initial="hidden"
+            whileInView={"show"}
+            viewport={{ once: false, amount: 0.7 }}
+            className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12"
+          >
             <img
               src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
               className="w-full"
@@ -59,7 +80,13 @@ const SignUp = () => {
           </motion.div>
 
           {/* <!-- Right column container with form --> */}
-          <motion.div variants={fadeIn("up", 0.2)} initial="hidden" whileInView={"show"} viewport={{once:false, amount:0.7}} className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
+          <motion.div
+            variants={fadeIn("up", 0.2)}
+            initial="hidden"
+            whileInView={"show"}
+            viewport={{ once: false, amount: 0.7 }}
+            className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12"
+          >
             <h1 className="text-4xl font-bold text-primary text-center mb-10">
               Đăng ký tài khoản
             </h1>
@@ -81,6 +108,24 @@ const SignUp = () => {
                   onChange={(e) => setemail(e.target.value)}
                 />
               </div>
+              <h1>Chọn vai trò</h1>
+              <div className="relative">
+                <select
+                  onChange={(e) => setrole(e.target.value)}
+                  id="role"
+                  className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
+                >
+                  <option value="" selected>
+                    Chọn vai trò
+                  </option>
+                  {roles.map((role) => (
+                    <option key={role.Id} value={role.Id}>
+                      {role.Name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <h1>Nhập mật khẩu</h1>
               <div className="relative">
                 <input
@@ -143,7 +188,7 @@ const SignUp = () => {
 
               <TERipple rippleColor="light" className="w-full">
                 <button
-                  onClick={() => {navigate("/")}}
+                  onClick={handleSubmit}
                   type="button"
                   className="inline-block w-full rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                 >

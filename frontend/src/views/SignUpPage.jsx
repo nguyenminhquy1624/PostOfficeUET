@@ -1,7 +1,10 @@
 import { TERipple } from "tw-elements-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import {motion} from 'framer-motion'
+import { fadeIn } from "../components/effect/variants";
+import { Button } from 'flowbite-react';
+import { IoMdArrowRoundBack } from "react-icons/io";
 const SignUp = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
@@ -37,21 +40,26 @@ const SignUp = () => {
     setconfirmPassword("");
     seterror("");
   };
+
+  const backToHome = () => {
+    navigate('/');
+  }
   return (
     <section className="h-screen">
       <div className="m-5 h-1/3 px-24 py-10 ">
+        <Button className="rounded-full " color="blue" onClick={backToHome}><IoMdArrowRoundBack className=""/></Button>
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
           {/* <!-- Left column container with background--> */}
-          <div className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
+          <motion.div variants={fadeIn("down", 0.2)} initial="hidden" whileInView={"show"} viewport={{once:false, amount:0.7}} className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
             <img
               src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
               className="w-full"
               alt="Phone image"
             />
-          </div>
+          </motion.div>
 
           {/* <!-- Right column container with form --> */}
-          <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
+          <motion.div variants={fadeIn("up", 0.2)} initial="hidden" whileInView={"show"} viewport={{once:false, amount:0.7}} className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
             <h1 className="text-4xl font-bold text-primary text-center mb-10">
               Đăng ký tài khoản
             </h1>
@@ -197,7 +205,7 @@ const SignUp = () => {
                 </a>
               </TERipple>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

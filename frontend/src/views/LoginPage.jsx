@@ -3,6 +3,8 @@ import { useState } from "react";
 import {motion} from 'framer-motion'
 import { fadeIn } from "../components/effect/variants";
 import { useNavigate } from "react-router-dom";
+import { Button } from 'flowbite-react';
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const LoginPage = () => {
   const [email, setemail] = useState("");
@@ -39,9 +41,14 @@ const LoginPage = () => {
     setconfirmPassword("");
     seterror("");
   };
+
+  const backToHome = () => {
+    navigate('/');
+  }
   return (
     <section className="h-screen">
       <div className="m-5 h-1/2 px-24 py-10 ">
+        <Button className="rounded-full " color="blue" onClick={backToHome}><IoMdArrowRoundBack className=""/></Button>
         <div className="flex h-full flex-wrap items-center justify-center lg:justify-between">
           {/* <!-- Left column container with background--> */}
           <motion.div variants={fadeIn("down", 0.2)} initial="hidden" whileInView={"show"} viewport={{once:false, amount:0.7}} className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">

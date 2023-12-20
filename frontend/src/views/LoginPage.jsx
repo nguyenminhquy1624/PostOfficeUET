@@ -143,12 +143,12 @@ const LoginPage = () => {
                 </button>
               </TERipple>
 
-              <a
+              {/* <a
                 href="signup"
                 className="flex justify-center mt-4 text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
               >
                 Bạn chưa có tài khoản?
-              </a>
+              </a> */}
 
               {/* <!-- Divider --> */}
               <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">

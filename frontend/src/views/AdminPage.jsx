@@ -9,10 +9,14 @@ const AdminPage = () => {
     { link: "Quản lý hệ thống", path: "SystemManagement", active: true},
     { link: "Quản lý tài khoản", path: "AccountManagement" , active: false},
     { link: "Thống kê hàng gửi/nhập", path: "LogisticStatistic" , active: false},];
-  const [activeTab, setActiveTab] = useState("SystemManagement")
+  if (localStorage.getItem("adminActiveTab") == null) {
+    localStorage.setItem("adminActiveTab", JSON.stringify("SystemManagement"))
+  }
+  const [activeTab, setActiveTab] = useState(JSON.parse(localStorage.getItem("adminActiveTab")))
 
   const handleTabClick = (value) => {
     setActiveTab(value);
+    localStorage.setItem("adminActiveTab", JSON.stringify(value))
   }
 
   return (

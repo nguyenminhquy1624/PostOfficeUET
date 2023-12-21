@@ -6,7 +6,7 @@ import AccountCard from "./AccountCard";
 import AddAccountModal from "../../modal/accountManagement/AddAccountModal";
 // import DeleteModal from "../../modal/DeleteModal";
 const AccountList = () => {
-    const [accountState, setAccountState] = useState([
+    const defaultAccountsList = [
         {
             TenTaiKhoan: "truongGiaoDich1",
             HoVaTen: "Nguyễn Văn A",
@@ -39,14 +39,23 @@ const AccountList = () => {
             Email: "quan3@gmail.com",
             LoaiTaiKhoan: 2,
         },
-    ])
-    
+    ]
+
+    // localStorage.clear();
+    if (localStorage.getItem("accounts") == null) {
+        localStorage.setItem("accounts", JSON.stringify(defaultAccountsList))
+    }
+
+    const [accountState, setAccountState] = useState(JSON.parse(localStorage.getItem("accounts")))
+    // console.log(accountState)
+
     // console.log(StorageManagerState)
     const [showAddForm, setShowAddForm] = useState(false);
 
     // const [showDeleteModal,setShowDeleteModal] = useState(false);
     // const [deleteConfirm, setDeleteConfirm] = useState(false)
     const handleAddAccountInfo = (accountInfo) => {
+        localStorage.setItem("accounts", JSON.stringify([...accountState, accountInfo]))
         setAccountState([...accountState, accountInfo]);
         setShowAddForm(false)
     }
@@ -59,15 +68,16 @@ const AccountList = () => {
                 return accountInfo
             }
         })
+        localStorage.setItem("accounts", JSON.stringify(newAccountState))
         setAccountState(newAccountState)
     }
-
+    
     const deleteAccountInfo = (MaTaiKhoan) => {
         const newAccountState = accountState.filter(
             account => account.MaTaiKhoan !== MaTaiKhoan
         )
+        localStorage.setItem("accounts", JSON.stringify(newAccountState))
         setAccountState(newAccountState)
-        
     }
 
     const handleOpenAddFormClick = () => {

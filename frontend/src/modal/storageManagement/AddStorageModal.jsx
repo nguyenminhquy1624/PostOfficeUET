@@ -109,27 +109,27 @@ const AddStorageModal = props => {
   return (
     <div className={`fixed inset-0 flex justify-center items-center transition-colors ${showAddForm ? "bg-black/20" : "hidden"} z-50`}>
         {/* AddPage Modal */}
-        <div className={`bg-white round-lg shadow p-6 translate-all max-w-md rounded-xl gap-4 ${showAddForm ? "scale-100 opacity-100" : "scale-100 opacity-0"}`} onClick={(e) => e.stopPropagation()}>
-            <button onClick={handleClosePage} className='absolute top-2 right-2 py-1 px-2 h-10 w-10'>
+        <div className={`cardGradient round-lg shadow p-12 translate-all max-w-md rounded-xl gap-4 ${showAddForm ? "scale-100 opacity-100" : "scale-100 opacity-0"}`} onClick={(e) => e.stopPropagation()}>
+            <button onClick={handleClosePage} className='absolute top-2 right-2 py-1 px-1 h-10 w-10'>
                 <img src={close_img}/>
             </button>
-            <h1 className='font-bold text-4xl text-primary flex justify-center my-2'>
+            <h1 className='font-bold text-3xl text-primary flex justify-center my-2'>
                 TẠO ĐIỂM GIAO DỊCH
             </h1>
             <form className='' onSubmit={handleSubmit}>
                 <div className='flex-col mx-2 my-2 text-primary py-0 space-y-1'>
                     <p>Tên điểm  giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageName} onChange={changeStorageName} ref={storageNameRef} onKeyDown={handleStorageNameDown} placeholder='Điền tên điểm giao dịch...'/>
+                    <input className="w-full rounded-lg px-3 py-3 border-black text-primary shadow-md" type='text' value={storageName} onChange={changeStorageName} ref={storageNameRef} onKeyDown={handleStorageNameDown} placeholder='Điền tên điểm giao dịch...'/>
                     <p>Mã điểm giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageCode} onChange={changeStorageCode} ref={storageCodeRef} onKeyDown={handleStorageCodeDown} placeholder='Điền mã điểm giao dịch...'/>
+                    <input className="w-full rounded-lg px-3 py-3 border-black text-primary shadow-md" type='text' value={storageCode} onChange={changeStorageCode} ref={storageCodeRef} onKeyDown={handleStorageCodeDown} placeholder='Điền mã điểm giao dịch...'/>
                     <p>Mã trưởng điểm giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageManager} onChange={changeStorageManager} ref={storageManagerRef} onKeyDown={handleStorageManagerDown} placeholder='Điền mã của trưởng giao dịch...'/>
+                    <input className="w-full rounded-lg px-3 py-3 border-black text-primary shadow-md" type='text' value={storageManager} onChange={changeStorageManager} ref={storageManagerRef} onKeyDown={handleStorageManagerDown} placeholder='Điền mã của trưởng giao dịch...'/>
                     <p>Địa chỉ điểm giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageLocation} onChange={changeStorageLocation} ref={storageLocationRef} onKeyDown={handleStorageLocationDown} placeholder='Điền dịa chỉ điểm giao dịch...'/>
+                    <input className="w-full rounded-lg px-3 py-3 border-black text-primary shadow-md" type='text' value={storageLocation} onChange={changeStorageLocation} ref={storageLocationRef} onKeyDown={handleStorageLocationDown} placeholder='Điền dịa chỉ điểm giao dịch...'/>
                     <p>Hotline</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageHotline} onChange={changeStorageHotline} ref={storageHotlineRef} onKeyDown={handleStorageHotlineDown} placeholder='Điền Hotline của điểm giao dịch...'/>
+                    <input className="w-full rounded-lg px-3 py-3 border-black text-primary shadow-md" type='text' value={storageHotline} onChange={changeStorageHotline} ref={storageHotlineRef} onKeyDown={handleStorageHotlineDown} placeholder='Điền Hotline của điểm giao dịch...'/>
                     <div className='flex justify-around gap-4 text-primary text-xl'>
-                        <button className='w-fit rounded-sm px-2 py-2 hover:scale-125 transition ease-out duration-500  ' onClick={handleReset}>Reset</button>
+                        <button className='w-fit rounded-sm px-2 py-2 hover:scale-125 transition ease-out duration-500 ' onClick={handleReset}>Reset</button>
                         <button className='w-fit rounded-sm px-2 py-2 hover:scale-125 transition ease-out duration-500 ' ref={confirmRef} type='submit'>Xác nhận</button>
                     </div>
                 </div>

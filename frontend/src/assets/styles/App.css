@@ -11,9 +11,19 @@ nav {
 .gradientBg {
   background: linear-gradient(45deg, #ee9ae9 0%, #5961f9 100%);
 }
+.gradientButton {
+  background: linear-gradient(45deg, #ee9ae9 0%, #5961f9 100%);
+}
 
+.cardGradient {
+  background: linear-gradient(45deg, #E6FFFD 0%, #AEE2FF 100%)
+}
+
+.textGradient {
+  color: linear-gradient(45deg, #fff 0%, #58b9fa 100%)
+}
 .tab {
-  background-color: rgb(230, 230, 230);
+  background-color: #58b9fa;
   cursor: pointer;
   padding: 10px;
   transition: background-color 0.3s ease;
@@ -21,11 +31,16 @@ nav {
   border-top-left-radius: 5px;
 }
 
-.tab:hover {
-  background-color: #f3f3f3;
-}
-
 .tab.active {
   background-color: #58b9fa;
   color: #fff;
+}
+
+.fixed-left-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%; /* Đảm bảo chiều cao của LeftNavBar chiếm toàn bộ chiều cao trang */
+  z-index: 1000; /* Chọn một giá trị z-index phù hợp */
+  /* Thêm các thuộc tính styling khác nếu cần */
 }

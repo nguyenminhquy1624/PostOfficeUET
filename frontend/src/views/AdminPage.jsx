@@ -1,9 +1,8 @@
 import StorageList from '/src/components/storageManagement/StorageList'
-import { FooterWithSocialLinks } from '/src/components/footer/Footers'
 import IndexNavbars from '/src/components/navbars/IndexNavbars'
 import LeftNavBar from '../components/service/LeftNavBar'
 import { useState } from 'react'
-
+import AccountList from '../components/AccountManagement/AccountList'
 const AdminPage = () => {
   const navItems = [
     { link: "Quản lý hệ thống", path: "SystemManagement", active: true},
@@ -19,12 +18,11 @@ const AdminPage = () => {
     <div>
       <IndexNavbars/>
       <div className="md:flex md:flex-row">
-        <LeftNavBar navItemsProps={navItems} changeTabFunc={handleTabClick} activeTabProps={activeTab}/>
-        <StorageList className="z-10"/>
+        <LeftNavBar  className="fixed-left-navbar\" navItemsProps={navItems} changeTabFunc={handleTabClick} activeTabProps={activeTab}/>
+        {activeTab === 'SystemManagement' ? <StorageList/> : <AccountList/>}
       </div>
       {/* <SearchBar /> */}
-      
-      <FooterWithSocialLinks/>
+
     </div>
   )
 }

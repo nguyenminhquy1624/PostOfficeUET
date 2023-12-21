@@ -115,7 +115,7 @@ const EditStorageModal = props => {
             <button onClick={handleClosePage} className='absolute top-2 right-2 py-1 px-2 h-10 w-10'>
                 <img src={close_img}/>
             </button>
-            <h1 className='font-bold text-4xl text-primary flex justify-center my-2'>
+            <h1 className='font-bold text-2xl text-primary flex justify-center my-2'>
                 CẬP NHẬT ĐIỂM GIAO DỊCH
             </h1>
             <form className='' onSubmit={handleSubmit}>

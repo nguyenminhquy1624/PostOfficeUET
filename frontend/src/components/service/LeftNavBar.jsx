@@ -17,19 +17,19 @@ const LeftNavBar = (props) => {
     // let navigate = useNavigate(); 
 
     return (
-        <>
-            <nav className="hidden md:block md:w-fit bg-white max-h-full border-b border-r-2 text-primary top-0 left-0 shadow-md mt-[80px]">
+        <div className="bg-slate-100 relative mt-10">
+            <nav className="hidden md:block md:w-fit max-h-full  text-primary top-0 left-0  mt-[80px]">
                 <div className="text-lg container my-auto flex justify-between items-center font-[500]">
                     <div className="flex items-center">
                         {/* showing nav items using map*/}
-                        <ul className="flex-col space-y-2">
+                        <ul className="flex-col text-center">
                             {navItems.map(({ link, path }) => (
                                 <a 
                                 key={link} 
                                 // href={path}
                                 onClick={() => handleTabClick(path)}
 
-                                className={`px-8 py-3 block cursor-pointer transition-all duration-300 hover:text-white hover:bg-indigo-600 rounded-xl ${activeTab === path ? "bg-indigo-600 text-white": ""}`}>
+                                className={`px-8 py-3 block cursor-pointer transition-all duration-300 hover:text-primary hover:bg-indigo-200 rounded-sm ${activeTab === path ? "gradientButton text-white": ""}`}>
                                 {link}
                                 </a>
                             ))}
@@ -48,7 +48,7 @@ const LeftNavBar = (props) => {
                                 key={link} 
                                 // href={path}
                                 onClick={() => handleTabClick(path)} 
-                                className={`px-8 py-3 block transition-all duration-300 hover:text-white hover:bg-indigo-600 rounded-xl ${activeTab === path ? "bg-indigo-600 text-white": ""}`}>
+                                className={`px-8 py-3 block transition-all duration-300 hover:text-primary text-center hover:bg-indigo-200 rounded-sm ${activeTab === path ? "gradientButton text-white": ""}`}>
                                 {link}
                                 </a>
                             ))}
@@ -68,7 +68,7 @@ const LeftNavBar = (props) => {
                     </button>
                 </div>
             </nav>
-        </>
+        </div>
     )
 
 }

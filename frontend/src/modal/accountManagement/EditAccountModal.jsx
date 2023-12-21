@@ -111,13 +111,13 @@ const EditAccountModal = props => {
     }
 
     const handleClosePage = (event) => {
-        event.prevenstDefault()
+        event.preventDefault()
         closePage()
     }
   return (
     <div className={`fixed inset-0 flex justify-center items-center transition-colors ${showEditForm ? "bg-black/20" : "hidden"} z-50`}>
         {/* AddPage Modal */}
-        <div className={`bg-white round-lg shadow p-6 translate-all max-w-md rounded-xl gap-4 ${showEditForm ? "scale-100 opacity-100" : "scale-100 opacity-0"}`} onClick={(e) => e.stopPropagation()}>
+        <div className={`bg-white round-lg shadow mt-20 p-6 translate-all max-w-md rounded-xl gap-4 ${showEditForm ? "scale-100 opacity-100" : "scale-100 opacity-0"} overflow-auto`} onClick={(e) => e.stopPropagation()}>
             <button onClick={handleClosePage} className='absolute top-2 right-2 py-1 px-1 h-10 w-10'>
                 <img src={close_img}/>
             </button>

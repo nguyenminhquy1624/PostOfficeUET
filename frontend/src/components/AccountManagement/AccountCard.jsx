@@ -53,7 +53,7 @@ const AccountCard = (props) => {
                     {accountInfo.HoVaTen}
                 </h1>
                 <p className="pb-2">
-                    {/* Địa điểm: {accountInfo.NgaySinh}<br></br> */}
+                    Email: {accountInfo.Emali}<br></br>
                    Số điện thoại: {accountInfo.SoDienThoai}<br></br>
                 </p>
             </div>
@@ -74,9 +74,9 @@ const AccountCard = (props) => {
             cancelDeleteFunc={handleCancelDelete} />
             <EditAccountModal
             showEditFormProps={showEditModal} 
-            editStorageFunc={handleConfirmEdit} 
+            editAccountFunc={handleConfirmEdit} 
             closePageFunc={handleCancelEdit} 
-            storageProps={accountInfo}  />
+            accountProps={accountInfo}  />
         </div>
     );
 };

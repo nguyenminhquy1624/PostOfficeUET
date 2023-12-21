@@ -4,29 +4,64 @@ import close_img from "../../assets/img/close.png"
 import { useRef, useState } from 'react'
 // import uuid from 'uuid'
 const EditAccountModal = props => {
-    const storageInfo = props.storageProps
-    const editStorage = props.editStorageFunc
+    const accountInfo = props.accountProps
+    const editAccount = props.editAccountFunc
     const closePage = props.closePageFunc
     let showEditForm = props.showEditFormProps
 
-    const [storageName, setStorageName] = useState(storageInfo.TenDiemGiaoDich)
-    const [storageCode, setStorageCode] = useState(storageInfo.MaDiemGiaoDich)
-    const [storageLocation, setStorageLocation] = useState(storageInfo.DiaDiem)
-    const [storageManager, setStorageManager] = useState(storageInfo.MaTruongDiem)
-    const [storageHotline, setStorageHotline] = useState(storageInfo.Hotline)
+    const [accountName, setAccountName] = useState(accountInfo.HoVaTen)
+    const [accountEmail, setAccountEmail] = useState(accountInfo.Email)
+    const [accountCode, setAccountCode] = useState(accountInfo.MaTaiKhoan)
+    const [accountPhoneNumber, setAccountPhoneNumber] = useState(accountInfo.SoDienThoai)
+    const [storageCode, setStorageCode] = useState(accountInfo.MaDiemGiaoDich)
     
-    const storageNameRef = useRef(null)
+    
+   
+    const accountNameRef = useRef(null)
+    const accountEmailRef = useRef(null)
+    const accountCodeRef = useRef(null)
+    const accountPhoneNumberRef = useRef(null)
     const storageCodeRef = useRef(null)
-    const storageManagerRef = useRef(null)
-    const storageLocationRef = useRef(null)
-    const storageHotlineRef = useRef(null)
     const confirmRef = useRef(null)
 
-    const changeStorageName = event => {
+    const changeAccountName = event => {
         event.preventDefault();
-        setStorageName(event.target.value)
+        setAccountName(event.target.value)
     }
-    const handleStorageNameDown = event => {
+    const handleAccountNameDown = event => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            accountEmailRef.current.focus();
+        }
+    }
+
+    const changeAccountEmail = event => {
+        event.preventDefault();
+        setAccountEmail(event.target.value)
+    }
+    const handleAccountEmailDown = event => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            accountCodeRef.current.focus();
+        }
+    }
+
+    const changeAccountCode = event => {
+        event.preventDefault();
+        setAccountCode(event.target.value)
+    }
+    const handleAccountCodeDown = event => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            accountPhoneNumberRef.current.focus();
+        }
+    }
+
+    const changeAccountPhoneNumber = event => {
+        event.preventDefault();
+        setAccountPhoneNumber(event.target.value)
+    }
+    const handleAccountPhoneNumberDown = event => {
         if (event.key === 'Enter') {
             event.preventDefault();
             storageCodeRef.current.focus();
@@ -40,52 +75,23 @@ const EditAccountModal = props => {
     const handleStorageCodeDown = event => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            storageManagerRef.current.focus();
-        }
-    }
-
-    const changeStorageManager = event => {
-        event.preventDefault();
-        setStorageManager(event.target.value)
-    }
-    const handleStorageManagerDown = event => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            storageLocationRef.current.focus();
-        }
-    }
-
-    const changeStorageLocation = event => {
-        event.preventDefault();
-        setStorageLocation(event.target.value)
-    }
-    const handleStorageLocationDown = event => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            storageHotlineRef.current.focus();
-        }
-    }
-
-    const changeStorageHotline = event => {
-        event.preventDefault();
-        setStorageHotline(event.target.value)
-    }
-    const handleStorageHotlineDown = event => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
             confirmRef.current.focus();
         }
     }
 
     const handleSubmit = event => {
         event.preventDefault()
-        editStorage({
-            id: storageInfo.id,
-            TenDiemGiaoDich: storageName,
+        editAccount({
+            TenTaiKhoan: accountInfo.TenTaiKhoan,
+            HoVaTen: accountName,
+            MaTaiKhoan: accountInfo.MaTaiKhoan,
+            MaDiemTapKet: "",
             MaDiemGiaoDich: storageCode,
-            MaTruongDiem: storageManager,
-            DiaDiem: storageLocation,
-            Hotline: storageHotline,    
+            MatKhau: accountInfo.MatKhau,
+            SoDienThoai: accountPhoneNumber,
+            Email:accountInfo.Email,
+            LoaiTaiKhoan: 2,
+            NgaySinh: accountInfo.NgaySinh,    
         })
     }
 
@@ -95,54 +101,46 @@ const EditAccountModal = props => {
     //         handleSubmit(event)
     //     }
     // }
-    const handleReset = () => {
+    const handleReset = (event) => {
         event.preventDefault()
-        setStorageName(storageInfo.TenDiemGiaoDich)
-        setStorageCode(storageInfo.MaDiemGiaoDich)
-        setStorageLocation(storageInfo.DiaDiem)
-        setStorageManager(storageInfo.MaTruongDiem)
-        setStorageHotline(storageInfo.Hotline)
+        setAccountName(accountInfo.HoVaTen)
+        setAccountEmail(accountInfo.Email)
+        setAccountCode(accountInfo.MaTaiKhoan)
+        setAccountPhoneNumber(accountInfo.SoDienThoai)
+        setStorageCode(accountInfo.MaDiemGiaoDich)
     }
 
-    const handleClosePage = event => {
-        // event.preventDefault()
+    const handleClosePage = (event) => {
+        event.prevenstDefault()
         closePage()
     }
   return (
     <div className={`fixed inset-0 flex justify-center items-center transition-colors ${showEditForm ? "bg-black/20" : "hidden"} z-50`}>
         {/* AddPage Modal */}
         <div className={`bg-white round-lg shadow p-6 translate-all max-w-md rounded-xl gap-4 ${showEditForm ? "scale-100 opacity-100" : "scale-100 opacity-0"}`} onClick={(e) => e.stopPropagation()}>
-            <button onClick={handleClosePage} className='absolute top-2 right-2 py-1 px-2 h-10 w-10'>
+            <button onClick={handleClosePage} className='absolute top-2 right-2 py-1 px-1 h-10 w-10'>
                 <img src={close_img}/>
             </button>
             <h1 className='font-bold text-4xl text-primary flex justify-center my-2'>
-                CẬP NHẬT ĐIỂM GIAO DỊCH
+                CẬP NHẬT TÀI KHOẢN TRƯỞNG ĐIỂM GIAO DỊCH
             </h1>
             <form className='' onSubmit={handleSubmit}>
                 <div className='flex-col mx-2 my-2 text-primary py-0 space-y-1'>
-                    <p>Tên điểm  giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageName} onChange={changeStorageName} ref={storageNameRef} onKeyDown={handleStorageNameDown} placeholder='Điền tên điểm giao dịch...'/>
-                    <p>Mã điểm giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageCode} onChange={changeStorageCode} ref={storageCodeRef} onKeyDown={handleStorageCodeDown} placeholder='Điền mã điểm giao dịch...'/>
-                    <p>Mã trưởng điểm giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageManager} onChange={changeStorageManager} ref={storageManagerRef} onKeyDown={handleStorageManagerDown} placeholder='Điền mã của trưởng giao dịch...'/>
-                    <p>Địa chỉ điểm giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageLocation} onChange={changeStorageLocation} ref={storageLocationRef} onKeyDown={handleStorageLocationDown} placeholder='Điền dịa chỉ điểm giao dịch...'/>
-                    <p>Hotline</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageHotline} onChange={changeStorageHotline} ref={storageHotlineRef} onKeyDown={handleStorageHotlineDown} placeholder='Điền Hotline của điểm giao dịch...'/>
+                    <p>Họ và tên trường điểm giao dịch</p>
+                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={accountName} onChange={changeAccountName} ref={accountNameRef} onKeyDown={handleAccountNameDown} />
+                    <p>Email của trưởng điểm giao dịch</p>
+                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={accountEmail} onChange={changeAccountEmail} ref={accountEmailRef} onKeyDown={handleAccountEmailDown} />
+                    <p>Mã tài khoản của trưởng điểm giao dịch</p>
+                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={accountCode} onChange={changeAccountCode} ref={accountCodeRef} onKeyDown={handleAccountCodeDown} />
+                    <p>Số điện thoại của trưởng điểm giao dịch</p>
+                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={accountPhoneNumber} onChange={changeAccountPhoneNumber} ref={accountPhoneNumberRef} onKeyDown={handleAccountPhoneNumberDown} />
+                    <p>Mã của điểm giao dịch</p>
+                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageCode} onChange={changeStorageCode} ref={storageCodeRef} onKeyDown={handleStorageCodeDown} />
                     <div className='flex justify-around gap-4 text-primary text-xl'>
                         <button className='w-fit rounded-sm px-2 py-2 hover:scale-125 transition ease-out duration-500  ' onClick={handleReset}>Reset</button>
                         <button className='w-fit rounded-sm px-2 py-2 hover:scale-125 transition ease-out duration-500 ' ref={confirmRef} type='submit'>Xác nhận</button>
                     </div>
                 </div>
-                {/* <div className='block text-xl text-black'>
-                    <p className='font-bold flex justify-center'>Chọn vị trí trên bản đồ</p>
-                    <img src={map_img} className='w-fit' />
-                    <div className='flex justify-around align-middle'>
-                        <button className='w-fit rounded-sm px-2 py-2 hover:scale-125 transition ease-out duration-500  ' onClick={handleReset}>Reset</button>
-                        <button className='w-fit rounded-sm px-2 py-2 hover:scale-125 transition ease-out duration-500 ' ref={confirmRef} type='submit'>Xác nhận</button>
-                    </div>
-                </div> */}
             </form>
         </div>
     </div>
@@ -150,9 +148,9 @@ const EditAccountModal = props => {
 }
 
 EditAccountModal.propTypes = {
-    storageProps: PropTypes.object.isRequired,
-    editStorageFunc: PropTypes.func.isRequired,
+    accountProps: PropTypes.object.isRequired,
+    editAccountFunc: PropTypes.func.isRequired,
     closePageFunc: PropTypes.func.isRequired,
-    showEditFormProps: PropTypes.object.isRequired
+    // showEditFormProps: PropTypes.object.isRequired
 }
 export default EditAccountModal

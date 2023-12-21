@@ -7,41 +7,47 @@ import { Button } from 'flowbite-react';
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 const LoginPage = () => {
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
-  const [confirmPassword, setconfirmPassword] = useState("");
-  const [error, seterror] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
   let navigate = useNavigate(); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    //  email validation
+    
+    // email validation
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (!emailRegex.test(email)) {
-      seterror("Please enter a valid email address.");
+      setError("Please enter a valid email address.");
       return;
     }
 
     // password matching validation
-    if (password !== confirmPassword) {
-      seterror("Password should match.");
-      return;
-    }
+    // if (password !== confirmPassword) {
+    //   setError("Password should match.");
+    //   return;
+    // }
 
-    alert("Form submitted successfully.");
+    // alert("Form submitted successfully.");
     console.log("Email: ", email);
     console.log("Password: ", password);
-    console.log("Confirm Password: ", confirmPassword);
-
+    // console.log("Confirm Password: ", confirmPassword);
+  
+    
     // empty the input fields after submitting the form
-    setemail("");
-    setpassword("");
-    setconfirmPassword("");
-    seterror("");
+    setEmail("");
+    setPassword("");
+    // setConfirmPassword("");
+    setError("");
+    
+    // only for admin
+    if (email == "admin@gmail.com" && password == '1') {
+      navigate('/admin');
+    }
   };
-
+  
   const backToHome = () => {
     navigate('/');
   }
@@ -79,20 +85,20 @@ const LoginPage = () => {
                   placeholder="example@gmail.com"
                   autoComplete="off"
                   value={email}
-                  onChange={(e) => setemail(e.target.value)}
+                  onChange={(e) => {setEmail(e.target.value); console.log(email)}}
                 />
               </div>
               <h1>Nhập mật khẩu</h1>
               <div className="relative">
                 <input
                   type="password"
-                  id="confirmPassword"
+                  id="password"
                   required
                   className="input-field focus:outline-none w-full px-3 py-2  border-primary border rounded-md appearance-none text-primary m-2"
                   placeholder="****"
                   autoComplete="off"
-                  value={confirmPassword}
-                  onChange={(e) => setconfirmPassword(e.target.value)}
+                  value={password}
+                  onChange={(e) => {setPassword(e.target.value); console.log(password)}}
                 />
               </div>
               <div className="pl-2 font-semibold text-red-500 py-2">
@@ -129,7 +135,7 @@ const LoginPage = () => {
 
               <TERipple rippleColor="light" className="w-full">
                 <button
-                  onClick={() => {navigate("/")}}
+                  onClick={handleSubmit}
                   type="button"
                   className="inline-block w-full rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                 >
@@ -137,12 +143,12 @@ const LoginPage = () => {
                 </button>
               </TERipple>
 
-              <a
+              {/* <a
                 href="signup"
                 className="flex justify-center mt-4 text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
               >
                 Bạn chưa có tài khoản?
-              </a>
+              </a> */}
 
               
             </form>

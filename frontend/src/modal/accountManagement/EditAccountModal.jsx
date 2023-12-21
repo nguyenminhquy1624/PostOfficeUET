@@ -3,7 +3,7 @@ import {PropTypes} from 'prop-types'
 import close_img from "../../assets/img/close.png"
 import { useRef, useState } from 'react'
 // import uuid from 'uuid'
-const EditStorageModal = props => {
+const EditAccountModal = props => {
     const storageInfo = props.storageProps
     const editStorage = props.editStorageFunc
     const closePage = props.closePageFunc
@@ -149,10 +149,10 @@ const EditStorageModal = props => {
   )
 }
 
-EditStorageModal.propTypes = {
+EditAccountModal.propTypes = {
     storageProps: PropTypes.object.isRequired,
     editStorageFunc: PropTypes.func.isRequired,
     closePageFunc: PropTypes.func.isRequired,
     showEditFormProps: PropTypes.object.isRequired
 }
-export default EditStorageModal
+export default EditAccountModal

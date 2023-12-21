@@ -95,7 +95,7 @@ const EditStorageModal = props => {
     //         handleSubmit(event)
     //     }
     // }
-    const handleReset = () => {
+    const handleReset = (event) => {
         event.preventDefault()
         setStorageName(storageInfo.TenDiemGiaoDich)
         setStorageCode(storageInfo.MaDiemGiaoDich)
@@ -104,8 +104,8 @@ const EditStorageModal = props => {
         setStorageHotline(storageInfo.Hotline)
     }
 
-    const handleClosePage = event => {
-        // event.preventDefault()
+    const handleClosePage = (event) => {
+        event.preventDefault()
         closePage()
     }
   return (
@@ -153,6 +153,6 @@ EditStorageModal.propTypes = {
     storageProps: PropTypes.object.isRequired,
     editStorageFunc: PropTypes.func.isRequired,
     closePageFunc: PropTypes.func.isRequired,
-    showEditFormProps: PropTypes.object.isRequired
+    // showEditFormProps: PropTypes.object.isRequired
 }
 export default EditStorageModal

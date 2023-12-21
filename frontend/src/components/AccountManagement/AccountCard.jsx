@@ -6,18 +6,18 @@ import { PropTypes } from "prop-types";
 import DeleteModal from "../../modal/storageManagement/DeleteModal";
 import { useState } from "react";
 // import { FaExpeditedssl } from "react-icons/fa6";
-import EditStorageModal from "../../modal/storageManagement/EditStorageModal";
+import EditAccountModal from "../../modal/accountManagement/EditAccountModal";
 
 const AccountCard = (props) => {
-  const storageInfo = props.storageProps;
-  const deleteStorage = props.deleteFunc;
-  const editStorage = props.editFunc;
-  // const handleDelete = (event, id) => {
-  //     event.preventDefault()
-  //     deleteStorage(id)
-  // }
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+    const accountInfo = props.accountProps;
+    const deleteAccount = props.deleteFunc;
+    const editAccount = props.editFunc
+    // const handleDelete = (event, id) => {
+    //     event.preventDefault()
+    //     deleteAccount(id)
+    // }
+    const [showDeleteModal,setShowDeleteModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false)
 
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
@@ -27,10 +27,10 @@ const AccountCard = (props) => {
     setShowDeleteModal(false);
   };
 
-  const handleConfirmDelete = () => {
-    deleteStorage(storageInfo.id);
-    setShowDeleteModal(false);
-  };
+    const handleConfirmDelete = () => {
+        deleteAccount(accountInfo.MaTaiKhoan);
+        setShowDeleteModal(false)
+    }
 
   const handleEditClick = () => {
     setShowEditModal(true);
@@ -40,56 +40,51 @@ const AccountCard = (props) => {
     setShowEditModal(false);
   };
 
-  const handleConfirmEdit = (editedStorageInfo) => {
-    editStorage(editedStorageInfo);
-    setShowEditModal(false);
-  };
+    const handleConfirmEdit = (editedAccountInfo) => {
+        editAccount(editedAccountInfo)
+        setShowEditModal(false)
+    }
 
-  return (
-    <div className="grid grid-cols-2 my-2 border-gray-300 shadow-md border-2 rounded-lg p-2">
-      <div className="align-top justify-start">
-        <h1 className="font-bold">{storageInfo.TenDiemGiaoDich}</h1>
-        <p className="pb-2">
-          Trưởng điểm: Nguyễn Văn A<br></br>
-          Địa điểm: {storageInfo.DiaDiem}
-          <br></br>
-          Hotline :{storageInfo.Hotline}
-          <br></br>
-        </p>
-      </div>
-      <div className="grid grid-flow-row">
-        <div className="flex align-top justify-end mx-2">
-          <img src={info_icon} className=" w-5 h-5 mx-2" />
-          <button className="w-5 h-5 mx-2" onClick={handleEditClick}>
-            <img src={edit_icon} className=" w-5 h-5" />
-          </button>
-          <button className="w-5 h-5" onClick={handleDeleteClick}>
-            <img src={delete_icon} className=" w-5 h-5" />
-          </button>
+    
+    return (
+        <div className="grid grid-cols-2 my-2 border-gray-300 shadow-md border-2 rounded-lg p-2">
+            <div className="align-top justify-start">
+                <h1 className="font-bold"> 
+                    {accountInfo.HoVaTen}
+                </h1>
+                <p className="pb-2">
+                    {/* Địa điểm: {accountInfo.NgaySinh}<br></br> */}
+                   Số điện thoại: {accountInfo.SoDienThoai}<br></br>
+                </p>
+            </div>
+            <div className="grid grid-flow-row">
+                <div className="flex align-top justify-end mx-2">
+                    <img src={info_icon} className=" w-5 h-5 mx-2" />
+                    <button className="w-5 h-5 mx-2" onClick={handleEditClick}>
+                        <img src={edit_icon} className=" w-5 h-5"/>
+                    </button>
+                    <button className="w-5 h-5" onClick={handleDeleteClick}>
+                        <img src={delete_icon} className=" w-5 h-5" />
+                    </button>
+                </div>
+            </div>
+            <DeleteModal 
+            showDeleteModalProps={showDeleteModal} 
+            conFirmDeleteFunc={handleConfirmDelete} 
+            cancelDeleteFunc={handleCancelDelete} />
+            <EditAccountModal
+            showEditFormProps={showEditModal} 
+            editStorageFunc={handleConfirmEdit} 
+            closePageFunc={handleCancelEdit} 
+            storageProps={accountInfo}  />
         </div>
-        <div className="flex justify-end align-bottom mr-2">
-          Khoảng cách : 1 km
-        </div>
-      </div>
-      <DeleteModal
-        showDeleteModalProps={showDeleteModal}
-        conFirmDeleteFunc={handleConfirmDelete}
-        cancelDeleteFunc={handleCancelDelete}
-      />
-      <EditStorageModal
-        showEditFormProps={showEditModal}
-        editStorageFunc={handleConfirmEdit}
-        closePageFunc={handleCancelEdit}
-        storageProps={storageInfo}
-      />
-    </div>
-  );
+    );
 };
 
 AccountCard.propTypes = {
-  storageProps: PropTypes.object.isRequired,
-  deleteFunc: PropTypes.func.isRequired,
-  editFunc: PropTypes.func.isRequired,
-};
+    accountProps: PropTypes.object.isRequired,
+    deleteFunc: PropTypes.func.isRequired,
+    editFunc: PropTypes.func.isRequired
+}
 
 export default AccountCard;

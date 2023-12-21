@@ -3,6 +3,7 @@ import IndexNavbars from '/src/components/navbars/IndexNavbars'
 import LeftNavBar from '../components/service/LeftNavBar'
 import { useState } from 'react'
 import AccountList from '../components/AccountManagement/AccountList'
+
 const AdminPage = () => {
   const navItems = [
     { link: "Quản lý hệ thống", path: "SystemManagement", active: true},
@@ -18,8 +19,9 @@ const AdminPage = () => {
     <div>
       <IndexNavbars/>
       <div className="md:flex md:flex-row">
-        <LeftNavBar  className="fixed-left-navbar\" navItemsProps={navItems} changeTabFunc={handleTabClick} activeTabProps={activeTab}/>
-        {activeTab === 'SystemManagement' ? <StorageList/> : <AccountList/>}
+        <LeftNavBar navItemsProps={navItems} changeTabFunc={handleTabClick} activeTabProps={activeTab}/>
+        {activeTab === "SystemManagement" && <StorageList className="z-10"/>}
+        {activeTab === "AccountManagement" && <AccountList className="z-10" />}
       </div>
       {/* <SearchBar /> */}
 

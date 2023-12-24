@@ -1,16 +1,19 @@
-import edit_icon from "../../assets/img/edit.png";
-import info_icon from "../../assets/img/exclamation.png";
-import delete_icon from "../../assets/img/delete.png";
+import edit_icon from "../../../assets/img/edit.png"
+import info_icon from "../../../assets/img/exclamation.png";
+import delete_icon from "../../../assets/img/delete.png";
 
 import { PropTypes } from "prop-types";
-import DeleteModal from "../../modal/storageManagement/DeleteModal";
+import DeleteModal from "../../../modal/storageManagement/DeleteModal";
 import { useState } from "react";
 // import { FaExpeditedssl } from "react-icons/fa6";
-import EditAccountModal from "../../modal/accountManagement/EditAccountModal";
+import EditStorageAccountModal from "../../../modal/accountManagement/EditStorageAccountModal";
+import EditTransactionAccountModal from "../../../modal/accountManagement/EditTransactionAccountModal";
 
 const AccountCard = (props) => {
     const accountInfo = props.accountProps;
     const deleteAccount = props.deleteFunc;
+    const isStorage = props.isStorageProps;
+
     const editAccount = props.editFunc
     // const handleDelete = (event, id) => {
     //     event.preventDefault()
@@ -19,26 +22,26 @@ const AccountCard = (props) => {
     const [showDeleteModal,setShowDeleteModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false)
 
-  const handleDeleteClick = () => {
-    setShowDeleteModal(true);
-  };
+    const handleDeleteClick = () => {
+        setShowDeleteModal(true);
+    };
 
-  const handleCancelDelete = () => {
-    setShowDeleteModal(false);
-  };
+    const handleCancelDelete = () => {
+        setShowDeleteModal(false);
+    };
 
     const handleConfirmDelete = () => {
         deleteAccount(accountInfo.MaTaiKhoan);
         setShowDeleteModal(false)
     }
 
-  const handleEditClick = () => {
-    setShowEditModal(true);
-  };
+    const handleEditClick = () => {
+        setShowEditModal(true);
+    };
 
-  const handleCancelEdit = () => {
-    setShowEditModal(false);
-  };
+    const handleCancelEdit = () => {
+        setShowEditModal(false);
+    };
 
     const handleConfirmEdit = (editedAccountInfo) => {
         editAccount(editedAccountInfo)
@@ -53,8 +56,9 @@ const AccountCard = (props) => {
                     {accountInfo.HoVaTen}
                 </h1>
                 <p className="pb-2">
-                    Email: {accountInfo.Emali}<br></br>
-                   Số điện thoại: {accountInfo.SoDienThoai}<br></br>
+                    Email: {accountInfo.Email}<br></br>
+                    Số điện thoại: {accountInfo.SoDienThoai}<br></br>
+                    Tên tài khoản: {accountInfo.TenTaiKhoan}<br></br>
                 </p>
             </div>
             <div className="grid grid-flow-row">
@@ -72,11 +76,15 @@ const AccountCard = (props) => {
             showDeleteModalProps={showDeleteModal} 
             conFirmDeleteFunc={handleConfirmDelete} 
             cancelDeleteFunc={handleCancelDelete} />
-            <EditAccountModal
+            {isStorage ? <EditStorageAccountModal
             showEditFormProps={showEditModal} 
             editAccountFunc={handleConfirmEdit} 
             closePageFunc={handleCancelEdit} 
-            accountProps={accountInfo}  />
+            accountProps={accountInfo}/> : 
+            <EditTransactionAccountModal showEditFormProps={showEditModal} 
+            editAccountFunc={handleConfirmEdit} 
+            closePageFunc={handleCancelEdit} 
+            accountProps={accountInfo}/>}
         </div>
     );
 };
@@ -84,7 +92,7 @@ const AccountCard = (props) => {
 AccountCard.propTypes = {
     accountProps: PropTypes.object.isRequired,
     deleteFunc: PropTypes.func.isRequired,
-    editFunc: PropTypes.func.isRequired
+    editFunc: PropTypes.func.isRequired,
 }
 
 export default AccountCard;

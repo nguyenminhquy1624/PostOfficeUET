@@ -1,14 +1,17 @@
-import edit_icon from "../../assets/img/edit.png";
-import info_icon from "../../assets/img/exclamation.png";
-import delete_icon from "../../assets/img/delete.png";
+import edit_icon from "../../../assets/img/edit.png"
+import info_icon from "../../../assets/img/exclamation.png";
+import delete_icon from "../../../assets/img/delete.png";
 
 import {PropTypes} from 'prop-types'
-import DeleteModal from "../../modal/storageManagement/DeleteModal";
+import DeleteModal from "../../../modal/storageManagement/DeleteModal";
 import { useState } from "react";
 // import { FaExpeditedssl } from "react-icons/fa6";
-import EditStorageModal from "../../modal/storageManagement/EditStorageModal";
+import EditStorageModal from "../../../modal/storageManagement/EditStorageModal";
 
 const StorageCard = (props) => {
+
+    const accountList = JSON.parse(localStorage.getItem("Account"))
+    // console.log(accountList)
     const storageInfo = props.storageProps;
     const deleteStorage = props.deleteFunc;
     const editStorage = props.editFunc
@@ -28,7 +31,7 @@ const StorageCard = (props) => {
     }
 
     const handleConfirmDelete = () => {
-        deleteStorage(storageInfo.id);
+        deleteStorage(storageInfo.MaDiemTapKet);
         setShowDeleteModal(false)
     }
 
@@ -45,15 +48,24 @@ const StorageCard = (props) => {
         setShowEditModal(false)
     }
 
+    const getStorageLeader = (MaDiemTapKet) => {
+        const ans = accountList.filter(accountInfo => (accountInfo.MaDiemTapKet == MaDiemTapKet))
+        // console.log(ans[0])
+        if (ans.length > 0)
+            return ans[0]
+        else
+            return null
+
+    }
     
     return (
         <div className="grid grid-cols-2 my-2 border-gray-300 shadow-md border-2 rounded-lg p-2">
             <div className="align-top justify-start">
                 <h1 className="font-bold"> 
-                    {storageInfo.TenDiemGiaoDich}
+                    {storageInfo.TenDiemTapKet}
                 </h1>
                 <p className="pb-2">
-                    Trưởng điểm: Nguyễn Văn A<br></br>
+                    Trưởng điểm: {getStorageLeader(storageInfo.MaDiemTapKet) ? getStorageLeader(storageInfo.MaDiemTapKet).HoVaTen : "Không có dữ liệu"}<br></br>
                     Địa điểm: {storageInfo.DiaDiem}<br></br>
                     Hotline :{storageInfo.Hotline}<br></br>
                 </p>
@@ -67,9 +79,6 @@ const StorageCard = (props) => {
                     <button className="w-5 h-5" onClick={handleDeleteClick}>
                         <img src={delete_icon} className=" w-5 h-5" />
                     </button>
-                </div>
-                <div className="flex justify-end align-bottom mr-2">
-                    Khoảng cách : 1 km
                 </div>
             </div>
             <DeleteModal 

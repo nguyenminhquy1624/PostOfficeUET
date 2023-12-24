@@ -9,15 +9,13 @@ const EditStorageModal = props => {
     const closePage = props.closePageFunc
     let showEditForm = props.showEditFormProps
 
-    const [storageName, setStorageName] = useState(storageInfo.TenDiemGiaoDich)
-    const [storageCode, setStorageCode] = useState(storageInfo.MaDiemGiaoDich)
+    const [storageName, setStorageName] = useState(storageInfo.TenDiemTapKet)
     const [storageLocation, setStorageLocation] = useState(storageInfo.DiaDiem)
-    const [storageManager, setStorageManager] = useState(storageInfo.MaTruongDiem)
     const [storageHotline, setStorageHotline] = useState(storageInfo.Hotline)
     
+    const [storageHotlineError, setStorageHotlineError] = useState(true)
+
     const storageNameRef = useRef(null)
-    const storageCodeRef = useRef(null)
-    const storageManagerRef = useRef(null)
     const storageLocationRef = useRef(null)
     const storageHotlineRef = useRef(null)
     const confirmRef = useRef(null)
@@ -27,30 +25,10 @@ const EditStorageModal = props => {
         setStorageName(event.target.value)
     }
     const handleStorageNameDown = event => {
+        
         if (event.key === 'Enter') {
             event.preventDefault();
-            storageCodeRef.current.focus();
-        }
-    }
-
-    const changeStorageCode = event => {
-        event.preventDefault();
-        setStorageCode(event.target.value)
-    }
-    const handleStorageCodeDown = event => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            storageManagerRef.current.focus();
-        }
-    }
-
-    const changeStorageManager = event => {
-        event.preventDefault();
-        setStorageManager(event.target.value)
-    }
-    const handleStorageManagerDown = event => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
+            if (storageName.trim() !== "")
             storageLocationRef.current.focus();
         }
     }
@@ -62,31 +40,46 @@ const EditStorageModal = props => {
     const handleStorageLocationDown = event => {
         if (event.key === 'Enter') {
             event.preventDefault();
+            if (storageLocation.trim() !== "")
             storageHotlineRef.current.focus();
         }
     }
 
+    const hotlineRegex = /^\d{4,10}$/;
     const changeStorageHotline = event => {
         event.preventDefault();
         setStorageHotline(event.target.value)
     }
     const handleStorageHotlineDown = event => {
+        if (storageHotline.trim() !== "" && !hotlineRegex.test(storageHotline)) {
+            setStorageHotlineError(false)
+        }
+        else {
+            setStorageHotlineError(true)
+        }
         if (event.key === 'Enter') {
             event.preventDefault();
+            if (storageHotline.trim() != "" && storageHotlineError)
             confirmRef.current.focus();
         }
     }
 
     const handleSubmit = event => {
         event.preventDefault()
-        editStorage({
-            id: storageInfo.id,
-            TenDiemGiaoDich: storageName,
-            MaDiemGiaoDich: storageCode,
-            MaTruongDiem: storageManager,
-            DiaDiem: storageLocation,
-            Hotline: storageHotline,    
-        })
+        if (storageName.trim() !== "" &&
+            storageLocation.trim() !== "" &&
+            storageHotline.trim() !== "" &&
+            storageHotlineError === true) {
+            editStorage({
+                TenDiemTapKet: storageName,
+                MaDiemTapKet: storageInfo.MaDiemTapKet,
+                DiaDiem: storageLocation,
+                Hotline: storageHotline,    
+            })
+        }
+        else {
+            alert("Dữ liệu nhập vào không hợp lệ hoặc bị thiếu")
+        }
     }
 
     // const handleConfirmDown = event => {
@@ -97,10 +90,8 @@ const EditStorageModal = props => {
     // }
     const handleReset = (event) => {
         event.preventDefault()
-        setStorageName(storageInfo.TenDiemGiaoDich)
-        setStorageCode(storageInfo.MaDiemGiaoDich)
+        setStorageName(storageInfo.TenDiemTapKet)
         setStorageLocation(storageInfo.DiaDiem)
-        setStorageManager(storageInfo.MaTruongDiem)
         setStorageHotline(storageInfo.Hotline)
     }
 
@@ -116,20 +107,17 @@ const EditStorageModal = props => {
                 <img src={close_img}/>
             </button>
             <h1 className='font-bold text-2xl text-primary flex justify-center my-2'>
-                CẬP NHẬT ĐIỂM GIAO DỊCH
+                CẬP NHẬT ĐIỂM TẬP KẾT 
             </h1>
             <form className='' onSubmit={handleSubmit}>
                 <div className='flex-col mx-2 my-2 text-primary py-0 space-y-1'>
-                    <p>Tên điểm  giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageName} onChange={changeStorageName} ref={storageNameRef} onKeyDown={handleStorageNameDown} placeholder='Điền tên điểm giao dịch...'/>
-                    <p>Mã điểm giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageCode} onChange={changeStorageCode} ref={storageCodeRef} onKeyDown={handleStorageCodeDown} placeholder='Điền mã điểm giao dịch...'/>
-                    <p>Mã trưởng điểm giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageManager} onChange={changeStorageManager} ref={storageManagerRef} onKeyDown={handleStorageManagerDown} placeholder='Điền mã của trưởng giao dịch...'/>
-                    <p>Địa chỉ điểm giao dịch</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageLocation} onChange={changeStorageLocation} ref={storageLocationRef} onKeyDown={handleStorageLocationDown} placeholder='Điền dịa chỉ điểm giao dịch...'/>
+                    <p>Tên điểm tập kết</p>
+                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageName} onChange={changeStorageName} ref={storageNameRef} onKeyDown={handleStorageNameDown} placeholder='Điền tên điểm tập kết...'/>
+                    <p>Địa chỉ điểm tập kết</p>
+                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageLocation} onChange={changeStorageLocation} ref={storageLocationRef} onKeyDown={handleStorageLocationDown} placeholder='Điền dịa chỉ điểm tập kết...'/>
                     <p>Hotline</p>
-                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageHotline} onChange={changeStorageHotline} ref={storageHotlineRef} onKeyDown={handleStorageHotlineDown} placeholder='Điền Hotline của điểm giao dịch...'/>
+                    <input className="w-full rounded-lg px-1 py-2 border-black text-black shadow-md" type='text' value={storageHotline} onChange={changeStorageHotline} ref={storageHotlineRef} onKeyDown={handleStorageHotlineDown} placeholder='Điền Hotline của điểm tập kết...'/>
+                    {!storageHotlineError && <p className='text-red-600'>Cần nhập số điện thoại chứa từ 4 đến 10 chữ số</p>}
                     <div className='flex justify-around gap-4 text-primary text-xl'>
                         <button className='w-fit rounded-sm px-2 py-2 hover:scale-125 transition ease-out duration-500  ' onClick={handleReset}>Reset</button>
                         <button className='w-fit rounded-sm px-2 py-2 hover:scale-125 transition ease-out duration-500 ' ref={confirmRef} type='submit'>Xác nhận</button>

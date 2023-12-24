@@ -1,11 +1,152 @@
 from django.contrib import admin
 from django.urls import path
-from .views import UserRegisterView, LoginView, UserView, LogoutView
+from .views import (
+    UserRegisterView,
+    LoginView,
+    UserView,
+    LogoutView,
+    AllUserView,
+    UserByID,
+    UpdateAccountView,
+    DeleteAccountView,
+    RegisterCustomerView,
+    CustomerByID,
+    CustomerAll,
+    UpdateCustomer,
+    DeleteCustomer,
+    RegisterDiemTapKetView,
+    DiemTapKetByID,
+    DiemTapKetAll,
+    UpdateDiemTapKet,
+    DeleteDiemTapKet,
+    RegisterDiemGiaoDichView,
+    DiemGiaoDichByID,
+    DiemGiaoDichAll,
+    UpdateDiemGiaoDich,
+    DeleteDiemGiaoDich,
+    RegisterDonHang,
+    DonHangByID,
+    DonHangAll,
+    UpdateDonHang,
+    DeleteDonHang,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/register/", UserRegisterView.as_view(), name="register"),
-    path("api/login/", LoginView.as_view(), name="login"),
-    path("api/user/", UserView.as_view(), name="user"),
-    path("api/logout/", LogoutView.as_view(), name="logout"),
+    path("api/account/register/", UserRegisterView.as_view(), name="RegisterAccount"),
+    path("api/account/login/", LoginView.as_view(), name="LoginAccount"),
+    path("api/account/", UserView.as_view(), name="Account"),
+    path("api/account/logout/", LogoutView.as_view(), name="LogoutAccount"),
+    path("api/account/all/", AllUserView.as_view(), name="AllAccount"),
+    path("api/account/<int:id>/", UserByID.as_view(), name="AccountId"),
+    path(
+        "api/account/update/<int:id>/",
+        UpdateAccountView.as_view(),
+        name="UpdateAccount",
+    ),
+    path(
+        "api/account/delete/<int:id>/",
+        DeleteAccountView.as_view(),
+        name="DeleteAccount",
+    ),
+    path(
+        "api/customer/register/",
+        RegisterCustomerView.as_view(),
+        name="CustomerRegister",
+    ),
+    path(
+        "api/customer/<int:id>/",
+        CustomerByID.as_view(),
+        name="CustomerByID",
+    ),
+    path(
+        "api/customer/all/",
+        CustomerAll.as_view(),
+        name="CustomerAll",
+    ),
+    path(
+        "api/customer/update/<int:id>/",
+        UpdateCustomer.as_view(),
+        name="UpdateCustomer",
+    ),
+    path(
+        "api/customer/delete/<int:id>/",
+        DeleteCustomer.as_view(),
+        name="DeleteCustomer",
+    ),
+    path(
+        "api/diemtapket/register/",
+        RegisterDiemTapKetView.as_view(),
+        name="RegisterDiemTapKetView",
+    ),
+    path(
+        "api/diemtapket/<int:id>/",
+        DiemTapKetByID.as_view(),
+        name="DiemTapKetByID",
+    ),
+    path(
+        "api/diemtapket/all/",
+        DiemTapKetAll.as_view(),
+        name="DiemTapKetAll",
+    ),
+    path(
+        "api/diemtapket/update/<int:id>",
+        UpdateDiemTapKet.as_view(),
+        name="UpdateDiemTapKet",
+    ),
+    path(
+        "api/diemtapket/delete/<int:id>",
+        DeleteDiemTapKet.as_view(),
+        name="DeleteDiemTapKet",
+    ),
+    path(
+        "api/diemgiaodich/register/",
+        RegisterDiemGiaoDichView.as_view(),
+        name="RegisterDiemGiaoDichView",
+    ),
+    path(
+        "api/diemgiaodich/<int:id>/",
+        DiemGiaoDichByID.as_view(),
+        name="DiemGiaoDichByID",
+    ),
+    path(
+        "api/diemgiaodich/all/",
+        DiemGiaoDichAll.as_view(),
+        name="DiemGiaoDichAll",
+    ),
+    path(
+        "api/diemgiaodich/update/<int:id>",
+        UpdateDiemGiaoDich.as_view(),
+        name="UpdateDiemGiaoDich",
+    ),
+    path(
+        "api/diemgiaodich/delete/<int:id>",
+        DeleteDiemGiaoDich.as_view(),
+        name="DeleteDiemGiaoDich",
+    ),
+    path(
+        "api/donhang/register/",
+        RegisterDonHang.as_view(),
+        name="RegisterDonHang",
+    ),
+    path(
+        "api/donhang/<int:id>/",
+        DonHangByID.as_view(),
+        name="DonHangByID",
+    ),
+    path(
+        "api/donhang/all/",
+        DonHangAll.as_view(),
+        name="DonHangAll",
+    ),
+    path(
+        "api/donhang/update/<int:id>",
+        UpdateDonHang.as_view(),
+        name="UpdateDonHang",
+    ),
+    path(
+        "api/donhang/delete/<int:id>",
+        DeleteDonHang.as_view(),
+        name="DeleteDonHang",
+    ),
 ]

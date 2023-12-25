@@ -1,9 +1,9 @@
 // import React from "react"
-import add_icon from "../../../assets/img/add.png";
+import add_icon from "../../assets/img/add.png";
 import { useState } from "react";
-import SearchBar from "../../searchbar/SearchBar";
+import SearchBar from "../../components/searchbar/SearchBar";
 import StorageStaffCard from "./StorageStaffCard";
-import AddStorageStaffModal from "../../../modal/accountManagement/AddStorageStaffModal";
+import AddStorageStaffModal from "../../modal/accountManagement/AddStorageStaffModal";
 
 // import DeleteModal from "../../modal/DeleteModal";
 const StorageStaffList = () => {
@@ -17,7 +17,9 @@ const StorageStaffList = () => {
     
 
     const defaultStorageStaffList = () => {
-        return JSON.parse(localStorage.getItem("Account").filter(accountInfo => (accountInfo.LoaiTaiKhoan === 5)))
+        return JSON.parse(localStorage.getItem("Account")).filter(
+            accountInfo => (accountInfo.LoaiTaiKhoan === 5 && 
+                            accountInfo.MaDiemTapKet === MaDiemTapKet))
     }
 
     const [accountState, setAccountState] = useState(defaultStorageStaffList())

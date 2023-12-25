@@ -15,7 +15,9 @@ class DiemGiaoDich(models.Model):
     TenDiaDiemGiaoDich = models.CharField(max_length=255)
     DiaDiem = models.CharField(max_length=255)
     Hotline = models.CharField(max_length=255)
-    MaDiemTapKet = models.ForeignKey(DiemTapKet, on_delete=models.CASCADE)
+    MaDiemTapKet = models.ForeignKey(
+        DiemTapKet, null=True, blank=True, on_delete=models.SET_NULL
+    )
 
 
 class Account(AbstractUser):

@@ -84,16 +84,16 @@ class AllUserView(APIView):
         return Response({"users": serializer.data})
 
 
-# Lay 1 user boi id
+# Lay ra 1 user boi id dung va sai ok
 class UserByID(APIView):
     def get(sefl, request, id, *args, **kwargs):
         try:
-            user = get_object_or_404(Account, pk=id)
-            serializer = UserSerializer(user)
+            account = Account.objects.get(pk=id)
+            serializer = UserSerializer(account)
             return Response({"account": serializer.data}, status=status.HTTP_200_OK)
         except Account.DoesNotExist:
             return Response(
-                {"message": "User not found"}, status=status.HTTP_404_NOT_FOUND
+                {"message": "Account not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
 
@@ -130,7 +130,7 @@ class DeleteAccountView(APIView):
             account.delete()
             return Response({"message": "Delete Account successfully"})
         except Account.DoesNotExist:
-            return Respone(
+            return Response(
                 {"message": "Account not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
@@ -155,11 +155,11 @@ class CustomerAll(APIView):
         return Response({"customer": serializer.data})
 
 
-# Lay tai khoan theo PK
+# Lay tai khoan theo ID dung va sai ok
 class CustomerByID(APIView):
     def get(self, request, id):
         try:
-            customer = get_object_or_404(Customer, pk=id)
+            customer = Customer.objects.get(pk=id)
             serializer = CustomerSerializer(customer)
             return Response({"customer": serializer.data})
         except Customer.DoesNotExist:
@@ -184,6 +184,7 @@ class UpdateCustomer(APIView):
             )
 
 
+# Test delete customer voi ID dung va sai ok
 class DeleteCustomer(APIView):
     def delete(self, request, id):
         try:
@@ -191,23 +192,25 @@ class DeleteCustomer(APIView):
             customer.delete()
             return Response({"message": "Delete customer successfully"})
         except Customer.DoesNotExist:
-            return Respone(
+            return Response(
                 {"message": "Account not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
 
+# Test ok
 class RegisterDiemTapKetView(APIView):
     def post(self, request):
         serializer = DiemTapKetSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Respone(serializer.data)
+        return Response(serializer.data)
 
 
+# Test ok voi id dung va sai
 class DiemTapKetByID(APIView):
-    def get(self, request):
+    def get(self, request, id):
         try:
-            diemtapket = get_object_or_404(DiemTapKet, pk=id)
+            diemtapket = DiemTapKet.objects.get(pk=id)
             serializer = DiemTapKetSerializer(diemtapket)
             return Response({"DiemTapKet": serializer.data})
         except DiemTapKet.DoesNotExist:
@@ -216,6 +219,7 @@ class DiemTapKetByID(APIView):
             )
 
 
+# Test ok
 class DiemTapKetAll(APIView):
     def get(self, request):
         try:
@@ -244,6 +248,7 @@ class UpdateDiemTapKet(APIView):
             )
 
 
+# test ok
 class DeleteDiemTapKet(APIView):
     def delete(self, request, id):
         try:
@@ -256,18 +261,20 @@ class DeleteDiemTapKet(APIView):
             )
 
 
+# Test ok
 class RegisterDiemGiaoDichView(APIView):
     def post(self, request):
-        serializer = DiemGiaoDich(data=request.data)
+        serializer = DiemGiaoDichSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Respone(serializer.data)
+        return Response(serializer.data)
 
 
+# Test ok
 class DiemGiaoDichByID(APIView):
-    def get(self, request):
+    def get(self, request, id):
         try:
-            diemgiaodich = get_object_or_404(DiemTapKet, pk=id)
+            diemgiaodich = DiemGiaoDich.objects.get(pk=id)
             serializer = DiemGiaoDichSerializer(diemgiaodich)
             return Response({"DiemGiaoDich": serializer.data})
         except DiemGiaoDich.DoesNotExist:
@@ -277,6 +284,7 @@ class DiemGiaoDichByID(APIView):
             )
 
 
+# Test ok
 class DiemGiaoDichAll(APIView):
     def get(self, request):
         try:
@@ -305,8 +313,7 @@ class UpdateDiemGiaoDich(APIView):
                 {"message": "Diem Giao Dich not found"},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-
+# test ok
 class DeleteDiemGiaoDich(APIView):
     def delete(self, request, id):
         try:
@@ -320,18 +327,19 @@ class DeleteDiemGiaoDich(APIView):
             )
 
 
+# Test ok
 class RegisterDonHang(APIView):
     def post(self, request):
         serializer = DonHangSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Respone(serializer.data)
+        return Response(serializer.data)
 
-
+# Test ok
 class DonHangByID(APIView):
-    def get(self, request):
+    def get(self, request, id):
         try:
-            donhang = get_object_or_404(DiemTapKet, pk=id)
+            donhang = DonHang.objects.get(pk=id)
             serializer = DonHangSerializer(donhang)
             return Response({"DiemTapKet": serializer.data})
         except DonHang.DoesNotExist:
@@ -339,7 +347,7 @@ class DonHangByID(APIView):
                 {"message": "Don Hang not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-
+# Test ok
 class DonHangAll(APIView):
     def get(self, request):
         try:
@@ -351,7 +359,7 @@ class DonHangAll(APIView):
                 {"message": "Don Hang not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-
+# Test ok
 class UpdateDonHang(APIView):
     def put(self, request, id):
         try:

@@ -31,8 +31,8 @@ const LoginPage = () => {
     // }
 
     // alert("Form submitted successfully.");
-    console.log("Email: ", email);
-    console.log("Password: ", password);
+    // console.log("Email: ", email);
+    // console.log("Password: ", password);
     // console.log("Confirm Password: ", confirmPassword);
   
     
@@ -45,6 +45,19 @@ const LoginPage = () => {
     // only for admin
     if (email == "admin@gmail.com" && password == '1') {
       navigate('/admin');
+    }
+    else {
+      const accounts = JSON.parse(localStorage.getItem("accounts"))
+      const accountFind = accounts.find((account) => account.Email === email);
+      if (!accountFind) {
+        alert("This account is not existed in our system!")
+      }
+      else if (accountFind && accountFind.MatKhau === password) {
+        alert("Successfully login!")
+      }
+      else {
+        alert("Your email or password is incorrect!!")
+      }
     }
   };
   

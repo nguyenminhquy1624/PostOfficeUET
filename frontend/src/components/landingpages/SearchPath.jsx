@@ -49,7 +49,9 @@ const SearchPath = () => {
       </motion.div>
       <motion.div variants={fadeIn("up", 0.2)} initial="hidden" whileInView={"show"} viewport={{once:false, amount:0.7}} className=" mx-[17%] mt-5 shadow-xl rounded-xl">
         <Tabs value={activeTab}>
-          <TabsHeader className="shadow-md" indicatorProps={{
+          <TabsHeader 
+          className="shadow-md"
+          indicatorProps={{
             className: "bg-[#58b9fa] shadow-md",
           }}>
             {data.map(({ label, value, icon }) => (
@@ -57,7 +59,7 @@ const SearchPath = () => {
                 key={value}
                 value={value}
                 onClick={() => handleTabClick(value)}
-                className={`${activeTab === value ? "text-white" : ""}`}
+                className={`tab ${activeTab === value ? "bg-blue text-white" : ""}`}
               >
                 <div className="flex items-center gap-2">
                   {icon}

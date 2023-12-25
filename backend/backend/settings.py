@@ -81,8 +81,8 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "postoffice",
-        "USER": "postgres",
+        "NAME": "magicpost",
+        "USER": "admin",
         "PASSWORD": "1",
         "HOST": "localhost",
         "PORT": "5432",
@@ -132,7 +132,7 @@ True
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-AUTH_USER_MODEL = "backend.UserAccount"
+AUTH_USER_MODEL = "backend.Account"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True

@@ -3,16 +3,18 @@ import {PropTypes} from 'prop-types'
 import close_img from "../../assets/img/close.png"
 import { useRef, useState } from 'react'
 // import uuid from 'uuid'
-const AddStorageModal = props => {
-    const addStorage = props.addStorageFunc
+const EditAccountModal = props => {
+    const storageInfo = props.storageProps
+    const editStorage = props.editStorageFunc
     const closePage = props.closePageFunc
-    let showAddForm = props.addFormProps
-    const [storageName, setStorageName] = useState('')
-    const [storageCode, setStorageCode] = useState("")
-    const [storageLocation, setStorageLocation] = useState("")
-    const [storageManager, setStorageManager] = useState("")
-    const [storageHotline, setStorageHotline] = useState("")
+    let showEditForm = props.showEditFormProps
 
+    const [storageName, setStorageName] = useState(storageInfo.TenDiemGiaoDich)
+    const [storageCode, setStorageCode] = useState(storageInfo.MaDiemGiaoDich)
+    const [storageLocation, setStorageLocation] = useState(storageInfo.DiaDiem)
+    const [storageManager, setStorageManager] = useState(storageInfo.MaTruongDiem)
+    const [storageHotline, setStorageHotline] = useState(storageInfo.Hotline)
+    
     const storageNameRef = useRef(null)
     const storageCodeRef = useRef(null)
     const storageManagerRef = useRef(null)
@@ -77,8 +79,8 @@ const AddStorageModal = props => {
 
     const handleSubmit = event => {
         event.preventDefault()
-        addStorage({
-            id: 5,
+        editStorage({
+            id: storageInfo.id,
             TenDiemGiaoDich: storageName,
             MaDiemGiaoDich: storageCode,
             MaTruongDiem: storageManager,
@@ -95,11 +97,11 @@ const AddStorageModal = props => {
     // }
     const handleReset = () => {
         event.preventDefault()
-        setStorageName('')
-        setStorageCode("")
-        setStorageLocation("")
-        setStorageManager("")
-        setStorageHotline("")
+        setStorageName(storageInfo.TenDiemGiaoDich)
+        setStorageCode(storageInfo.MaDiemGiaoDich)
+        setStorageLocation(storageInfo.DiaDiem)
+        setStorageManager(storageInfo.MaTruongDiem)
+        setStorageHotline(storageInfo.Hotline)
     }
 
     const handleClosePage = event => {
@@ -107,14 +109,14 @@ const AddStorageModal = props => {
         closePage()
     }
   return (
-    <div className={`fixed inset-0 flex justify-center items-center transition-colors ${showAddForm ? "bg-black/20" : "hidden"} z-50`}>
+    <div className={`fixed inset-0 flex justify-center items-center transition-colors ${showEditForm ? "bg-black/20" : "hidden"} z-50`}>
         {/* AddPage Modal */}
-        <div className={`bg-white round-lg shadow p-6 translate-all max-w-md rounded-xl gap-4 ${showAddForm ? "scale-100 opacity-100" : "scale-100 opacity-0"}`} onClick={(e) => e.stopPropagation()}>
-            <button onClick={handleClosePage} className='absolute top-2 right-2 py-1 px-2 h-20 w-20'>
+        <div className={`bg-white round-lg shadow p-6 translate-all max-w-md rounded-xl gap-4 ${showEditForm ? "scale-100 opacity-100" : "scale-100 opacity-0"}`} onClick={(e) => e.stopPropagation()}>
+            <button onClick={handleClosePage} className='absolute top-2 right-2 py-1 px-2 h-10 w-10'>
                 <img src={close_img}/>
             </button>
-            <h1 className='font-bold text-md text-primary flex justify-center my-2'>
-                TẠO ĐIỂM GIAO DỊCH
+            <h1 className='font-bold text-4xl text-primary flex justify-center my-2'>
+                CẬP NHẬT ĐIỂM GIAO DỊCH
             </h1>
             <form className='' onSubmit={handleSubmit}>
                 <div className='flex-col mx-2 my-2 text-primary py-0 space-y-1'>
@@ -147,9 +149,10 @@ const AddStorageModal = props => {
   )
 }
 
-AddStorageModal.propTypes = {
-    addStorageFunc: PropTypes.func.isRequired,
+EditAccountModal.propTypes = {
+    storageProps: PropTypes.object.isRequired,
+    editStorageFunc: PropTypes.func.isRequired,
     closePageFunc: PropTypes.func.isRequired,
-    addFormProps: PropTypes.object.isRequired
+    showEditFormProps: PropTypes.object.isRequired
 }
-export default AddStorageModal
+export default EditAccountModal

@@ -5,7 +5,7 @@ import LoginPage from './views/LoginPage'
 import SignUp from './views/SignUpPage'
 import Feedback from './components/landingpages/Feedback'
 import AdminPage from './views/AdminPage'
-
+import TransactionStaff from './views/TransactionStaff'
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +15,7 @@ function App() {
       <Route path='login' element={<LoginPage/>} />
       <Route path='signup' element={<SignUp/>} />
       <Route path='feedback' element={<Feedback/>} />
+      <Route path='transactionStaff' element={<TransactionStaff/>} />
     </Routes>
       
     </BrowserRouter>

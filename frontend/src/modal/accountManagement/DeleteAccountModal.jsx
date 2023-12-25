@@ -3,7 +3,7 @@ import { Button, Modal } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import {PropTypes} from 'prop-types'
 
-const DeleteModal = (props) => {
+const DeleteAccountModal = (props) => {
     let showDeleteModal = props.showDeleteModalProps
     const handleConfirmDelete = props.conFirmDeleteFunc
     const CloseFunc = props.cancelDeleteFunc
@@ -30,9 +30,9 @@ const DeleteModal = (props) => {
 
     )
 }
-DeleteModal.propTypes = {
+DeleteAccountModal.propTypes = {
     // showDeleteModalProps: PropTypes.object.isRequired,
     conFirmDeleteFunc: PropTypes.func.isRequired,
     cancelDeleteFunc: PropTypes.func.isRequired
 }
-export default DeleteModal
+export default DeleteAccountModal

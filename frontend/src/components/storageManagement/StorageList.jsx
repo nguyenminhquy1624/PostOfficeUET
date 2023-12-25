@@ -73,7 +73,7 @@ const StorageList = () => {
   return (
     <div className="max-w-full flex-grow">
       <SearchBar />
-      <div className="relative justify-items-center mx-10 mt-2 p-4">
+      <div className="relative justify-items-center mx-10 mt-2 p-2">
         <h1 className="absolute bg-white m-2 px-2 -top-2 left-1/10 italic font-bold text-2xl text-primary">
           ĐIỂM GIAO DỊCH
         </h1>

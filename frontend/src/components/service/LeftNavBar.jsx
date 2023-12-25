@@ -17,7 +17,7 @@ const LeftNavBar = (props) => {
     // let navigate = useNavigate(); 
 
     return (
-        <div className="bg-slate-100 relative mt-10">
+        <div className="bg-slate-100 relative">
             <nav className="hidden md:block md:w-fit max-h-full  text-primary top-0 left-0  mt-[80px]">
                 <div className="text-lg container my-auto flex justify-between items-center font-[500]">
                     <div className="flex items-center">
@@ -67,6 +67,7 @@ const LeftNavBar = (props) => {
                     )}
                     </button>
                 </div>
+                
             </nav>
         </div>
     )

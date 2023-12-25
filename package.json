@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "lucide-react": "^0.299.0"
+  }
+}

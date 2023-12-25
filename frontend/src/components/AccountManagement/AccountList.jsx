@@ -3,7 +3,7 @@ import StorageCard from "./AccountCard";
 import add_icon from "../../assets/img/add.png";
 import { useState } from "react";
 // import {uuidv4} from 'uuid';
-import AddStorageModal from "../../modal/storageManagement/AddStorageModal";
+import AddAccountModal from "../../modal/accountManagement/AddAccountModal";
 import SearchBar from "../searchbar/SearchBar";
 // import DeleteModal from "../../modal/DeleteModal";
 const AccountList = () => {
@@ -96,7 +96,7 @@ const AccountList = () => {
           <img src={add_icon} />
         </button>
       </div>
-      <AddStorageModal
+      <AddAccountModal
         addStorageFunc={handleAddStorageInfo}
         closePageFunc={handleCloseAddFormClick}
         addFormProps={showAddForm}

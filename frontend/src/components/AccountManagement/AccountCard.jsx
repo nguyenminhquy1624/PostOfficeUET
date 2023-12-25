@@ -3,10 +3,10 @@ import info_icon from "../../assets/img/exclamation.png";
 import delete_icon from "../../assets/img/delete.png";
 
 import { PropTypes } from "prop-types";
-import DeleteModal from "../../modal/storageManagement/DeleteModal";
+import DeleteAccountModal from "../../modal/accountManagement/DeleteAccountModal";
 import { useState } from "react";
 // import { FaExpeditedssl } from "react-icons/fa6";
-import EditStorageModal from "../../modal/storageManagement/EditStorageModal";
+import EditAccountModal from "../../modal/accountManagement/EditAccountModal";
 
 const AccountCard = (props) => {
   const storageInfo = props.storageProps;
@@ -71,12 +71,12 @@ const AccountCard = (props) => {
           Khoảng cách : 1 km
         </div>
       </div>
-      <DeleteModal
+      <DeleteAccountModal
         showDeleteModalProps={showDeleteModal}
         conFirmDeleteFunc={handleConfirmDelete}
         cancelDeleteFunc={handleCancelDelete}
       />
-      <EditStorageModal
+      <EditAccountModal
         showEditFormProps={showEditModal}
         editStorageFunc={handleConfirmEdit}
         closePageFunc={handleCancelEdit}

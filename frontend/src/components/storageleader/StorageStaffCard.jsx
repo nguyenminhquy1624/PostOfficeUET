@@ -1,12 +1,12 @@
-import edit_icon from "../../../assets/img/edit.png"
-import info_icon from "../../../assets/img/exclamation.png";
-import delete_icon from "../../../assets/img/delete.png";
+import edit_icon from "../../assets/img/edit.png"
+import info_icon from "../../assets/img/exclamation.png";
+import delete_icon from "../../assets/img/delete.png";
 
 import { PropTypes } from "prop-types";
-import DeleteModal from "../../../modal/storageManagement/DeleteModal";
+import DeleteModal from "../../modal/storageManagement/DeleteModal";
 import { useState } from "react";
 // import { FaExpeditedssl } from "react-icons/fa6";
-import EditStorageAccountModal from "../../../modal/accountManagement/EditStorageAccountModal";
+import EditStaffModal from "../../modal/accountManagement/EditStaffModal";
 
 const StorageStaffCard = (props) => {
     const accountInfo = props.accountProps;
@@ -70,11 +70,12 @@ const StorageStaffCard = (props) => {
             showDeleteModalProps={showDeleteModal} 
             conFirmDeleteFunc={handleConfirmDelete} 
             cancelDeleteFunc={handleCancelDelete} />
-            <EditStorageAccountModal
+            <EditStaffModal
             showEditFormProps={showEditModal} 
             editAccountFunc={handleConfirmEdit} 
             closePageFunc={handleCancelEdit} 
-            accountProps={accountInfo}  />
+            accountProps={accountInfo}  
+            isStorageProps={true}/>
         </div>
     );
 };

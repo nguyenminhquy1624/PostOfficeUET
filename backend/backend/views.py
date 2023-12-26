@@ -42,7 +42,7 @@ class LoginView(APIView):
             raise AuthenticationFailed("Incorrect password")
 
         payload = {
-            "id": user.id,
+            "id": user.pk,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
             "iat": datetime.datetime.utcnow(),
         }
@@ -178,13 +178,13 @@ class LoginCustomerView(APIView):
 
         return response
 
+
 class LogoutCustomerView(APIView):
     def post(self, request):
         respone = Response()
         respone.delete_cookie("jwt")
         respone.data = {"message": "Successfully"}
         return respone
-
 
 
 # Lay tat ca cac tai khoan

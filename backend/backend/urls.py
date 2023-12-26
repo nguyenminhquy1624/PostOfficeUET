@@ -10,6 +10,8 @@ from .views import (
     UpdateAccountView,
     DeleteAccountView,
     RegisterCustomerView,
+    LoginCustomerView,
+    LogoutCustomerView,
     CustomerByID,
     CustomerAll,
     UpdateCustomer,
@@ -59,6 +61,12 @@ urlpatterns = [
         "api/customer/register/",
         RegisterCustomerView.as_view(),
         name="CustomerRegister",
+    ),
+    # Test ok
+    path("api/customer/login/", LoginCustomerView.as_view(), name="LoginCustomerView"),
+    # Test ok
+    path(
+        "api/customer/logout/", LogoutCustomerView.as_view(), name="LogoutCustomerView"
     ),
     # Test ok
     path(

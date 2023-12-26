@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Account, Customer, DonHang, DiemGiaoDich, DiemTapKet
+from django.contrib.auth.hashers import make_password, check_password
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -30,7 +31,6 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = "__all__"
-        # fields = ["username", "password", "HoVaTen", "SoDienThoai", "email"]
 
 
 class DiemTapKetSerializer(serializers.ModelSerializer):

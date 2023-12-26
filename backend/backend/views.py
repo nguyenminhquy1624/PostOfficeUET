@@ -13,6 +13,7 @@ from .models import Account, Customer, DiemTapKet, DiemGiaoDich, DonHang
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 import jwt, datetime
+from django.contrib.auth.hashers import check_password
 
 
 # Account user register, login, logout , authentication
@@ -145,6 +146,45 @@ class RegisterCustomerView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+
+class LoginCustomerView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        if not username or not password:
+            raise AuthenticationFailed("Invalid credentials")
+
+        user = Customer.objects.filter(username=username).first()
+
+        if user is None:
+            raise AuthenticationFailed("User not found")
+
+        if password != user.password:
+            raise AuthenticationFailed("Incorrect password")
+
+        payload = {
+            "id": user.MaKhachHang,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            "iat": datetime.datetime.utcnow(),
+        }
+
+        token = jwt.encode(payload, "secret", algorithm="HS256").decode("utf-8")
+
+        response = Response()
+        response.set_cookie(key="jwt", value=token, httponly=True)
+        response.data = {"jwt": token}
+
+        return response
+
+class LogoutCustomerView(APIView):
+    def post(self, request):
+        respone = Response()
+        respone.delete_cookie("jwt")
+        respone.data = {"message": "Successfully"}
+        return respone
+
 
 
 # Lay tat ca cac tai khoan
@@ -313,6 +353,8 @@ class UpdateDiemGiaoDich(APIView):
                 {"message": "Diem Giao Dich not found"},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
 # test ok
 class DeleteDiemGiaoDich(APIView):
     def delete(self, request, id):
@@ -335,6 +377,7 @@ class RegisterDonHang(APIView):
         serializer.save()
         return Response(serializer.data)
 
+
 # Test ok
 class DonHangByID(APIView):
     def get(self, request, id):
@@ -347,6 +390,7 @@ class DonHangByID(APIView):
                 {"message": "Don Hang not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
+
 # Test ok
 class DonHangAll(APIView):
     def get(self, request):
@@ -358,6 +402,7 @@ class DonHangAll(APIView):
             return Response(
                 {"message": "Don Hang not found"}, status=status.HTTP_404_NOT_FOUND
             )
+
 
 # Test ok
 class UpdateDonHang(APIView):

@@ -6,13 +6,13 @@ import { useState } from 'react'
 import AccountList from '../components/admin/AccountManagement/AccountList'
 
 
-import { FaMapMarkerAlt } from "react-icons/fa";
-import { RiAccountBoxLine } from "react-icons/ri";
-import { LuLogOut } from "react-icons/lu";
-import { FaChartColumn } from "react-icons/fa6";
-import AdminNavbars from "../components/navbars/AdminNavbards";
-// import ProfileCard from "../components/Profile/ProfileCard";
-import Sidebar, { SidebarItem } from "../components/service/SlideBar";
+// import { FaMapMarkerAlt } from "react-icons/fa";
+// import { RiAccountBoxLine } from "react-icons/ri";
+// import { LuLogOut } from "react-icons/lu";
+// import { FaChartColumn } from "react-icons/fa6";
+// import AdminNavbars from "../components/navbars/AdminNavbards";
+// // import ProfileCard from "../components/Profile/ProfileCard";
+// import Sidebar, { SidebarItem } from "../components/service/SlideBar";
 
 const AdminPage = () => {
   const defaultTransactionStationList = [

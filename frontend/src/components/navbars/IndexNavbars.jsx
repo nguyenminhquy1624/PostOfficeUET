@@ -23,6 +23,7 @@ const IndexNavbars = () => {
     navigate(path);
   }
 
+
   return (
     <>
       <nav className="bg-white md:px-4 p-4 w-full border-b mx-auto text-primary fixed right-0 top-0 left-0 shadow-md">
@@ -50,12 +51,12 @@ const IndexNavbars = () => {
           </div>
 
           <div className="space-x-12 hidden md:flex items-center">
-            {/* <a
+            <a
               href="signup"
               className="hidden lg:flex items-center hover:text-secondary"
             >
               Đăng ký
-            </a> */}
+            </a>
             <button className="bg-secondary py-2 px-4 transition-all duration-300 rounded hover:text-white hover:bg-indigo-600" onClick={login} >
               Đăng nhập
             </button>

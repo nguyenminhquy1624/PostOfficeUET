@@ -1,0 +1,20 @@
+ [
+  {
+    "TenDiemTapKet": "Điểm tập kết Cầu Giấy",
+    "MaDiemTapKet": 1234,
+    "DiaDiem": "Số 3 Trần Quốc Hoàn",
+    "Hotline": "15214"
+  },
+  {
+    "TenDiemTapKet": "Điểm tập kết Bắc Từ Liêm",
+    "MaDiemTapKet": 1235,
+    "DiaDiem": "Số 6 Cầu Diễn, xã Minh Khai",
+    "Hotline": "15215"
+  },
+  {
+    "TenDiemTapKet": "Điểm tập kết Đống Đa",
+    "MaDiemTapKet": 1236,
+    "DiaDiem": "Số 9 Hoàng Cầu",
+    "Hotline": "15216"
+  }
+]

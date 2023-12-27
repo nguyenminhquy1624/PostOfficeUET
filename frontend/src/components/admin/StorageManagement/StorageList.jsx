@@ -1,44 +1,123 @@
 // import React from "react"
 import StorageCard from "./StorageCard";
 import add_icon from "../../../assets/img/add.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import {uuidv4} from 'uuid';
 import AddStorageModal from "../../../modal/storageManagement/AddStorageModal";
 import SearchBar from "../../searchbar/SearchBar";
+import axios from 'axios'
 // import DeleteModal from "../../modal/DeleteModal";
 const StorageList = () => {
 
+    const access_token = localStorage.getItem("access");
+    console.log("access_token: ", access_token)
+    const [defaultStorageState, setDefaultStorageState] = useState([])
+    // const [storageState, setStorageState] = useState(JSON.parse(localStorage.getItem("StorageStation")));
     const [storageState, setStorageState] = useState(JSON.parse(localStorage.getItem("StorageStation")));
     // const [filteredStorageState, setFilterStorageState] = useState(JSON.parse(localStorage.getItem("StorageStation")))
 
     const [showAddForm, setShowAddForm] = useState(false);
     
-    const handleAddStorageInfo = (storageInfo) => {
-        const storageList = JSON.parse(localStorage.getItem("StorageStation"))
-        setStorageState([...storageList, storageInfo]);
-        localStorage.setItem("StorageStation", JSON.stringify([...storageList, storageInfo]))
+    useEffect(() => {
+        const getData= async () => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/api/diemtapket/all/")
+                console.log("get data: ", res.data)
+                setDefaultStorageState(res.data['Diem Tap Ket'])
+
+                setStorageState(res.data['Diem Tap Ket'])
+            } catch (error) {
+                console.log("error: ", error.message);
+            }
+        }
+        getData();
+    }, [])
+
+    const handleAddStorageInfo = async (storageInfo) => {
+        try {
+            let response = await axios.post(
+                "http://127.0.0.1:8000/api/diemtapket/register/", storageInfo
+            )
+            console.log("add data: ", response.data)
+
+            // const storageList = JSON.parse(localStorage.getItem("StorageStation"))
+            // setStorageState([...storageList, storageInfo]);
+            // setDefaultStorageState([...defaultStorageState, storageInfo])
+            
+            alert("Tạo dữ liệu mới thành công !!!")
+            window.location.reload();
+            // localStorage.setItem("StorageStation", JSON.stringify([...storageList, storageInfo]))
+        } catch (error) {
+            console.log("add error: ", error)
+            alert("Tạo dữ liệu mới không thành công !!!")
+        }
         setShowAddForm(false)
     }
-    const handleEditStorageInfo = (updatedStorageInfo) => {
-        const storageList = JSON.parse(localStorage.getItem("StorageStation"))
-        const newStorageState = storageList.map((storageInfo) => {
-            if (storageInfo.MaDiemTapKet === updatedStorageInfo.MaDiemTapKet) {
-                return updatedStorageInfo
-            }
-            else {
-                return storageInfo
-            }
-        })
-        localStorage.setItem("StorageStation", JSON.stringify(newStorageState))
-        setStorageState(newStorageState)
+    const handleEditStorageInfo = async (storage_id, updatedStorageInfo) => {
+        try {
+            console.log(`id: ${storage_id}`)
+            console.log( 'update_data: ', updatedStorageInfo)
+            let response = await axios.put(
+                `http://127.0.0.1:8000/api/diemtapket/update/${storage_id}/`,
+                {
+                    TenDiemTapKet: updatedStorageInfo.TenDiemTapKet,
+                    DiaDiem: updatedStorageInfo.DiaDiem,
+                    Hotline: updatedStorageInfo.Hotline
+                }
+            )
+            console.log("edit data: ", response.data)
+
+            // const newStorageState = defaultStorageState.map((storageInfo) => {
+            //     if (storageInfo.MaDiemTapKet === storage_id) {
+            //         updatedStorageInfo.MaDiemTapKet = storage_id
+            //         console.log("updatedStorageInfo: ", updatedStorageInfo)
+            //         return updatedStorageInfo
+            //     }
+            //     else {
+            //         return storageInfo
+            //     }
+            // })
+            // setDefaultStorageState(newStorageState)
+            alert("Cập nhật dữ liệu thành công !!!")
+            window.location.reload();
+        } catch (error) {
+            console.log("edit error: ", error)
+            alert("Cập nhật dữ liệu không thành công !!!")
+        }
+        // const storageList = JSON.parse(localStorage.getItem("StorageStation"))
+        // const newStorageState = storageList.map((storageInfo) => {
+        //     if (storageInfo.MaDiemTapKet === updatedStorageInfo.MaDiemTapKet) {
+        //         return updatedStorageInfo
+        //     }
+        //     else {
+        //         return storageInfo
+        //     }
+        // })
+        // localStorage.setItem("StorageStation", JSON.stringify(newStorageState))
+        // setStorageState(newStorageState)
     }
-    const deleteStorageInfo = (MaDiemTapKet) => {
-        const storageList = JSON.parse(localStorage.getItem("StorageStation"))
-        const newStorageState = storageList.filter(
-            storage => storage.MaDiemTapKet !== MaDiemTapKet
-        )
-        localStorage.setItem("StorageStation", JSON.stringify(newStorageState))
-        setStorageState(newStorageState)
+    const deleteStorageInfo = async (MaDiemTapKet) => {
+        try {
+            let response = await axios.delete(
+                `http://127.0.0.1:8000/api/diemtapket/delete/${MaDiemTapKet}`
+            )
+            console.log("delete data: ",response.data)
+            // const newStorageState = defaultStorageState.filter(
+            //     storage => storage.MaDiemTapKet !== MaDiemTapKet
+            // )
+            // setDefaultStorageState(newStorageState)
+            alert("Xóa dữ liệu thành công !!!")
+            window.location.reload();
+        } catch (err) {
+            console.log("delete data: ", err)
+            alert("Xóa dữ liệu không thành công !!!")
+        }
+        // const storageList = JSON.parse(localStorage.getItem("StorageStation"))
+        // const newStorageState = storageList.filter(
+        //     storage => storage.MaDiemTapKet !== MaDiemTapKet
+        // )
+        // localStorage.setItem("StorageStation", JSON.stringify(newStorageState))
+        // setStorageState(newStorageState)
         
     }
 
@@ -56,12 +135,20 @@ const StorageList = () => {
     // }
     
     const handleSearchTerm = (searchTerm) => {
-        const filteredStorageState = JSON.parse(localStorage.getItem("StorageStation")).filter(storageInfo => (
+        // const filteredStorageState = JSON.parse(localStorage.getItem("StorageStation")).filter(storageInfo => (
+        //     storageInfo.TenDiemTapKet.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        //     storageInfo.DiaDiem.toLowerCase().includes(searchTerm.toLowerCase())
+        // ))
+        // setStorageState(filteredStorageState)
+
+        const filteredStorageState = defaultStorageState.filter(storageInfo => (
             storageInfo.TenDiemTapKet.toLowerCase().includes(searchTerm.toLowerCase()) ||
             storageInfo.DiaDiem.toLowerCase().includes(searchTerm.toLowerCase())
         ))
         setStorageState(filteredStorageState)
     }
+
+    console.log("storageState: ", storageState)
     return (
         <div className="max-w-full flex-grow">
             <SearchBar searchFunc={handleSearchTerm} />

@@ -103,9 +103,7 @@ const defaultAccountsList = [
     LoaiTaiKhoan: 4,
     MatKhau: "1",
     MaDiemTapKet: 1234,
-    MaDiemGiaoDich: null,
-    
-    
+    MaDiemGiaoDich: null,   
   },
   {
     MaTaiKhoan: 12322,
@@ -140,8 +138,6 @@ const defaultAccountsList = [
     MatKhau: "1",
     MaDiemTapKet: 1234,
     MaDiemGiaoDich: null,
-    
-    
   },
   {
     MaTaiKhoan: 234213,
@@ -152,8 +148,7 @@ const defaultAccountsList = [
     LoaiTaiKhoan: 5,
     MatKhau: "1",
     MaDiemTapKet: 1234,
-    MaDiemGiaoDich: null,
-    
+    MaDiemGiaoDich: null,    
   },
   {
     MaTaiKhoan: 234212,
@@ -166,7 +161,6 @@ const defaultAccountsList = [
     MaDiemTapKet: 1234,
     MaDiemGiaoDich: null,
   },
-
 ]
 
 // localStorage.clear();

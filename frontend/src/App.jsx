@@ -7,6 +7,8 @@ import Feedback from './components/landingpages/Feedback'
 import AdminPage from './views/AdminPage'
 import StorageLeaderPage from './views/StorageLeaderPage'
 import TransactionStaff from './views/TransactionStaff'
+import StorageStaff from './views/StorageStaff'
+import CustomerPage from './views/CustomerPage'
 import SignUpPage from './views/SignUpPage'
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
       <Route path='feedback' element={<Feedback/>} />
       <Route path='storageLeader' element={<StorageLeaderPage/>} />
       <Route path='transactionStaff' element={<TransactionStaff/>} />
+      <Route path='storageStaff' element={<StorageStaff/>} />
+      <Route path='customer' element={<CustomerPage/>} />
     </Routes>
       
     </BrowserRouter>

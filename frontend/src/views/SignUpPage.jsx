@@ -18,26 +18,48 @@ const SignUpPage = () => {
   // const [role, setrole] = useState("");
 
   let navigate = useNavigate();
- 
+  const roles = [
+    { Id: "1", Name: "Lãnh đạo" },
+    { Id: "2", Name: "Trưởng điểm giao dịch" },
+    { Id: "3", Name: "Giao dịch viên" },
+    { Id: "4", Name: "Nhân viên giao hàng" },
+    { Id: "5", Name: "Trưởng điểm tập kết" },
+    { Id: "6", Name: "Tập kết viên" },
+  ];
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
-  const validateRegister = (e) => {
-    e.preventDefault();
+  //   //  email validation
+  //   const emailRegex = /^\S+@\S+\.\S+$/;
+  //   if (!emailRegex.test(email)) {
+  //     seterror("Email không đúng định dạng.");
+  //     return false;
+  //   }
 
-    //  email validation
-    const emailRegex = /^\S+@\S+\.\S+$/;
-    if (!emailRegex.test(email)) {
-      seterror("Email không đúng định dạng.");
-      return false;
-    }
+  //   // password matching validation
+  //   if (password !== confirmPassword) {
+  //     seterror("Password should match.");
+  //     return;
+  //   }
 
-    // password matching validation
-    if (password !== confirmPassword) {
-      seterror("mật khẩu và mật khẩu xác nhận không giống nhau.");
-      return false;
-    }
-    return true
-  }
+  //   // setrole(findNameById(roles, role));
 
+  //   alert("Form submitted successfully.");
+  //   console.log("Email: ", email);
+  //   console.log("Password: ", password);
+  //   console.log("Confirm Password: ", confirmPassword);
+  //   console.log("Role", findNameById(roles, role));
+  //   // empty the input fields after submitting the form
+  //   setemail("");
+  //   setpassword("");
+  //   setconfirmPassword("");
+  //   seterror("");
+  //   setrole("");
+  // };
+  const findNameById = (cities, id) => {
+    const findCity = cities.find((city) => city.Id === id);
+    return findCity ? findCity.Name : null;
+  };
   const backToHome = () => {
     navigate("/");
   };
@@ -170,19 +192,24 @@ const SignUpPage = () => {
                   onChange={(e) => setemail(e.target.value)}
                 />
               </div>
-
-              <h1>Nhập tên tài khoản</h1>
+              <h1>Chọn vai trò</h1>
               <div className="relative">
-                <input
-                  type="username"
-                  id="username"
-                  required
+                <select
+                  onChange={(e) => setrole(e.target.value)}
+                  id="role"
                   className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
-                  autoComplete="off"
-                  value={username}
-                  onChange={(e) => setusername(e.target.value)}
-                />
+                >
+                  <option value="" selected>
+                    Chọn vai trò
+                  </option>
+                  {roles.map((role) => (
+                    <option key={role.Id} value={role.Id}>
+                      {role.Name}
+                    </option>
+                  ))}
+                </select>
               </div>
+
               <h1>Nhập mật khẩu</h1>
               <div className="relative">
                 <input

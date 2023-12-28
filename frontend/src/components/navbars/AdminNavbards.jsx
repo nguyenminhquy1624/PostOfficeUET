@@ -11,7 +11,7 @@ const AdminNavbars = (props) => {
 
   const navItems = props.navItemsProps
   const [showProfile, setShowProfile] = useState(false);
-
+  const userInfo = props.userInfoProps
   let navigate = useNavigate();
 
   const logout = () => {
@@ -79,7 +79,7 @@ const AdminNavbars = (props) => {
                   style={{ cursor: "pointer" }}
                   className={`flex items-center h-50 rounded-full overflow-hidden`}
                 >
-                  <img className="w-full h-full object-cover" src={avt} />
+                  <span>Ad</span>
                 </Avatar>
               </Dropdown>
             </div>

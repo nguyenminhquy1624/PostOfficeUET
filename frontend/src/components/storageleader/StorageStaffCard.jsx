@@ -50,9 +50,9 @@ const StorageStaffCard = (props) => {
                     {accountInfo.HoVaTen}
                 </h1>
                 <p className="pb-2">
-                    Email: {accountInfo.Email}<br></br>
+                    Email: {accountInfo.email}<br></br>
                     Số điện thoại: {accountInfo.SoDienThoai}<br></br>
-                    Tên tài khoản: {accountInfo.TenTaiKhoan}<br></br>
+                    Tên tài khoản: {accountInfo.user}<br></br>
                 </p>
             </div>
             <div className="grid grid-flow-row">

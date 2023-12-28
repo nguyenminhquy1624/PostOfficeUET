@@ -1,6 +1,7 @@
 import { PropTypes } from "prop-types";
 import { FiCheckCircle } from "react-icons/fi";
-const OrderCardSend = (props) => {
+
+const StorageCardSend = (props) => {
   let orderInfo = props.orderProps;
   const editOrderFunc = props.editOrderFunc
   const userList = JSON.parse(localStorage.getItem("userData"));
@@ -67,9 +68,9 @@ const OrderCardSend = (props) => {
   );
 };
 
-OrderCardSend.propTypes = {
+StorageCardSend.propTypes = {
   orderProps: PropTypes.object.isRequired,
   editOrderFunc: PropTypes.func.isRequired
 };
 
-export default OrderCardSend;
+export default StorageCardSend;

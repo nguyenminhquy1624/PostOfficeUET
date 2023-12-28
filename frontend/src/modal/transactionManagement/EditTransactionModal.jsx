@@ -1,7 +1,8 @@
 import {PropTypes} from 'prop-types'
 // import map_img from "../assets/img/tmp_map.png"
 import close_img from "../../assets/img/close.png"
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import axios from 'axios'
 // import uuid from 'uuid'
 const EditTransactionModal = props => {
     const transactionInfo = props.transactionProps
@@ -10,7 +11,22 @@ const EditTransactionModal = props => {
     let showEditForm = props.showEditFormProps
 
     
-    const storageList = JSON.parse(localStorage.getItem("StorageStation"))
+    // const storageList = JSON.parse(localStorage.getItem("StorageStation"))
+
+    const [storageList, setStorageList] = useState([])
+    useEffect(() => {
+        const getStorage = async () => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/api/diemtapket/all/")
+                console.log("get data in edit: ", res.data['Diem Tap Ket'])
+                setStorageList(res.data['Diem Tap Ket'])
+            } catch (error) {
+                console.log("error: ", error.message);
+            }
+        }
+        getStorage();
+    }, [])
+
     const getStorage = (MaDiemTapKet) => {
         const ans = storageList.filter(storageInfo => (storageInfo.MaDiemTapKet === MaDiemTapKet))
         if (ans.length > 0)
@@ -18,14 +34,19 @@ const EditTransactionModal = props => {
         else 
             return null
     }
-
-    const defaultStorageName = getStorage(transactionInfo.MaDiemTapKet) ? getStorage(transactionInfo.MaDiemTapKet).TenDiemTapKet : "không có dữ liệu"
-    const [transactionName, setTransactionName] = useState(transactionInfo.TenDiemGiaoDich)
+    // console.log("transaction: ", getStorage(transactionInfo.MaDiemTapKet))
+    let defaultStorageName = "không có dữ liệu"
+    if (getStorage(transactionInfo.MaDiemTapKet) !== null) {
+        defaultStorageName = getStorage(transactionInfo.MaDiemTapKet).TenDiemTapKet
+    }
+    console.log("transaction: ", defaultStorageName)
+    const [transactionName, setTransactionName] = useState(transactionInfo.TenDiaDiemGiaoDich)
     const [transactionLocation, setTransactionLocation] = useState(transactionInfo.DiaDiem)
     const [transactionHotline, setTransactionHotline] = useState(transactionInfo.Hotline)
     const [storageName, setStorageName] = useState(defaultStorageName)
     const [storageCode, setStorageCode] = useState(transactionInfo.MaDiemTapKet)
 
+    console.log("storageName: ", )
 
     const [transactionHotlineError, setTransactionHotlineError] = useState(true)
 
@@ -112,12 +133,11 @@ const EditTransactionModal = props => {
             storageName.trim() !== "" &&
             storageCode !== null &&
             transactionHotlineError === true) {
-            editTransaction({
-                TenDiemGiaoDich: transactionName,
+            editTransaction(transactionInfo.MaDiemGiaoDich ,{
+                TenDiaDiemGiaoDich: transactionName,
                 DiaDiem: transactionLocation,
+                Hotline: transactionHotline,
                 MaDiemTapKet: storageCode,
-                MaDiemGiaoDich: transactionInfo.MaDiemGiaoDich,
-                Hotline: transactionHotline,    
             })
         }
         else {
@@ -133,7 +153,7 @@ const EditTransactionModal = props => {
     // }
     const handleReset = (event) => {
         event.preventDefault()
-        setTransactionName(transactionInfo.TenDiemGiaoDich)
+        setTransactionName(transactionInfo.TenDiaDiemGiaoDich)
         setTransactionLocation(transactionInfo.DiaDiem)
         setTransactionHotline(transactionInfo.Hotline)
         setStorageName(defaultStorageName)
@@ -144,6 +164,8 @@ const EditTransactionModal = props => {
         event.preventDefault()
         closePage()
     }
+
+    
   return (
     <div className={`fixed inset-0 flex justify-center items-center transition-colors ${showEditForm ? "bg-black/20" : "hidden"} z-50`}>
         {/* AddPage Modal */}

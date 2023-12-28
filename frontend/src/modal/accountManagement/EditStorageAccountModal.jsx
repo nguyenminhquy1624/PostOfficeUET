@@ -1,15 +1,30 @@
 import {PropTypes} from 'prop-types'
 // import map_img from "../assets/img/tmp_map.png"
 import close_img from "../../assets/img/close.png"
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 // import uuid from 'uuid'
+import axios from 'axios'
 const EditStorageAccountModal = props => {
     const accountInfo = props.accountProps
     const editAccount = props.editAccountFunc
     const closePage = props.closePageFunc
     let showEditForm = props.showEditFormProps
 
-    const storageList = JSON.parse(localStorage.getItem("StorageStation"))
+    // const storageList = JSON.parse(localStorage.getItem("StorageStation"))
+
+    const [storageList, setStorageList] = useState([])
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/api/diemtapket/all/")
+                console.log("get data: ", res.data)
+                setStorageList(res.data['Diem Tap Ket'])
+            } catch (error) {
+                console.log("error: ", error)
+            }
+        }
+        getData();
+    }, [])
     const getStorage = (MaDiemTapKet) => {
         const ans = storageList.filter(storageInfo => (storageInfo.MaDiemTapKet === MaDiemTapKet))
         if (ans.length > 0)
@@ -20,7 +35,7 @@ const EditStorageAccountModal = props => {
     const defaultStorageName = getStorage(accountInfo.MaDiemTapKet) ? getStorage(accountInfo.MaDiemTapKet).TenDiemTapKet : "không có dữ liệu"
     const [accountName, setAccountName] = useState(accountInfo.HoVaTen)
     const [accountPhoneNumber, setAccountPhoneNumber] = useState(accountInfo.SoDienThoai)
-    const [accountEmail, setAccountEmail] = useState(accountInfo.Email)
+    const [accountEmail, setAccountEmail] = useState(accountInfo.email)
     const [storageName, setStorageName] = useState(defaultStorageName)
     const [storageCode, setStorageCode] = useState(accountInfo.MaDiemTapKet)
     
@@ -132,16 +147,15 @@ const EditStorageAccountModal = props => {
         accountEmail.trim() !== "" &&
         storageName.trim() !== "" &&
         storageCode !== null && accountPhoneNumberError && accountEmailError) {
-            editAccount({
-                MaTaiKhoan: accountInfo.MaTaiKhoan,
-                TenTaiKhoan: accountInfo.TenTaiKhoan,
+            editAccount(accountInfo.MaTaiKhoan, {
+                username: accountInfo.username,
                 HoVaTen: accountName,
                 SoDienThoai: accountPhoneNumber,
-                Email: accountEmail,
+                email: accountEmail,
                 LoaiTaiKhoan: 4,
-                MatKhau: "1",
+                password: accountInfo.password,
                 MaDiemTapKet: storageCode,
-                MaDiemGiaoDich: null,   
+                MaDiemGiaoDich: null  
             })
         }
         else {
@@ -159,7 +173,7 @@ const EditStorageAccountModal = props => {
         event.preventDefault()
         setAccountName(accountInfo.HoVaTen)
         setAccountPhoneNumber(accountInfo.SoDienThoai)
-        setAccountEmail(accountInfo.Email)
+        setAccountEmail(accountInfo.email)
         setStorageName(defaultStorageName)
         setStorageCode(accountInfo.MaDiemTapKet)
     }

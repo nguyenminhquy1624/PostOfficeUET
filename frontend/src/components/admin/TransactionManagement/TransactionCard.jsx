@@ -4,13 +4,28 @@ import delete_icon from "../../../assets/img/delete.png";
 
 import {PropTypes} from 'prop-types'
 import DeleteModal from "../../../modal/transactionManagement/DeleteModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 // import { FaExpeditedssl } from "react-icons/fa6";
 import EditTransactionModal from "../../../modal/transactionManagement/EditTransactionModal";
 const TransactionCard = (props) => {
 
-    const accountList = JSON.parse(localStorage.getItem("Account"))
+    // const accountList = JSON.parse(localStorage.getItem("Account"))
     // console.log(accountList)
+    const [accountList, setAccountList] = useState([])
+    useEffect(() => {
+        const getAccount = async () => {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/account/all/")
+                console.log("response.data: ", response.data)
+                setAccountList(response.data['users'])
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+        getAccount(); 
+    }, [])
     const transactionInfo = props.transactionProps;
     const deleteTransaction = props.deleteFunc;
     const editTransaction = props.editFunc
@@ -42,13 +57,15 @@ const TransactionCard = (props) => {
         setShowEditModal(false)
     }
 
-    const handleConfirmEdit = (editedTransactionInfo) => {
-        editTransaction(editedTransactionInfo)
+    const handleConfirmEdit = (transaction_id ,editedTransactionInfo) => {
+        editTransaction(transaction_id, editedTransactionInfo)
         setShowEditModal(false)
     }
 
     const getTransactionLeader = (MaDiemGiaoDich) => {
-        const ans = accountList.filter(accountInfo => (accountInfo.MaDiemGiaoDich == MaDiemGiaoDich))
+        const ans = accountList.filter(
+            accountInfo => (accountInfo.MaDiemGiaoDich == MaDiemGiaoDich &&
+                accountInfo.LoaiTaiKhoan === 2))
         // console.log(ans[0])
         if (ans.length > 0)
             return ans[0]
@@ -61,7 +78,7 @@ const TransactionCard = (props) => {
         <div className="grid grid-cols-2 my-2 border-gray-300 shadow-md border-2 rounded-lg p-2">
             <div className="align-top justify-start">
                 <h1 className="font-bold"> 
-                    {transactionInfo.TenDiemGiaoDich}
+                    {transactionInfo.TenDiaDiemGiaoDich}
                 </h1>
                 <p className="pb-2">
                     Trưởng điểm: {getTransactionLeader(transactionInfo.MaDiemGiaoDich) ? getTransactionLeader(transactionInfo.MaDiemGiaoDich).HoVaTen : "Không có dữ liệu"}<br></br>

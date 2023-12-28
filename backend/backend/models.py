@@ -82,7 +82,7 @@ class DonHang(models.Model):
     MaDiemGiaoDich = models.ForeignKey(
         DiemGiaoDich, null=True, blank=True, on_delete=models.CASCADE
     )
-    MaDiemTapKet = models.ForeignKey(
+    DiemTapKet = models.ForeignKey(
         DiemTapKet, null=True, blank=True, on_delete=models.CASCADE
     )
     DiaChiNguoiGui = models.CharField(max_length=255)

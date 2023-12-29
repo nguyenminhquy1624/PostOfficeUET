@@ -49,30 +49,8 @@ const OrderCardSend = (props) => {
     // orderInfo.MaDiemTapKet = getTransaction(orderInfo.MaDiemGiaoDich).MaDiemTapKet
     // console.log("orderInfoSend: ", orderInfo)
     // editOrderFunc(orderInfo)
-    if (State === 1 ) {
-      // Đơn hàng gửi cho người nhận
-      // Đơn hàng hoàn cho người gửi
-      editOrderFunc(orderInfo.MaDonHang, {
-        MaTaiKhoan: orderInfo.MaTaiKhoan,
-        MaKhachHang: orderInfo.MaKhachHang,
-        NgayGuiHang: orderInfo.NgayGuiHang,
-        NgayNhanHang: orderInfo.NgayNhanHang,
-        TrangThai: 2,
-        LoaiHang: orderInfo.LoaiHang,
-        KhoiLuong: orderInfo.KhoiLuong,
-        Tien: orderInfo.Tien,
-        MoTaDonHang: orderInfo.MoTaDonHang,
-        HoVaTenNguoiNhan: orderInfo.HoVaTenNguoiNhan,
-        DiaChiNhanHang: orderInfo.DiaChiNhanHang,
-        SoDienThoaiNguoiNhan: orderInfo.SoDienThoaiNguoiNhan,
-        DiaChiNguoiGui: orderInfo.DiaChiNguoiGui,
-        MaDiemGiaoDich: orderInfo.MaDiemGiaoDich,
-        DiemTapKet: orderInfo.DiemTapKet,
-      });
-    } 
-    if (State === 2 ) {
-      // Đơn hàng tới điểm tập kết
-      // Đơn hàng hoàn tới điểm tập kết
+    if (State === 1) {
+      // Đơn hàng gửi cho khách hàng
       editOrderFunc(orderInfo.MaDonHang, {
         MaTaiKhoan: orderInfo.MaTaiKhoan,
         MaKhachHang: orderInfo.MaKhachHang,
@@ -91,36 +69,54 @@ const OrderCardSend = (props) => {
         DiemTapKet: null,
       });
     }
+    if (State === 2) {
+      // Đơn hàng tới điểm tập kết
+      editOrderFunc(orderInfo.MaDonHang, {
+        MaTaiKhoan: orderInfo.MaTaiKhoan,
+        MaKhachHang: orderInfo.MaKhachHang,
+        NgayGuiHang: orderInfo.NgayGuiHang,
+        NgayNhanHang: orderInfo.NgayNhanHang,
+        TrangThai: 2,
+        LoaiHang: orderInfo.LoaiHang,
+        KhoiLuong: orderInfo.KhoiLuong,
+        Tien: orderInfo.Tien,
+        MoTaDonHang: orderInfo.MoTaDonHang,
+        HoVaTenNguoiNhan: orderInfo.HoVaTenNguoiNhan,
+        DiaChiNhanHang: orderInfo.DiaChiNhanHang,
+        SoDienThoaiNguoiNhan: orderInfo.SoDienThoaiNguoiNhan,
+        DiaChiNguoiGui: orderInfo.DiaChiNguoiGui,
+        MaDiemGiaoDich: orderInfo.MaDiemGiaoDich,
+        DiemTapKet: account_info.MaDiemTapKet,
+      });
+    }
   };
 
   // console.log("order info: ", orderInfo);
   return (
-    <>
-      <div className="grid grid-cols-2 my-2 border-gray-300 shadow-md border-2 rounded-lg p-2">
-        <div className="align-top justify-start">
-          <h1 className="font-bold">Đơn hàng số {orderInfo.MaDonHang}</h1>
-          <p className="pb-2">
-            Khách hàng:{" "}
-            {getCustomerByID().length > 0
-              ? getCustomerByID()[0].HoVaTen
-              : "Không có dữ liệu"}
-            <br></br>
-            Nơi gửi: {orderInfo.MaDiemGiaoDich}
-            <br></br>
-            Số điện thoại :{orderInfo.SoDienThoaiNguoiNhan}
-            <br></br>
-          </p>
-        </div>
+    <div className="grid grid-cols-2 my-2 border-gray-300 shadow-md border-2 rounded-lg p-2">
+      <div className="align-top justify-start">
+        <h1 className="font-bold">Đơn hàng số {orderInfo.MaDonHang}</h1>
+        <p className="pb-2">
+          Khách hàng:{" "}
+          {getCustomerByID().length > 0
+            ? getCustomerByID()[0].HoVaTen
+            : "Không có dữ liệu"}
+          <br></br>
+          Nơi gửi: {orderInfo.MaDiemGiaoDich}
+          <br></br>
+          Số điện thoại :{orderInfo.SoDienThoaiNguoiNhan}
+          <br></br>
+        </p>
+      </div>
 
-        <div className="grid grid-flow-row">
-          <div className="flex align-top justify-end">
-            <button className="w-10 h-10 mx-2" onClick={acceptOrder}>
-              <FiCheckCircle />
-            </button>
-          </div>
+      <div className="grid grid-flow-row">
+        <div className="flex align-top justify-end">
+          <button className="w-10 h-10 mx-2" onClick={acceptOrder}>
+            <FiCheckCircle />
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

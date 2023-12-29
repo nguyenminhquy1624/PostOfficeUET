@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import SearchBar from "../searchbar/SearchBar";
 import OrderCard from "./OrderCard";
 import axios from "axios";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa6";
@@ -14,9 +13,7 @@ const OrderList = () => {
       try {
         const res = await axios.get("http://127.0.0.1:8000/api/donhang/all/");
         console.log("get data: ", res.data);
-        const order = res.data["Don Hang"].filter(
-          (orderInfo) => orderInfo.MaTaiKhoan === account_info.MaTaiKhoan
-        );
+        const order = res.data["Don Hang"]
         setDefaultOrderList(order);
       } catch (error) {
         console.log("get don hang err: ", error);
@@ -24,7 +21,7 @@ const OrderList = () => {
     };
     getOrder();
   }, []);
-
+  console.log('donhang: ', defaultOrderList)
   const getOrderList = (State) => {
     if (State === 1) { // đơn hàng đến từ điểm tập kết để chuyển cho khách hàng nhận
       return defaultOrderList.filter( 

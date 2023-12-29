@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import SearchBar from "../searchbar/SearchBar";
 import OrderCardSend from "./OrderCardSend";
 import axios from "axios";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa6";
@@ -13,9 +12,7 @@ const OrderListSend = () => {
       try {
         const res = await axios.get("http://127.0.0.1:8000/api/donhang/all/");
         console.log("get data: ", res.data);
-        const order = res.data["Don Hang"].filter(
-          (orderInfo) => orderInfo.MaTaiKhoan === account_info.MaTaiKhoan
-        );
+        const order = res.data["Don Hang"]
         setDefaultOrderList(order);
       } catch (error) {
         console.log("get don hang err: ", error);
@@ -23,6 +20,7 @@ const OrderListSend = () => {
     };
     getOrder();
   }, []);
+
   const getOrderList = (State) => { // check để xác nhận
     if (State === 1) {
       // Đơn hàng gửi cho người nhận
@@ -38,7 +36,7 @@ const OrderListSend = () => {
         (orderInfo) =>
           orderInfo.TrangThai === 2 &&
           orderInfo.MaDiemGiaoDich === account_info.MaDiemGiaoDich &&
-          orderInfo.DiemTapKet === account_info.MaDiemTapKet
+          orderInfo.DiemTapKet === null
       );
     } 
   };
@@ -49,13 +47,13 @@ const OrderListSend = () => {
   const [State, setState] = useState(1);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleOrderFromStorage = (event) => {
+  const handleOrderToCustomer = (event) => {
     event.preventDefault();
     setState(1);
     // console.log("xxx", isStorage, getAccountList(isStorage))
   };
 
-  const handleOrderFromCustomer = (event) => {
+  const handleOrderToStorage = (event) => {
     event.preventDefault();
     setState(2);
     // console.log("yyy", isStorage, getAccountList(isStorage))
@@ -135,11 +133,8 @@ const OrderListSend = () => {
           <p className="overflow-hidden">
             {State === 1
               ? "Đơn hàng gửi cho người nhận"
-              : State === 2
-              ? "Đơn hàng tới điểm tập kết"
-              : State === 3
-              ? "Đơn hàng hoàn cho người gửi"
-              : "Đơn hàng hoàn tới điểm tập kết"}
+              :"Đơn hàng tới điểm tập kết"
+              }
           </p>
           <button>{showDropdown ? <FaAngleDown /> : <FaAngleUp />}</button>
           {showDropdown && (
@@ -147,13 +142,13 @@ const OrderListSend = () => {
               <ul>
                 <li
                   className="overflow-hidden cursor-pointer hover:bg-indigo-400 hover:text-white "
-                  onClick={handleOrderFromStorage}
+                  onClick={handleOrderToCustomer}
                 >
                   Đơn hàng gửi cho người nhận
                 </li>
                 <li
                   className="overflow-hidden cursor-pointer hover:bg-indigo-400 hover:text-white "
-                  onClick={handleOrderFromCustomer}
+                  onClick={handleOrderToStorage}
                 >
                   Đơn hàng tới điểm tập kết
                 </li>

@@ -6,10 +6,11 @@ import { Avatar, Dropdown, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import avt from "../../assets/img/church.jpg";
 import { useState } from "react";
-
+import { PropTypes } from "prop-types";
 const AdminNavbars = (props) => {
 
   const navItems = props.navItemsProps
+  const accountInfo = props.accountInfoProps
   const [showProfile, setShowProfile] = useState(false);
   const userInfo = props.userInfoProps
   let navigate = useNavigate();
@@ -70,7 +71,7 @@ const AdminNavbars = (props) => {
               Đăng nhập
             </button> */}
             <div className="m-5 font-bold">
-              <span>Admin</span>
+              <span>{accountInfo.username}</span>
             </div>
             <div >
               <Dropdown overlay={menu} placement="bottomRight" arrow className="">
@@ -115,5 +116,7 @@ const AdminNavbars = (props) => {
     </>
   );
 };
-
+AdminNavbars.propTypes = {
+  accountInfoProps: PropTypes.object.isRequired
+};
 export default AdminNavbars;

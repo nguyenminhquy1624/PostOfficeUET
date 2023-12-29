@@ -24,7 +24,6 @@ const IndexNavbars = () => {
   };
 
   const account_info = JSON.parse(localStorage.getItem("account_info"))
-
   
   let navItems = [
     { link: "Trang chủ", path: "" },
@@ -41,35 +40,35 @@ const IndexNavbars = () => {
           {link: "Quản lý hệ thống", path: "admin"}
         ]
       }
-      if (account_info.LoaiTaiKhoan === 2) {
+      else if (account_info.LoaiTaiKhoan === 2) {
         navItems = [
           {link: "Quản lý điểm giao dịch", path: "transactionLeader"}
         ]
       }
-      if (account_info.LoaiTaiKhoan === 3) {
+      else if (account_info.LoaiTaiKhoan === 3) {
         navItems = [
           {link: "Quản lý đơn hàng", path: "transactionStaff"}
         ]
       }
-      if (account_info.LoaiTaiKhoan === 4) {
+      else if (account_info.LoaiTaiKhoan === 4) {
         navItems = [
           {link: "Quản lý điểm tập kết", path: "storageLeader"}
         ]
       }
-      if (account_info.LoaiTaiKhoan === 5) {
+      else if (account_info.LoaiTaiKhoan === 5) {
         navItems = [
           {link: "Quản lý đơn hàng", path: "storageStaff"}
         ]
       }
       else {
         navItems = [
-          {link: "Quản lý đơn hàng", path: ""}
+          {link: "Quản lý đơn hàng", path: "/customer"}
         ]
       }
     }
     else {
       navItems = [
-        {link: "Quản lý đơn hàng", path: ""}
+        {link: "Quản lý đơn hàng", path: "/customer"}
       ]
     }
   }
@@ -148,7 +147,7 @@ const IndexNavbars = () => {
             </div> :
             <div className="hidden md:flex items-center">
               <div className="m-5 font-bold">
-                <span>Admin</span>
+                <span>{account_info.username}</span>
               </div>
               <div >
                 <Dropdown overlay={menu} placement="bottomRight" arrow className="">

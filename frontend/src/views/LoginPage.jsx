@@ -45,6 +45,7 @@ const LoginPage = () => {
           "http://127.0.0.1:8000/api/account/login/", payload
         )
         console.log("account login: ", response.data)
+        // console.log("acc: ", response.data['account'])
         localStorage.setItem("access_token", JSON.stringify(response.data['jwt']))
         localStorage.setItem("account_info", JSON.stringify(response.data['account']))
         alert("Đăng nhập thành công")

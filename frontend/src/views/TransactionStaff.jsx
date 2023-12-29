@@ -5,6 +5,7 @@ import { RiAccountBoxLine } from "react-icons/ri";
 import AdminNavbars from "../components/navbars/AdminNavbards";
 import LeftNavBar from "../components/service/LeftNavBar";
 import OrderListSend from "../components/OrderManagement/OderListSend";
+import IndexNavbars from "../components/navbars/IndexNavbars";
 
 const TransactionStaff = () => {
   const account_info = JSON.parse(localStorage.getItem("account_info")) 
@@ -263,7 +264,7 @@ const TransactionStaff = () => {
 
   return (
     <div>
-      <AdminNavbars accountInfoProps={account_info} />
+      <IndexNavbars />
       <div className="md:flex md:flex-row">
         <LeftNavBar
           className="fixed-left-navbar h-full"

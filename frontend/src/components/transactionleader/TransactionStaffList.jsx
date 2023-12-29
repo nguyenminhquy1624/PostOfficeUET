@@ -1,21 +1,21 @@
 // import React from "react"
 import add_icon from "../../assets/img/add.png";
 import { useEffect, useState } from "react";
-import SearchBar from "../../components/searchbar/SearchBar";
-import StorageStaffCard from "./StorageStaffCard";
-import AddStorageStaffModal from "../../modal/accountManagement/AddStorageStaffModal";
+import SearchBar from "../searchbar/SearchBar";
+import TransactionStaffCard from "./TransactionStaffCard";
+import AddTransactionStaffModal from "../../modal/accountManagement/AddTransactionStaffModal";
 import axios from "axios";
 
 // import DeleteModal from "../../modal/DeleteModal";
-const StorageStaffList = () => {
-    // const MaDiemTapKet = props.storageCodeProps
+const TransactionStaffList = () => {
+    // const MaDiemGiaoDich = props.transactionCodeProps
     
     const account_info = JSON.parse(localStorage.getItem("account_info"))
     console.log(account_info)
-    const MaDiemTapKet = account_info.MaDiemTapKet
-    const [getStorage, setGetStorage] = useState(null)
+    const MaDiemGiaoDich = account_info.MaDiemGiaoDich
+    const [getTransaction, setGetTransaction] = useState(null)
 
-    const [defaultStorageStaffList, setDefaultStorageStaffList] = useState([])
+    const [defaultTransactionStaffList, setDefaultTransactionStaffList] = useState([])
     const [accountCount, setAccountCount] = useState(0)
     const [accountState, setAccountState] = useState([])
     const [showAddForm, setShowAddForm] = useState(false);
@@ -25,12 +25,12 @@ const StorageStaffList = () => {
         const getData = async () => {
             try {
                 const response = await axios.get (
-                    `http://127.0.0.1:8000/api/diemtapket/${MaDiemTapKet}/`
+                    `http://127.0.0.1:8000/api/diemgiaodich/${MaDiemGiaoDich}/`
                 )
-                console.log("storageleader data: ", response.data['DiemTapKet'])
-                setGetStorage(response.data['DiemTapKet'])
+                console.log("transactionleader data: ", response.data['DiemGiaoDich'])
+                setGetTransaction(response.data['DiemGiaoDich'])
             } catch (error) {
-                console.log("storageleader err: ", error)
+                console.log("transactionleader err: ", error)
             }
         }
         const getAccountList = async () => {
@@ -45,15 +45,15 @@ const StorageStaffList = () => {
                 }
                 // console.log(response.data['users'].filter(
                 //     accountInfo => (accountInfo.LoaiTaiKhoan === 5 &&
-                //         accountInfo.MaDiemTapKet === MaDiemTapKet))
+                //         accountInfo.MaDiemGiaoDich === MaDiemGiaoDich))
                 // )
-                setDefaultStorageStaffList(response.data['users'].filter(
-                    accountInfo => (accountInfo.LoaiTaiKhoan === 5 &&
-                        accountInfo.MaDiemTapKet === MaDiemTapKet)
+                setDefaultTransactionStaffList(response.data['users'].filter(
+                    accountInfo => (accountInfo.LoaiTaiKhoan === 3 &&
+                        accountInfo.MaDiemGiaoDich === MaDiemGiaoDich)
                 ))
                 setAccountState(response.data['users'].filter(
-                    accountInfo => (accountInfo.LoaiTaiKhoan === 5 &&
-                        accountInfo.MaDiemTapKet === MaDiemTapKet)
+                    accountInfo => (accountInfo.LoaiTaiKhoan === 3 &&
+                        accountInfo.MaDiemGiaoDich === MaDiemGiaoDich)
                 ))
             } catch (error) {
                 console.log("account error: ", error)
@@ -61,25 +61,25 @@ const StorageStaffList = () => {
         }
         getData();
         getAccountList();
-    }, [MaDiemTapKet])
+    }, [MaDiemGiaoDich])
 
-    // const MaDiemTapKet = JSON.parse(localStorage.getItem("account"))
-    // const getStorage = JSON.parse(localStorage.getItem("StorageStation")).filter(
-    //     storageInfo => (storageInfo.MaDiemTapKet === MaDiemTapKet)
-    // ) ? JSON.parse(localStorage.getItem("StorageStation")).filter(
-    //     storageInfo => (storageInfo.MaDiemTapKet === MaDiemTapKet)
+    // const MaDiemGiaoDich = JSON.parse(localTransaction.getItem("account"))
+    // const getTransaction = JSON.parse(localTransaction.getItem("TransactionStation")).filter(
+    //     transactionInfo => (transactionInfo.MaDiemGiaoDich === MaDiemGiaoDich)
+    // ) ? JSON.parse(localTransaction.getItem("TransactionStation")).filter(
+    //     transactionInfo => (transactionInfo.MaDiemGiaoDich === MaDiemGiaoDich)
     // )[0]: null
     
 
-    // const defaultStorageStaffList = () => {
-    //     return JSON.parse(localStorage.getItem("Account")).filter(
+    // const defaultTransactionStaffList = () => {
+    //     return JSON.parse(localTransaction.getItem("Account")).filter(
     //         accountInfo => (accountInfo.LoaiTaiKhoan === 5 && 
-    //                         accountInfo.MaDiemTapKet === MaDiemTapKet))
+    //                         accountInfo.MaDiemGiaoDich === MaDiemGiaoDich))
     // }
 
-    // const [accountState, setAccountState] = useState(defaultStorageStaffList())
+    // const [accountState, setAccountState] = useState(defaultTransactionStaffList())
     // const [showAddForm, setShowAddForm] = useState(false);
-    // console.log("getStorage: ", getStorage)
+    // console.log("getTransaction: ", getTransaction)
     
     const handleAddAccountInfo = async (accountInfo) => {
         console.log("accountInfo: ", accountInfo)
@@ -95,9 +95,9 @@ const StorageStaffList = () => {
             alert("Tạo dữ liệu mới không thành công !!!")
         }
         setShowAddForm(false)
-        // const accountList = JSON.parse(localStorage.getItem("Account"))
-        // localStorage.setItem("Account", JSON.stringify([...accountList, accountInfo]))
-        // setAccountState(defaultStorageStaffList());
+        // const accountList = JSON.parse(localTransaction.getItem("Account"))
+        // localTransaction.setItem("Account", JSON.stringify([...accountList, accountInfo]))
+        // setAccountState(defaultTransactionStaffList());
         // setShowAddForm(false)
     }
 
@@ -117,7 +117,7 @@ const StorageStaffList = () => {
             alert("Cập nhật dữ liệu không thành công !!!")
         }
 
-        // const accountList = JSON.parse(localStorage.getItem("Account"))
+        // const accountList = JSON.parse(localTransaction.getItem("Account"))
         // const newAccountState =accountList.map((accountInfo) => {
         //     if (accountInfo.MaTaiKhoan === updatedAccountInfo.MaTaiKhoan) {
         //         return updatedAccountInfo
@@ -126,8 +126,8 @@ const StorageStaffList = () => {
         //         return accountInfo
         //     }
         // })
-        // localStorage.setItem("Account", JSON.stringify(newAccountState))
-        // setAccountState(defaultStorageStaffList())
+        // localTransaction.setItem("Account", JSON.stringify(newAccountState))
+        // setAccountState(defaultTransactionStaffList())
     }
     
     const deleteAccountInfo = async (MaTaiKhoan) => {
@@ -136,22 +136,22 @@ const StorageStaffList = () => {
                 `http://127.0.0.1:8000/api/account/delete/${MaTaiKhoan}/`
             )
             console.log("delete data: ",response.data)
-            // const newStorageState = defaultStorageState.filter(
-            //     storage => storage.MaDiemTapKet !== MaDiemTapKet
+            // const newTransactionState = defaultTransactionState.filter(
+            //     transaction => transaction.MaDiemGiaoDich !== MaDiemGiaoDich
             // )
-            // setDefaultStorageState(newStorageState)
+            // setDefaultTransactionState(newTransactionState)
             alert("Xóa dữ liệu thành công !!!")
             window.location.reload();
         } catch (err) {
             console.log("delete data: ", err)
             alert("Xóa dữ liệu không thành công !!!")
         }
-        // const accountList = JSON.parse(localStorage.getItem("Account"))
+        // const accountList = JSON.parse(localTransaction.getItem("Account"))
         // const newAccountState = accountList.filter(
         //     account => account.MaTaiKhoan !== MaTaiKhoan
         // )
-        // localStorage.setItem("Account", JSON.stringify(newAccountState))
-        // setAccountState(defaultStorageStaffList())
+        // localTransaction.setItem("Account", JSON.stringify(newAccountState))
+        // setAccountState(defaultTransactionStaffList())
     }
 
     const handleOpenAddFormClick = () => {
@@ -170,8 +170,8 @@ const StorageStaffList = () => {
     
     const handleSearchTerm = (searchTerm) => {
         // console.log("searchTerm: ", searchTerm)
-        // console.log("storageStaffAccount: ", defaultStorageStaffList)
-        const filteredAccountState = defaultStorageStaffList.filter(accountInfo => (
+        // console.log("transactionStaffAccount: ", defaultTransactionStaffList)
+        const filteredAccountState = defaultTransactionStaffList.filter(accountInfo => (
             accountInfo.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
             accountInfo.HoVaTen.toLowerCase().includes(searchTerm.toLowerCase())
         ))
@@ -179,7 +179,7 @@ const StorageStaffList = () => {
         setAccountState(filteredAccountState)
     }
 
-    // console.log(isStorage)
+    // console.log(isTransaction)
     
     return (
         <div className="max-w-full flex-grow">
@@ -197,7 +197,7 @@ const StorageStaffList = () => {
                     {accountState.map(accountInfo => (
                         <div key={accountInfo.MaTaiKhoan}>
                             {/* <Link to={`./${accountInfo.MaTaiKhoan}`}></Link>  */}
-                            <StorageStaffCard 
+                            <TransactionStaffCard 
                             accountCountProps={accountCount}
                             accountProps={accountInfo} 
                             deleteFunc={deleteAccountInfo} 
@@ -211,9 +211,9 @@ const StorageStaffList = () => {
                     <img src={add_icon} />
                 </button>
             </div>
-            <AddStorageStaffModal 
+            <AddTransactionStaffModal 
             accountCountProps={accountCount}
-            storageInfoProps={getStorage}
+            transactionInfoProps={getTransaction}
             addAccountFunc={handleAddAccountInfo} 
             closePageFunc={handleCloseAddFormClick} 
             addFormProps={showAddForm}/>
@@ -221,4 +221,4 @@ const StorageStaffList = () => {
     );
 };
 
-export default StorageStaffList;
+export default TransactionStaffList;

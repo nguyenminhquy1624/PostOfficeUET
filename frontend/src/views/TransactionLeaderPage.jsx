@@ -1,9 +1,10 @@
-import StorageStaffList from '../components/storageleader/StorageStaffList'
+import TransactionStaffList from '../components/transactionleader/TransactionStaffList'
+import AdminNavbars from '../../src/components/navbars/AdminNavbards'
 import LeftNavBar from '../components/service/LeftNavBar'
 import { useState, useEffect } from 'react'
 import IndexNavbars from '../components/navbars/IndexNavbars'
 
-const StorageLeaderPage = () => {
+const TransactionLeaderPage = () => {
 //   const defaultTransactionStationList = [
 //     {
 //       TenDiemGiaoDich: "Điểm giao dịch Cầu Giấy 1",
@@ -166,16 +167,16 @@ const StorageLeaderPage = () => {
 
 
 
-// localStorage.clear();
-if (localStorage.getItem("Account") == null) {
-  localStorage.setItem("Account", JSON.stringify(defaultAccountsList))
-}
-if (localStorage.getItem("TransactionStation") == null) {
-  localStorage.setItem("TransactionStation", JSON.stringify(defaultTransactionStationList))
-}
-if (localStorage.getItem("StorageStation") == null) {
-  localStorage.setItem("StorageStation", JSON.stringify(defaultStorageStationList))
-}
+// // localStorage.clear();
+// if (localStorage.getItem("Account") == null) {
+//   localStorage.setItem("Account", JSON.stringify(defaultAccountsList))
+// }
+// if (localStorage.getItem("TransactionStation") == null) {
+//   localStorage.setItem("TransactionStation", JSON.stringify(defaultTransactionStationList))
+// }
+// if (localStorage.getItem("StorageStation") == null) {
+//   localStorage.setItem("StorageStation", JSON.stringify(defaultStorageStationList))
+// }
 
 const navItems = [
   { link: "Quản lý nhân viên", path: "StaffManagement", active: true},
@@ -194,7 +195,7 @@ const handleTabClick = (value) => {
       <IndexNavbars/>
       <div className="md:flex md:flex-row">
         <LeftNavBar navItemsProps={navItems} changeTabFunc={handleTabClick} activeTabProps={activeTab}/>
-        {activeTab === "StaffManagement" && <StorageStaffList className="z-10"/>}
+        {activeTab === "StaffManagement" && <TransactionStaffList className="z-10"/>}
       </div>
       {/* <SearchBar /> */}
 
@@ -202,4 +203,4 @@ const handleTabClick = (value) => {
   )
 }
 
-export default StorageLeaderPage
+export default TransactionLeaderPage

@@ -75,7 +75,7 @@ const StorageStaffCard = (props) => {
             editAccountFunc={handleConfirmEdit} 
             closePageFunc={handleCancelEdit} 
             accountProps={accountInfo}  
-            isStorageProps={true}/>
+            isStorageProps={false}/>
         </div>
     );
 };

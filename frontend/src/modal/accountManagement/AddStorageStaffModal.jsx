@@ -1,16 +1,18 @@
 import { PropTypes } from "prop-types";
 // import map_img from "../assets/img/tmp_map.png"
 import close_img from "../../assets/img/close.png";
-import { useRef, useState, useEffect, useDebugValue } from "react";
+import { useRef, useState} from "react";
 // import uuid from 'uuid'
-import axios from "axios";
+// import axios from "axios";
 
 const AddStorageStaffModal = (props) => {
+  const accountCount = props.accountCountProps;
   const storageInfo = props.storageInfoProps;
   const addAccount = props.addAccountFunc;
   const closePage = props.closePageFunc;
   let showAddForm = props.addFormProps;
 
+  console.log("storageInfo: ", storageInfo)
   const [accountName, setAccountName] = useState("");
   const [accountPhoneNumber, setAccountPhoneNumber] = useState("");
   const [accountEmail, setAccountEmail] = useState("");
@@ -73,7 +75,7 @@ const AddStorageStaffModal = (props) => {
     }
   };
   const storageCode = storageInfo ? storageInfo.MaDiemTapKet : null;
-
+  // console.log("storageCode: ", storageCode)
   const handleSubmit = (event) => {
     event.preventDefault();
     if (
@@ -83,16 +85,16 @@ const AddStorageStaffModal = (props) => {
       accountPhoneNumberError &&
       accountEmailError
     ) {
-      const xxid = 5;
-      const accountNickName = `tapKetVien${storageCode}${xxid}`;
+      
+      const accountNickName = `tapKetVien${storageCode}_${accountCount + 1}`;
       addAccount({
-        username: accountEmail,
+        username: accountNickName,
         password: '1',
         HoVaTen: accountName,
         SoDienThoai: accountPhoneNumber,
         email: accountEmail,
         LoaiTaiKhoan: 5,
-        MaDiemTapKet: '',
+        MaDiemTapKet: storageCode,
         MaDiemGiaoDich: '',
       });
     } else {
@@ -206,6 +208,7 @@ const AddStorageStaffModal = (props) => {
 AddStorageStaffModal.propTypes = {
   addAccountFunc: PropTypes.func.isRequired,
   closePageFunc: PropTypes.func.isRequired,
+  storageInfoProps: PropTypes.object.isRequired
   // addFormProps: PropTypes.object.isRequired
 };
 export default AddStorageStaffModal;

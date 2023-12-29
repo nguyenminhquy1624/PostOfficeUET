@@ -105,7 +105,7 @@ const EditAccountModal = props => {
     }
 
     const handleClosePage = event => {
-        // event.preventDefault()
+        event.preventDefault()
         closePage()
     }
   return (

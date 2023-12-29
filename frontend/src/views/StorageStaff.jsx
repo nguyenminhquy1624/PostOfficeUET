@@ -7,6 +7,7 @@ import LeftNavBar from "../components/service/LeftNavBar";
 import OrderListSend from "../components/OrderManagement/OderListSend";
 import StorageList from "../components/storageManagement/StorageList";
 import StorageListSend from "../components/storageManagement/StorageListSend";
+import IndexNavbars from "../components/navbars/IndexNavbars";
 const TransactionStaff = () => {
   const account_info = JSON.parse(localStorage.getItem("account_info"))
   const navItems = [
@@ -34,7 +35,7 @@ const TransactionStaff = () => {
 
   return (
     <div>
-      <AdminNavbars accountInfoProps={account_info}/>
+      < IndexNavbars/>
       <div className="md:flex md:flex-row">
         <LeftNavBar
           className="fixed-left-navbar h-full"

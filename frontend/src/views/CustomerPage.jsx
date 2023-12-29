@@ -5,6 +5,7 @@ import AdminNavbars from "../components/navbars/AdminNavbards";
 import LeftNavBar from "../components/service/LeftNavBar";
 import OrderManagementList from "../components/customer/OrderManagementList";
 import axios from "axios";
+import IndexNavbars from "../components/navbars/IndexNavbars";
 
 const CustomerPage = () => {
   const account_info = JSON.parse(localStorage.getItem("account_info"));
@@ -25,7 +26,7 @@ const CustomerPage = () => {
 
   return (
     <div>
-      <AdminNavbars accountInfoProps={account_info} />
+      <IndexNavbars />
       <div className="md:flex md:flex-row">
         <LeftNavBar
           className="fixed-left-navbar h-full"

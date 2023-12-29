@@ -1,7 +1,8 @@
 import { PropTypes } from 'prop-types'
 // import map_img from "../assets/img/tmp_map.png"
 import close_img from "../../assets/img/close.png"
-import { useRef, useState } from 'react'
+import { useRef, useState , useEffect} from 'react'
+import axios from 'axios'
 // import uuid from 'uuid'
 const EditStafModal = props => {
     const accountInfo = props.accountProps
@@ -10,47 +11,120 @@ const EditStafModal = props => {
     let showEditForm = props.showEditFormProps
     const isStorage = props.isStorageProps
 
-    const unit = isStorage ? "StorageStation" : "TransactionStation"
 
-    const defaultUnitList = JSON.parse(localStorage.getItem(`${unit}`))
-
-    const getUnit = (MaDiem) => {
-        const ans = isStorage ?
-            defaultUnitList.filter(unitInfo => (unitInfo.MaDiemTapKet === MaDiem)) :
-            defaultUnitList.filter(unitInfo => (unitInfo.MaDiemGiaoDich === MaDiem))
-        if (ans.length > 0)
-            return ans[0]
-        else
-            return null
-    }
-
-    const getFilteredUnitList = (isStorageBool) => {
-        const xxx = isStorageBool ? "StorageStation" : "TransactionStation"
-        let unitList = JSON.parse(localStorage.getItem(`${xxx}`))
-
-        if (isStorageBool) {
-            return unitList.filter(unitInfo =>
-            (unitInfo.DiaDiem.toLowerCase().includes(unitName.toLowerCase()) ||
-                unitInfo.TenDiemTapKet.toLowerCase().includes(unitName.toLowerCase())))
-        }
-        else {
-            return unitList.filter(unitInfo =>
-            (unitInfo.DiaDiem.toLowerCase().includes(unitName.toLowerCase()) ||
-                unitInfo.TenDiemGiaoDich.toLowerCase().includes(unitName.toLowerCase())))
-        }
-    }
-    const defaultUnitCode = isStorage ? accountInfo.MaDiemTapKet : accountInfo.MaDiemGiaoDich
-    let defaultUnitName = "không có dữ liệu"
-    if (getUnit(defaultUnitCode)) {
-        if (isStorage) defaultUnitName = getUnit(defaultUnitCode).TenDiemTapKet
-        else defaultUnitName = getUnit(defaultUnitCode).TenDiemGiaoDich
-    }
     const [accountName, setAccountName] = useState(accountInfo.HoVaTen)
     const [accountPhoneNumber, setAccountPhoneNumber] = useState(accountInfo.SoDienThoai)
-    const [accountEmail, setAccountEmail] = useState(accountInfo.Email)
+    const [accountEmail, setAccountEmail] = useState(accountInfo.email)
     const [isStorageStaff, setIsStorageStaff] = useState(isStorage)
-    const [unitName, setUnitName] = useState(defaultUnitName)
-    const [unitCode, setUnitCode] = useState(defaultUnitCode)
+    const [defaultUnitList, setDefaultUnitList] = useState([])
+    const [unitName, setUnitName] = useState("")
+    const [storageCode, setStorageCode] = useState(accountInfo.MaDiemTapKet)
+    const [transactionCode, setTransactionCode] = useState(accountInfo.MaDiemGiaoDich)
+
+    const [secondDefaultList, setSecondDefaultList] = useState([])
+    // const unit = isStorage ? "StorageStation" : "TransactionStation"
+    // const defaultUrl = isStorage ? "http://127.0.0.1:8000/api/diemtapket/" : "http://127.0.0.1:8000/api/diemgiaodich/"
+
+
+    useEffect (() => {
+    
+        const getUnitList = async () => {
+            const defaultUrl = isStorage ? "http://127.0.0.1:8000/api/diemtapket/all/" : "http://127.0.0.1:8000/api/diemgiaodich/all/"
+            const getField = isStorage ? "Diem Tap Ket" : "Diem Giao Dich"
+
+            const secondDefaultUrl = !isStorage ? "http://127.0.0.1:8000/api/diemtapket/all/" : "http://127.0.0.1:8000/api/diemgiaodich/all/"
+            const secondGetField = !isStorage ? "Diem Tap Ket" : "Diem Giao Dich"
+            try {
+                const response = await axios.get(defaultUrl)
+                console.log("get data: ", response.data)
+                setDefaultUnitList(response.data[getField])
+            } catch (err) {
+                console.log("staff err: ", err)
+            }
+            try {
+                const response = await axios.get(secondDefaultUrl)
+                console.log("get trans data: ", response.data)
+                setSecondDefaultList(response.data[secondGetField])
+            } catch (err) {
+                console.log("staff err: ", err)
+            }
+
+        }
+        getUnitList()
+    }, [isStorage])
+
+    const [defaultUnitName, setDefaultUnitName] = useState("")
+    useEffect (() => {
+        const getDefaultUnit = async () => {
+            const defaultUnitUrl = isStorage ? 
+            `http://127.0.0.1:8000/api/diemtapket/${accountInfo.MaDiemTapKet}` :
+            `http://127.0.0.1:8000/api/diemgiaodich/${accountInfo.MaDiemGiaoDich}`
+            let getField = isStorage ? "DiemTapKet" : "DiemGiaoDich" 
+            try {
+                const response = await axios.get(
+                    defaultUnitUrl
+                )
+                console.log("get unit data: ", response.data[getField])
+                const tmp_name = isStorage ? response.data[getField].TenDiemTapKet : response.data[getField].TenDiaDiemGiaoDich
+                setDefaultUnitName(tmp_name)
+                setUnitName(tmp_name)
+                
+            } catch (err) {
+                console.log("unit error: ", err)
+            }
+        }
+        getDefaultUnit()
+    }, [])
+    // setUnitName(defaultUnitName)
+    // const defaultUnitList = JSON.parse(localStorage.getItem(`${unit}`))
+
+    // const getUnit = (MaDiem) => {
+    //     const ans = isStorage ?
+    //         defaultUnitList.filter(unitInfo => (unitInfo.MaDiemTapKet === MaDiem)) :
+    //         defaultUnitList.filter(unitInfo => (unitInfo.MaDiemGiaoDich === MaDiem))
+    //     if (ans.length > 0)
+    //         return ans[0]
+    //     else
+    //         return null
+    // }
+
+    const getFilteredUnitList = (isStorageBool) => {
+        // const xxx = isStorageBool ? "StorageStation" : "TransactionStation"
+        // let unitList =  
+
+        if (isStorage) {
+            if (isStorageBool) {
+                return defaultUnitList.filter(unitInfo =>
+                (unitInfo.DiaDiem.toLowerCase().includes(unitName.toLowerCase()) ||
+                    unitInfo.TenDiemTapKet.toLowerCase().includes(unitName.toLowerCase())))
+            }
+            else {
+                return secondDefaultList.filter(unitInfo =>
+                (unitInfo.DiaDiem.toLowerCase().includes(unitName.toLowerCase()) ||
+                    unitInfo.TenDiaDiemGiaoDich.toLowerCase().includes(unitName.toLowerCase())))
+            }
+        }
+        else {
+            if (isStorageBool) {
+                return secondDefaultList.filter(unitInfo =>
+                (unitInfo.DiaDiem.toLowerCase().includes(unitName.toLowerCase()) ||
+                    unitInfo.TenDiemTapKet.toLowerCase().includes(unitName.toLowerCase())))
+            }
+            else {
+                return defaultUnitList.filter(unitInfo =>
+                (unitInfo.DiaDiem.toLowerCase().includes(unitName.toLowerCase()) ||
+                    unitInfo.TenDiaDiemGiaoDich.toLowerCase().includes(unitName.toLowerCase())))
+            }
+        }
+        
+    }
+    // const defaultUnitCode = isStorage ? accountInfo.MaDiemTapKet : accountInfo.MaDiemGiaoDich
+    // let defaultUnitName = "không có dữ liệu"
+    // if (getUnit(defaultUnitCode)) {
+    //     if (isStorage) defaultUnitName = getUnit(defaultUnitCode).TenDiemTapKet
+    //     else defaultUnitName = getUnit(defaultUnitCode).TenDiemGiaoDich
+    // }
+    
 
     // const filteredUnitList = defaultUnitList.filter(unitInfo =>  
     //     (unitInfo.DiaDiem.toLowerCase().includes(unitName.toLowerCase()) ||
@@ -121,12 +195,13 @@ const EditStafModal = props => {
     const changeUnitName = event => {
         event.preventDefault();
         setUnitName(event.target.value)
-        setUnitCode(null)
+        setStorageCode(null)
+        setTransactionCode(null)
     }
     const handleUnitNameDown = event => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            if (unitName.trim() !== "" && unitCode !== null)
+            if (unitName.trim() !== "" && storageCode !== null)
                 confirmRef.current.focus();
         }
     }
@@ -136,11 +211,13 @@ const EditStafModal = props => {
 
         if (isStorageStaff) {
             setUnitName(unitInfo.TenDiemTapKet)
-            setUnitCode(unitInfo.MaDiemTapKet)
+            setStorageCode(unitInfo.MaDiemTapKet)
+            setTransactionCode(null)
         }
         else {
-            setUnitName(unitInfo.TenDiemGiaoDich)
-            setUnitCode(unitInfo.MaDiemGiaoDich)
+            setUnitName(unitInfo.TenDiaDiemGiaoDich)
+            setStorageCode(unitInfo.MaDiemTapKet)
+            setTransactionCode(unitInfo.MaDiemGiaoDich)
         }
     }
     // console.log(defaultUnitList)
@@ -166,16 +243,15 @@ const EditStafModal = props => {
                 accountPhoneNumber.trim() !== "" &&
                 accountEmail.trim() !== "" &&
                 unitName.trim() !== "" &&
-                unitCode !== null && accountPhoneNumberError && accountEmailError) {
-                editAccount({
-                    MaTaiKhoan: accountInfo.MaTaiKhoan,
-                    TenTaiKhoan: accountInfo.TenTaiKhoan,
+                storageCode !== null && accountPhoneNumberError && accountEmailError) {
+                editAccount(accountInfo.MaTaiKhoan,{
+                    username: accountInfo.username,
                     HoVaTen: accountName,
                     SoDienThoai: accountPhoneNumber,
-                    Email: accountEmail,
+                    email: accountEmail,
                     LoaiTaiKhoan: 5,
-                    MatKhau: "1",
-                    MaDiemTapKet: unitCode,
+                    password: accountInfo.password,
+                    MaDiemTapKet: storageCode,
                     MaDiemGiaoDich: null,
                 })
             }
@@ -188,17 +264,16 @@ const EditStafModal = props => {
                 accountPhoneNumber.trim() !== "" &&
                 accountEmail.trim() !== "" &&
                 unitName.trim() !== "" &&
-                unitCode !== null && accountPhoneNumberError && accountEmailError) {
-                editAccount({
-                    MaTaiKhoan: accountInfo.MaTaiKhoan,
-                    TenTaiKhoan: accountInfo.TenTaiKhoan,
+                storageCode !== null && transactionCode !== null && accountPhoneNumberError && accountEmailError) {
+                editAccount(accountInfo.MaTaiKhoan, {
+                    username: accountInfo.username,
                     HoVaTen: accountName,
                     SoDienThoai: accountPhoneNumber,
-                    Email: accountEmail,
+                    email: accountEmail,
                     LoaiTaiKhoan: 3,
-                    MatKhau: "1",
-                    MaDiemTapKet: null,
-                    MaDiemGiaoDich: unitCode,
+                    password: accountInfo.password,
+                    MaDiemTapKet: storageCode,
+                    MaDiemGiaoDich: transactionCode,
                 })
             }
             else {
@@ -217,10 +292,11 @@ const EditStafModal = props => {
         event.preventDefault()
         setAccountName(accountInfo.HoVaTen)
         setAccountPhoneNumber(accountInfo.SoDienThoai)
-        setAccountEmail(accountInfo.Email)
+        setAccountEmail(accountInfo.email)
         setIsStorageStaff(isStorage)
         setUnitName(defaultUnitName)
-        setUnitCode(defaultUnitCode)
+        setStorageCode(accountInfo.storageCode)
+        setTransactionCode(accountInfo.transactionCode)
     }
 
     const handleClosePage = (event) => {
@@ -253,9 +329,11 @@ const EditStafModal = props => {
                                     type="radio"
                                     className="form-radio h-5 w-5 text-blue-600"
                                     checked={isStorageStaff === true}
-                                    onChange={() => {
+                                    onChange={(e) => {
+                                        e.preventDefault()
                                         setIsStorageStaff(true)
-                                        setUnitCode(null)
+                                        setStorageCode(null)
+                                        setTransactionCode(null)
                                     }}
                                 />
                                 <span className="ml-2">Tập kết Viên</span>
@@ -266,9 +344,11 @@ const EditStafModal = props => {
                                     type="radio"
                                     className="form-radio h-5 w-5 text-red-600"
                                     checked={isStorageStaff === false}
-                                    onChange={() => {
+                                    onChange={(e) => {
+                                        e.preventDefault()
                                         setIsStorageStaff(false),
-                                        setUnitCode(null)
+                                        setStorageCode(null)
+                                        setTransactionCode(null)
                                     }}
                                 />
                                 <span className="ml-2">Giao dịch Viên</span>
@@ -287,7 +367,7 @@ const EditStafModal = props => {
                                             key={isStorageStaff ? unitInfo.MaDiemTapKet : unitInfo.MaDiemGiaoDich}
                                             className='m-1 rounded-md text-primary justify-start p-1 w-full border-b-2 cursor-pointer'
                                             onClick={(e) => handleUnitInfoClick(e, unitInfo)}>
-                                            <p className="">{isStorageStaff ? unitInfo.TenDiemTapKet : unitInfo.TenDiemGiaoDich}</p>
+                                            <p className="">{isStorageStaff ? unitInfo.TenDiemTapKet : unitInfo.TenDiaDiemGiaoDich}</p>
                                             <p className='italic text-[10px]'>{unitInfo.DiaDiem}</p>
                                         </div>
                                     ))}

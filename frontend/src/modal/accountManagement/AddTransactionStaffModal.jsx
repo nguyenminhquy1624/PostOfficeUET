@@ -4,7 +4,8 @@ import close_img from "../../assets/img/close.png"
 import { useRef, useState } from 'react'
 // import uuid from 'uuid'
 const AddTransactionStaffModal = props => {
-    const storageInfo = props.storageInfoProps
+    const accountCount = props.accountCountProps
+    const transactionInfo = props.transactionInfoProps
     const addAccount = props.addAccountFunc
     const closePage = props.closePageFunc
     let showAddForm = props.addFormProps
@@ -70,7 +71,8 @@ const AddTransactionStaffModal = props => {
             confirmRef.current.focus();
         }
     }
-    const storageCode = storageInfo ? storageInfo.MaDiemTapKet : null
+    const transactionCode = transactionInfo ? transactionInfo.MaDiemGiaoDich : null
+    const storageCode = transactionInfo ? transactionInfo.MaDiemTapKet : null
 
     const handleSubmit = event => {
         event.preventDefault()
@@ -78,18 +80,16 @@ const AddTransactionStaffModal = props => {
         accountPhoneNumber.trim() !== "" &&
         accountEmail.trim() !== "" &&
         accountPhoneNumberError && accountEmailError) {
-            const xxid = 5
-            const accountNickName = `tapKetVien${storageCode}${xxid}`
+            const accountNickName = `giaoDichVien${transactionCode}_${accountCount + 1}`
             addAccount({
-                MaTaiKhoan: xxid,
-                TenTaiKhoan: accountNickName,
+                username: accountNickName,
                 HoVaTen: accountName,
                 SoDienThoai: accountPhoneNumber,
-                Email: accountEmail,
-                LoaiTaiKhoan: 5,
-                MatKhau: "1",
+                email: accountEmail,
+                LoaiTaiKhoan: 3,
+                password: "1",
                 MaDiemTapKet: storageCode,
-                MaDiemGiaoDich: null,
+                MaDiemGiaoDich: transactionCode,
             })
         }
         else {
@@ -150,6 +150,7 @@ const AddTransactionStaffModal = props => {
 AddTransactionStaffModal.propTypes = {
     addAccountFunc: PropTypes.func.isRequired,
     closePageFunc: PropTypes.func.isRequired,
+    transactionInfoProps: PropTypes.object.isRequired
     // addFormProps: PropTypes.object.isRequired
 }
 export default AddTransactionStaffModal

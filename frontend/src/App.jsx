@@ -11,6 +11,7 @@ import StorageStaff from './views/StorageStaff'
 import CustomerPage from './views/CustomerPage'
 import SignUpPage from './views/SignUpPage'
 import LogoutPage from './views/LogoutPage'
+import TransactionLeaderPage from './views/TransactionLeaderPage'
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,7 @@ function App() {
       <Route path='transactionStaff' element={<TransactionStaff/>} />
       <Route path='storageStaff' element={<StorageStaff/>} />
       <Route path='customer' element={<CustomerPage/>} />
+      <Route path='transactionLeader' element={<TransactionLeaderPage />} />
     </Routes>
       
     </BrowserRouter>

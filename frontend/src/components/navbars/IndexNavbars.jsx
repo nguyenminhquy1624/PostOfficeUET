@@ -93,6 +93,7 @@ const IndexNavbars = () => {
       alert("Đăng xuất thất bại")
       console.log("logout err: ", err)
     }
+    navigate("/")
   }
 
 

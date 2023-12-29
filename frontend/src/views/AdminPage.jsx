@@ -171,7 +171,7 @@ const handleTabClick = (value) => {
 }
   return (
     <div>
-      <AdminNavbars/>
+      <IndexNavbars/>
       <div className="md:flex md:flex-row">
         <LeftNavBar navItemsProps={navItems} changeTabFunc={handleTabClick} activeTabProps={activeTab}/>
         {activeTab === "TransactionManagement" && <TransactionList className="z-10"/>}

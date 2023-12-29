@@ -35,6 +35,8 @@ class LoginView(APIView):
         password = request.data["password"]
 
         user = Account.objects.filter(username=username).first()
+        acc = Account.objects.get(username=user.username)
+        serializerUser = UserSerializer(acc)
 
         if user is None:
             raise AuthenticationFailed("User not found")
@@ -52,7 +54,7 @@ class LoginView(APIView):
         response = Response()
 
         response.set_cookie(key="jwt", value=token, httponly=True)
-        response.data = {"jwt": token}
+        response.data = {"jwt": token, "account": serializerUser.data}
         return response
 
 
@@ -150,8 +152,8 @@ class RegisterCustomerView(APIView):
 
 class LoginCustomerView(APIView):
     def post(self, request):
-        username = request.data.get("username")
-        password = request.data.get("password")
+        username = request.data["username"]
+        password = request.data["password"]
 
         if not username or not password:
             raise AuthenticationFailed("Invalid credentials")
@@ -171,10 +173,11 @@ class LoginCustomerView(APIView):
         }
 
         token = jwt.encode(payload, "secret", algorithm="HS256").decode("utf-8")
+        serializerUser = CustomerSerializer(user)
 
         response = Response()
         response.set_cookie(key="jwt", value=token, httponly=True)
-        response.data = {"jwt": token}
+        response.data = {"jwt": token, "userCustomer": serializerUser.data}
 
         return response
 

@@ -8,6 +8,7 @@ import OrderListSend from "../components/OrderManagement/OderListSend";
 import StorageList from "../components/storageManagement/StorageList";
 import StorageListSend from "../components/storageManagement/StorageListSend";
 const TransactionStaff = () => {
+  const account_info = JSON.parse(localStorage.getItem("account_info"))
   const navItems = [
     {
       link: "Quản lý đơn hàng nhận",
@@ -33,7 +34,7 @@ const TransactionStaff = () => {
 
   return (
     <div>
-      <AdminNavbars/>
+      <AdminNavbars accountInfoProps={account_info}/>
       <div className="md:flex md:flex-row">
         <LeftNavBar
           className="fixed-left-navbar h-full"

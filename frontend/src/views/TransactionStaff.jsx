@@ -7,6 +7,7 @@ import LeftNavBar from "../components/service/LeftNavBar";
 import OrderListSend from "../components/OrderManagement/OderListSend";
 
 const TransactionStaff = () => {
+  const account_info = JSON.parse(localStorage.getItem("account_info")) 
   const navItems = [
     {
       link: "Quản lý đơn hàng nhận",
@@ -262,7 +263,7 @@ const TransactionStaff = () => {
 
   return (
     <div>
-      <AdminNavbars />
+      <AdminNavbars accountInfoProps={account_info} />
       <div className="md:flex md:flex-row">
         <LeftNavBar
           className="fixed-left-navbar h-full"

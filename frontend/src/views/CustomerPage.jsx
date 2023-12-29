@@ -7,6 +7,7 @@ import OrderManagementList from "../components/customer/OrderManagementList";
 import axios from "axios";
 
 const CustomerPage = () => {
+  const account_info = JSON.parse(localStorage.getItem("account_info"));
   const navItems = [
     {
       link: "Quản lý đơn hàng",
@@ -16,7 +17,6 @@ const CustomerPage = () => {
       icon: <RiAccountBoxLine />,
     },
   ];
-  
 
   const [activeTab, setActiveTab] = useState("Order");
   const handleTabClick = (link) => {
@@ -25,7 +25,7 @@ const CustomerPage = () => {
 
   return (
     <div>
-      <AdminNavbars />
+      <AdminNavbars accountInfoProps={account_info} />
       <div className="md:flex md:flex-row">
         <LeftNavBar
           className="fixed-left-navbar h-full"

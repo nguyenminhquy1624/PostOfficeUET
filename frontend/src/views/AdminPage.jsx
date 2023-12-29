@@ -4,7 +4,7 @@ import IndexNavbars from '/src/components/navbars/IndexNavbars'
 import LeftNavBar from '../components/service/LeftNavBar'
 import { useState } from 'react'
 import AccountList from '../components/admin/AccountManagement/AccountList'
-
+import AdminNavbars from '../components/navbars/AdminNavbards'
 
 // import { FaMapMarkerAlt } from "react-icons/fa";
 // import { RiAccountBoxLine } from "react-icons/ri";

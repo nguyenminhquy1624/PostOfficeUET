@@ -1,73 +1,83 @@
 import { TERipple } from "tw-elements-react";
 import { useState } from "react";
-import {motion} from 'framer-motion'
+import { motion } from 'framer-motion'
 import { fadeIn } from "../components/effect/variants";
 import { useNavigate } from "react-router-dom";
 import { Button } from 'flowbite-react';
 import { IoMdArrowRoundBack } from "react-icons/io";
-import axios  from "axios";
+import axios from "axios";
 const LoginPage = () => {
   const [username, setUsername] = useState("")
-
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("")
+  const [role, setRole] = useState(1)
   // const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
-  let navigate = useNavigate(); 
+  let navigate = useNavigate();
+
+  // const roles = [
+  //   { Id: "1", Name: "Lãnh đạo" },
+  //   { Id: "2", Name: "Trưởng điểm giao dịch" },
+  //   { Id: "3", Name: "Giao dịch viên" },
+  //   { Id: "4", Name: "Trưởng điểm tập kết" },
+  //   { Id: "5", Name: "Tập kết viên" },
+  //   { Id: "6", Name: "Khách hàng"}
+  // ];
 
   const roles = [
-    { Id: "1", Name: "Lãnh đạo" },
-    { Id: "2", Name: "Trưởng điểm giao dịch" },
-    { Id: "3", Name: "Giao dịch viên" },
-    { Id: "4", Name: "Trưởng điểm tập kết" },
-    { Id: "5", Name: "Tập kết viên" },
-    { Id: "6", Name: "Khách hàng"}
-  ];
+    { Id: "1", Name: "Nhân viên" },
+    { Id: "2", Name: "Khách hàng" }
+  ]
 
-  const validateLogin = (e) => {
-    e.preventDefault()
-    const emailRegex = /^\S+@\S+\.\S+$/;
-    if (!emailRegex.test(email)) {
-      setError("Email chưa đúng định dạng");
-      return false;
-    }
-    return true
-  }
   const handleSubmit = async (e) => {
-    const check = validateLogin(e)
-    if (check) {
-      console.log("username: ", username)
-      console.log("Password: ", password);
-      console.log("Email: ", email);
-      console.log("role: ", role)
+    e.preventDefault()
+    console.log("username: ", username)
+    console.log("Password: ", password);
+    console.log("role: ", role)
 
-      if (role >= 1 && role <= 5) {
-        let payload = {
-          username: username,
-          password: password,
-          LoaiTaiKhoan: role,
-          email: email,
-        }
-        try {
-          let response = await axios.post(
-            "http://127.0.0.1:8000/api/account/login/", payload
-          )
-          console.log(response.data)
-          console.log(JSON.parse(localStorage.getItem("access")))
-          alert("Đăng nhập thành công")
-          backToHome("/")
-          } catch (err) {
-            console.log(error)
-            alert("Đăng nhập không thành công")
-          }
-        }
-        else {
-          console.log("Chưa làm đăng nhập tài khoản khách hàng")
-          return
-        }
+    if (role === 1) {
+      let payload = {
+        username: username,
+        password: password,
       }
+      try {
+        let response = await axios.post(
+          "http://127.0.0.1:8000/api/account/login/", payload
+        )
+        console.log("account login: ", response.data)
+        localStorage.setItem("access_token", JSON.stringify(response.data['jwt']))
+        localStorage.setItem("account_info", JSON.stringify(response.data['account']))
+        alert("Đăng nhập thành công")
+        backToHome("/")
+      } catch (err) {
+        console.log(err)
+        alert("Đăng nhập không thành công")
+      }
+    }
+
+    else {
+      let payload = {
+        username: username,
+        password: password,
+      }
+      try {
+        let response = await axios.post(
+          "http://127.0.0.1:8000/api/customer/login/", payload
+        )
+        console.log("customer login: ", response.data)
+        console.log("abcxyz: ", response.data['jwt'])
+        localStorage.setItem("access_token", JSON.stringify(response.data['jwt']))
+        localStorage.setItem("account_info", JSON.stringify(response.data['account']))
+        console.log(JSON.parse(localStorage.getItem("access_token")))
+        alert("Đăng nhập thành công")
+        backToHome("/")
+      } catch (err) {
+        console.log(err)
+        alert("Đăng nhập không thành công")
+      }
+      // console.log("Chưa làm đăng nhập tài khoản khách hàng")
+      // return
+    }
     // email validation
     // const emailRegex = /^\S+@\S+\.\S+$/;
     // if (!emailRegex.test(email)) {
@@ -85,12 +95,12 @@ const LoginPage = () => {
     // console.log("Email: ", email);
     // console.log("Password: ", password);
     // console.log("Confirm Password: ", confirmPassword);
-  
-    
+
+
     // empty the input fields after submitting the form
 
-    
-    
+
+
     // only for admin
     // if (email == "admin@gmail.com" && password == '1') {
     //   navigate('/admin');
@@ -110,17 +120,17 @@ const LoginPage = () => {
     // }
 
   };
-  
+
   const backToHome = () => {
     navigate('/');
   }
   return (
     <section className="h-screen">
       <div className="m-5 h-1/2 px-24 py-10 ">
-        <Button className="rounded-full " color="blue" onClick={backToHome}><IoMdArrowRoundBack className=""/></Button>
+        <Button className="rounded-full " color="blue" onClick={backToHome}><IoMdArrowRoundBack className="" /></Button>
         <div className="flex h-full flex-wrap items-center justify-center lg:justify-between">
           {/* <!-- Left column container with background--> */}
-          <motion.div variants={fadeIn("down", 0.2)} initial="hidden" whileInView={"show"} viewport={{once:false, amount:0.7}} className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
+          <motion.div variants={fadeIn("down", 0.2)} initial="hidden" whileInView={"show"} viewport={{ once: false, amount: 0.7 }} className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
             <img
               src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
               className="w-full"
@@ -129,7 +139,7 @@ const LoginPage = () => {
           </motion.div>
 
           {/* <!-- Right column container with form --> */}
-          <motion.div variants={fadeIn("up", 0.2)} initial="hidden" whileInView={"show"} viewport={{once:false, amount:0.7}} className="md:w-8/12 lg:ml-6 lg:w-5/12">
+          <motion.div variants={fadeIn("up", 0.2)} initial="hidden" whileInView={"show"} viewport={{ once: false, amount: 0.7 }} className="md:w-8/12 lg:ml-6 lg:w-5/12">
             <h1 className="text-4xl font-bold text-primary text-center mb-10">
               Đăng nhập
             </h1>
@@ -148,7 +158,7 @@ const LoginPage = () => {
                   placeholder=""
                   autoComplete="off"
                   value={username}
-                  onChange={(e) => {setUsername(e.target.value); console.log(username)}}
+                  onChange={(e) => { setUsername(e.target.value); console.log(username) }}
                 />
               </div>
               <h1>Nhập mật khẩu</h1>
@@ -161,27 +171,9 @@ const LoginPage = () => {
                   placeholder="****"
                   autoComplete="off"
                   value={password}
-                  onChange={(e) => {setPassword(e.target.value); console.log(password)}}
+                  onChange={(e) => { e.preventDefault(); setPassword(e.target.value) }}
                 />
               </div>
-              <div className="pl-2 font-semibold text-red-500 py-2">
-                {error}
-              </div>
-
-              <h1>Nhập enail của tài khoản </h1>
-              <div className="relative">
-                <input
-                  type="email"
-                  id="email"
-                  required
-                  className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
-                  placeholder="example@gmail.com"
-                  autoComplete="off"
-                  value={email}
-                  onChange={(e) => {setEmail(e.target.value); console.log(email)}}
-                />
-              </div>
-
               <h1>Chọn vai trò</h1>
               <div className="relative">
                 <select
@@ -189,9 +181,6 @@ const LoginPage = () => {
                   id="role"
                   className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
                 >
-                  <option value="" selected>
-                    Chọn vai trò
-                  </option>
                   {roles.map((role) => (
                     <option key={role.Id} value={role.Id}>
                       {role.Name}
@@ -246,7 +235,7 @@ const LoginPage = () => {
                 Bạn chưa có tài khoản?
               </a> */}
 
-              
+
             </form>
           </motion.div>
         </div>

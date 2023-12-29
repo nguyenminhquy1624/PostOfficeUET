@@ -19,6 +19,7 @@ const LandingPage = () => {
     },
   ];
   localStorage.setItem("MaKhachHang", JSON.stringify(MaKhachHangDefault))
+  // localStorag`e.clear()
   return (
     <div>
       <IndexNavbars/>

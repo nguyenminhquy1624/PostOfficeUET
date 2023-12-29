@@ -120,7 +120,7 @@ class UpdateAccountView(APIView):
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Account.DoesNotExist:
-            return Respone(
+            return Response(
                 {"message": "Account not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
@@ -159,6 +159,8 @@ class LoginCustomerView(APIView):
             raise AuthenticationFailed("Invalid credentials")
 
         user = Customer.objects.filter(username=username).first()
+        acc = Customer.objects.get(username=user.username)
+        serializerUser = CustomerSerializer(acc)
 
         if user is None:
             raise AuthenticationFailed("User not found")
@@ -177,7 +179,7 @@ class LoginCustomerView(APIView):
 
         response = Response()
         response.set_cookie(key="jwt", value=token, httponly=True)
-        response.data = {"jwt": token, "userCustomer": serializerUser.data}
+        response.data = {"jwt": token, "account": serializerUser.data}
 
         return response
 

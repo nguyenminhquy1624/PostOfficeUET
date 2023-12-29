@@ -10,6 +10,7 @@ import TransactionStaff from './views/TransactionStaff'
 import StorageStaff from './views/StorageStaff'
 import CustomerPage from './views/CustomerPage'
 import SignUpPage from './views/SignUpPage'
+import LogoutPage from './views/LogoutPage'
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ function App() {
       <Route path='admin' element={<AdminPage />} />
       <Route path='login' element={<LoginPage/>} />
       <Route path='signup' element={<SignUp/>} />
+      <Route path='logout' element={<LogoutPage />} />
       <Route path='feedback' element={<Feedback/>} />
       <Route path='storageLeader' element={<StorageLeaderPage/>} />
       <Route path='transactionStaff' element={<TransactionStaff/>} />

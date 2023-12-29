@@ -18,9 +18,9 @@ const LeftNavBar = (props) => {
 
     return (
         <div className="bg-slate-100 relative">
-            <nav className="hidden md:block md:w-fit max-h-full  text-primary top-0 left-0  mt-[80px]">
-                <div className="text-lg container my-auto flex justify-between  font-[500]">
-                    <div className="flex ">
+            <nav className="hidden md:block md:w-fit max-h-full  text-primary top-0 left-0  mt-[100px]">
+                <div className="text-lg container my-auto flex justify-between items-center font-[500]">
+                    <div className="flex items-center">
                         {/* showing nav items using map*/}
                         <ul className="flex-col text-center">
                             {navItems.map(({ link, path }) => (

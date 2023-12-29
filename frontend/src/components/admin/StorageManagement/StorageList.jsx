@@ -13,7 +13,9 @@ const StorageList = () => {
     console.log("access_token: ", access_token)
     const [defaultStorageState, setDefaultStorageState] = useState([])
     // const [storageState, setStorageState] = useState(JSON.parse(localStorage.getItem("StorageStation")));
-    const [storageState, setStorageState] = useState(JSON.parse(localStorage.getItem("StorageStation")));
+    // const [storageState, setStorageState] = useState(JSON.parse(localStorage.getItem("StorageStation")));
+    const [storageState, setStorageState] = useState([]);
+
     // const [filteredStorageState, setFilterStorageState] = useState(JSON.parse(localStorage.getItem("StorageStation")))
 
     const [showAddForm, setShowAddForm] = useState(false);

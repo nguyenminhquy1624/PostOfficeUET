@@ -1,14 +1,30 @@
 import {PropTypes} from 'prop-types'
 // import map_img from "../assets/img/tmp_map.png"
 import close_img from "../../assets/img/close.png"
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // import uuid from 'uuid'
+import axios from 'axios'
 const AddStorageAccountModal = props => {
+    const accountCount = props.accountCountProps
     const addAccount = props.addAccountFunc
     const closePage = props.closePageFunc
     let showAddForm = props.addFormProps
 
-    const storageList = JSON.parse(localStorage.getItem("StorageStation"))
+
+    const [defaultStorageList, setDefaultStorageList] = useState([])
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/api/diemtapket/all/")
+                console.log("get data: ", res.data)
+                setDefaultStorageList(res.data['Diem Tap Ket'])
+            } catch (error) {
+                console.log("error: ", error)
+            }
+        }
+        getData();
+    }, [])
+    // const storageList = JSON.parse(localStorage.getItem("StorageStation"))
     const [accountName, setAccountName] = useState('')
     const [accountPhoneNumber, setAccountPhoneNumber] = useState("")
     const [accountEmail, setAccountEmail] = useState("")
@@ -94,7 +110,7 @@ const AddStorageAccountModal = props => {
 
     }
     // console.log(storageList)
-    const filteredStorageList = storageList.filter(storageInfo =>  
+    const filteredStorageList = defaultStorageList.filter(storageInfo =>  
         (storageInfo.DiaDiem.toLowerCase().includes(storageName.toLowerCase()) ||
         storageInfo.TenDiemTapKet.toLowerCase().includes(storageName.toLowerCase()))
     );
@@ -106,16 +122,15 @@ const AddStorageAccountModal = props => {
         accountEmail.trim() !== "" &&
         storageName.trim() !== "" &&
         storageCode !== null && accountPhoneNumberError && accountEmailError) {
-            const xxid = 5
-            const accountNickName = `truongGiaoDich${xxid}`
+            // const xxid = 5
+            const accountNickName = `truongTapKet${accountCount + 1}`
             addAccount({
-                MaTaiKhoan: xxid,
-                TenTaiKhoan: accountNickName,
+                username: accountNickName,
                 HoVaTen: accountName,
                 SoDienThoai: accountPhoneNumber,
-                Email: accountEmail,
+                email: accountEmail,
                 LoaiTaiKhoan: 4,
-                MatKhau: "1",
+                password: "1",
                 MaDiemTapKet: storageCode,
                 MaDiemGiaoDich: null,
             })

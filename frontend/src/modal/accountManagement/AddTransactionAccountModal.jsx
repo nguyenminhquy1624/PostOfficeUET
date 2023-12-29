@@ -1,19 +1,37 @@
 import {PropTypes} from 'prop-types'
 // import map_img from "../assets/img/tmp_map.png"
 import close_img from "../../assets/img/close.png"
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 // import uuid from 'uuid'
+import axios from 'axios'
 const AddTransactionAccountModal = props => {
+    const accountCount = props.accountCountProps
     const addAccount = props.addAccountFunc
     const closePage = props.closePageFunc
     let showAddForm = props.addFormProps
 
-    const transactionList = JSON.parse(localStorage.getItem("TransactionStation"))
+    // const transactionList = JSON.parse(localStorage.getItem("TransactionStation"))
+
+    const [defaultTransactionList, setDefaultTransactionList] = useState([])
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/api/diemgiaodich/all/")
+                console.log("get data: ", res.data)
+                setDefaultTransactionList(res.data['Diem Giao Dich'])
+            } catch (error) {
+                console.log("error: ", error)
+            }
+        }
+        getData();
+    }, [])
+
     const [accountName, setAccountName] = useState('')
     const [accountPhoneNumber, setAccountPhoneNumber] = useState("")
     const [accountEmail, setAccountEmail] = useState("")
     const [transactionName, setTransactionName] = useState("")
     const [transactionCode, setTransactionCode] = useState(null)
+    const [storageCode, setStorageCode] = useState(null)
     
     const accountNameRef = useRef(null)
     const accountPhoneNumberRef = useRef(null)
@@ -78,6 +96,7 @@ const AddTransactionAccountModal = props => {
         event.preventDefault();
         setTransactionName(event.target.value)
         setTransactionCode(null)
+        setStorageCode(null)
     }
     const handleTransactionNameDown = event => {
         if (event.key === 'Enter') {
@@ -89,14 +108,15 @@ const AddTransactionAccountModal = props => {
 
     const handleTransactionInfoClick = (event, transactionInfo) => {
         event.preventDefault()
-        setTransactionName(transactionInfo.TenDiemGiaoDich)
+        setTransactionName(transactionInfo.TenDiaDiemGiaoDich)
         setTransactionCode(transactionInfo.MaDiemGiaoDich)
+        setStorageCode(transactionInfo.MaDiemTapKet)
 
     }
     // console.log(transactionList)
-    const filteredTransactionList = transactionList.filter(transactionInfo =>  
+    const filteredTransactionList = defaultTransactionList.filter(transactionInfo =>  
         (transactionInfo.DiaDiem.toLowerCase().includes(transactionName.toLowerCase()) ||
-        transactionInfo.TenDiemGiaoDich.toLowerCase().includes(transactionName.toLowerCase()))
+        transactionInfo.TenDiaDiemGiaoDich.toLowerCase().includes(transactionName.toLowerCase()))
     );
 
     const handleSubmit = event => {
@@ -106,17 +126,16 @@ const AddTransactionAccountModal = props => {
         accountEmail.trim() !== "" &&
         transactionName.trim() !== "" &&
         transactionCode !== null && accountPhoneNumberError && accountEmailError) {
-            const xxid = 5
-            const accountNickName = `truongGiaoDich${xxid}`
+            // const xxid = 5
+            const accountNickName = `truongGiaoDich${accountCount + 1}`
             addAccount({
-                MaTaiKhoan: xxid,
-                TenTaiKhoan: accountNickName,
+                username: accountNickName,
                 HoVaTen: accountName,
                 SoDienThoai: accountPhoneNumber,
-                Email: accountEmail,
+                email: accountEmail,
                 LoaiTaiKhoan: 2,
-                MatKhau: "1",
-                MaDiemTapKet: null,
+                password: "1",
+                MaDiemTapKet: storageCode,
                 MaDiemGiaoDich: transactionCode,
             })
         }
@@ -138,6 +157,7 @@ const AddTransactionAccountModal = props => {
         setAccountEmail("")
         setTransactionName("")
         setTransactionCode(null)
+        setStorageCode(null)
 
     }
 
@@ -177,7 +197,7 @@ const AddTransactionAccountModal = props => {
                             key={transactionInfo.MaDiemGiaoDich} 
                             className='m-1 rounded-md text-primary justify-start p-1 w-full border-b-2 cursor-pointer'
                             onClick={(e) => handleTransactionInfoClick(e, transactionInfo)}>
-                                <p className="">{transactionInfo.TenDiemGiaoDich}</p> 
+                                <p className="">{transactionInfo.TenDiaDiemGiaoDich}</p> 
                                 <p className='italic text-[10px]'>{transactionInfo.DiaDiem}</p>
                             </div>
                         ))}

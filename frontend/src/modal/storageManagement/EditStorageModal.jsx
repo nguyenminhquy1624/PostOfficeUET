@@ -65,16 +65,19 @@ const EditStorageModal = props => {
     }
 
     const handleSubmit = event => {
+
         event.preventDefault()
         if (storageName.trim() !== "" &&
             storageLocation.trim() !== "" &&
             storageHotline.trim() !== "" &&
             storageHotlineError === true) {
-            editStorage({
+                console.log("storageName: ", storageName)
+                console.log("storageLocation: ", storageLocation)
+                console.log("storageHotline: ", storageHotline)
+            editStorage(storageInfo.MaDiemTapKet, {
                 TenDiemTapKet: storageName,
-                MaDiemTapKet: storageInfo.MaDiemTapKet,
                 DiaDiem: storageLocation,
-                Hotline: storageHotline,    
+                Hotline: storageHotline    
             })
         }
         else {

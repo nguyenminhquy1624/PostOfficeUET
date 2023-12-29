@@ -4,14 +4,29 @@ import delete_icon from "../../../assets/img/delete.png";
 
 import {PropTypes} from 'prop-types'
 import DeleteModal from "../../../modal/storageManagement/DeleteModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { FaExpeditedssl } from "react-icons/fa6";
 import EditStorageModal from "../../../modal/storageManagement/EditStorageModal";
+import axios from "axios";
 
 const StorageCard = (props) => {
 
-    const accountList = JSON.parse(localStorage.getItem("Account"))
-    // console.log(accountList)
+    // const accountList = JSON.parse(localStorage.getItem("Account"))
+    const [accountList, setAccountList] = useState([])
+    useEffect(() => {
+        const getAccount = async () => {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/account/all/")
+                console.log("response.data: ", response.data)
+                setAccountList(response.data['users'])
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getAccount();
+    }, [])
+
     const storageInfo = props.storageProps;
     const deleteStorage = props.deleteFunc;
     const editStorage = props.editFunc
@@ -43,13 +58,15 @@ const StorageCard = (props) => {
         setShowEditModal(false)
     }
 
-    const handleConfirmEdit = (editedStorageInfo) => {
-        editStorage(editedStorageInfo)
+    const handleConfirmEdit = (storage_id, editedStorageInfo) => {
+        editStorage(storage_id, editedStorageInfo)
         setShowEditModal(false)
     }
 
     const getStorageLeader = (MaDiemTapKet) => {
-        const ans = accountList.filter(accountInfo => (accountInfo.MaDiemTapKet == MaDiemTapKet))
+        const ans = accountList.filter(
+            accountInfo => (accountInfo.MaDiemTapKet === MaDiemTapKet &&
+                accountInfo.LoaiTaiKhoan === 4))
         // console.log(ans[0])
         if (ans.length > 0)
             return ans[0]

@@ -1,7 +1,8 @@
 import {PropTypes} from 'prop-types'
 // import map_img from "../assets/img/tmp_map.png"
 import close_img from "../../assets/img/close.png"
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import axios from 'axios'
 // import uuid from 'uuid'
 
 const AddTransactionModal = props => {
@@ -15,9 +16,21 @@ const AddTransactionModal = props => {
     const [storageCode, setStorageCode] = useState(null)
     
     const [transactionHotlineError, setTransactionHotlineError] = useState(true)
+    const [storageList, setStorageList] = useState([])
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/api/diemtapket/all/")
+                console.log("get data: ", res.data)
+                setStorageList(res.data['Diem Tap Ket'])
 
-    const storageList = JSON.parse(localStorage.getItem("StorageStation")
-)
+            } catch (error) {
+                console.log("error: ", error.message);
+            }
+        }
+        getData();
+    }, [])
+    // const storageList = JSON.parse(localStorage.getItem("StorageStation"))
     const transactionNameRef = useRef(null)
     const transactionLocationRef = useRef(null)
     const transactionHotlineRef = useRef(null)
@@ -101,9 +114,8 @@ const AddTransactionModal = props => {
             storageCode !== null &&
             transactionHotlineError === true) {
             addTransaction({
-                TenDiemGiaoDich: transactionName,
+                TenDiaDiemGiaoDich: transactionName,
                 DiaDiem: transactionLocation,
-                MaDiemGiaoDich: 745424,
                 MaDiemTapKet: storageCode,
                 Hotline: transactionHotline,    
             })

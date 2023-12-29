@@ -5,12 +5,18 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../components/effect/variants";
 import { Button } from "flowbite-react";
 import { IoMdArrowRoundBack } from "react-icons/io";
-const SignUp = () => {
-  const [email, setemail] = useState("");
+import axios from 'axios'
+const SignUpPage = () => {
+
+  const [name, setname] = useState("")
+  const [phonenumber, setphonenumber] = useState("")
+  const [username,setusername] = useState("")
   const [password, setpassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
+  const [email, setemail] = useState("");
   const [error, seterror] = useState("");
-  const [role, setrole] = useState("");
+  // const [role, setrole] = useState("");
+
   let navigate = useNavigate();
   const roles = [
     { Id: "1", Name: "Lãnh đạo" },
@@ -20,36 +26,36 @@ const SignUp = () => {
     { Id: "5", Name: "Trưởng điểm tập kết" },
     { Id: "6", Name: "Tập kết viên" },
   ];
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
-    //  email validation
-    const emailRegex = /^\S+@\S+\.\S+$/;
-    if (!emailRegex.test(email)) {
-      seterror("Please enter a valid email address.");
-      return;
-    }
+  //   //  email validation
+  //   const emailRegex = /^\S+@\S+\.\S+$/;
+  //   if (!emailRegex.test(email)) {
+  //     seterror("Email không đúng định dạng.");
+  //     return false;
+  //   }
 
-    // password matching validation
-    if (password !== confirmPassword) {
-      seterror("Password should match.");
-      return;
-    }
+  //   // password matching validation
+  //   if (password !== confirmPassword) {
+  //     seterror("Password should match.");
+  //     return;
+  //   }
 
-    // setrole(findNameById(roles, role));
+  //   // setrole(findNameById(roles, role));
 
-    alert("Form submitted successfully.");
-    console.log("Email: ", email);
-    console.log("Password: ", password);
-    console.log("Confirm Password: ", confirmPassword);
-    console.log("Role", findNameById(roles, role));
-    // empty the input fields after submitting the form
-    setemail("");
-    setpassword("");
-    setconfirmPassword("");
-    seterror("");
-    setrole("");
-  };
+  //   alert("Form submitted successfully.");
+  //   console.log("Email: ", email);
+  //   console.log("Password: ", password);
+  //   console.log("Confirm Password: ", confirmPassword);
+  //   console.log("Role", findNameById(roles, role));
+  //   // empty the input fields after submitting the form
+  //   setemail("");
+  //   setpassword("");
+  //   setconfirmPassword("");
+  //   seterror("");
+  //   setrole("");
+  // };
   const findNameById = (cities, id) => {
     const findCity = cities.find((city) => city.Id === id);
     return findCity ? findCity.Name : null;
@@ -57,6 +63,58 @@ const SignUp = () => {
   const backToHome = () => {
     navigate("/");
   };
+
+  const handleSubmit = async (e) => {
+    
+    const check = validateRegister(e)
+
+    if (check) {
+      console.log("name: ", name)
+      console.log("phonenumber: ", phonenumber)
+      console.log("username: ", username)
+      console.log("Password: ", password);
+      console.log("Email: ", email);
+      console.log("Confirm Password: ", confirmPassword);
+
+      let payload = {
+        username: username,
+        password: password,
+        HoVaTen: name,
+        SoDienThoai: phonenumber,
+        email: email
+      }
+
+      try {
+        let response = await axios.post(
+            "http://127.0.0.1:8000/api/customer/register/", payload
+        )
+        console.log(response.data)
+        console.log(JSON.parse(localStorage.getItem("access")))
+        alert("Đăng kí thành công")
+        backToHome("/")
+      }
+      catch (err) {
+        console.log(err.response.data)
+        alert("Đăng kí không thành công")
+      }
+
+      
+      setname("");
+      setphonenumber("");
+      setusername("");
+      setpassword("");
+      setconfirmPassword("");
+      setemail("");
+      seterror("");
+    }
+    
+    // setrole("");
+  };
+  // const findNameById = (cities, id) => {
+  //   const findCity = cities.find((city) => city.Id === id);
+  //   return findCity ? findCity.Name : null;
+  // };
+  
   return (
     <section className="h-screen">
       <div className="m-5 h-1/3 px-24 py-10 ">
@@ -95,13 +153,39 @@ const SignUp = () => {
               className="p-20 rounded-xl shadow-3xl"
             >
               {/* <!-- Email input --> */}
-              <h1>Nhập email</h1>
+              <h1>Nhập họ và tên</h1>
+              <div className="relative">
+                <input
+                  type="name"
+                  id="name"
+                  required
+                  className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
+                  autoComplete="off"
+                  value={name}
+                  onChange={(e) => setname(e.target.value)}
+                />
+              </div>
+
+              <h1>Nhập số điện thoại</h1>
+              <div className="relative">
+                <input
+                  type="phonenumber"
+                  id="phonenumber"
+                  required
+                  className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
+                  autoComplete="off"
+                  value={phonenumber}
+                  onChange={(e) => setphonenumber(e.target.value)}
+                />
+              </div>
+
+              <h1>Nhập địa chỉ Email</h1>
               <div className="relative">
                 <input
                   type="email"
                   id="email"
                   required
-                  className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
+                  className="input-field focus:outline-none w-full px-3 py-2  border-primary border rounded-md appearance-none text-primary m-2"
                   placeholder="example@gmail.com"
                   autoComplete="off"
                   value={email}
@@ -139,8 +223,7 @@ const SignUp = () => {
                   onChange={(e) => setpassword(e.target.value)}
                 />
               </div>
-
-              <h1>Nhập lại mật khẩu</h1>
+              <h1>Xác nhận mật khẩu</h1>
               <div className="relative">
                 <input
                   type="password"
@@ -153,6 +236,8 @@ const SignUp = () => {
                   onChange={(e) => setconfirmPassword(e.target.value)}
                 />
               </div>
+
+              
 
               <div className="pl-2 font-semibold text-red-500 py-2">
                 {error}
@@ -176,12 +261,12 @@ const SignUp = () => {
                 </div>
 
                 {/* <!-- Forgot password link --> */}
-                <a
+                {/* <a
                   href="#!"
                   className="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
                 >
                   Quên mật khẩu?
-                </a>
+                </a> */}
               </div>
 
               {/* <!-- Submit button --> */}
@@ -214,4 +299,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpPage;

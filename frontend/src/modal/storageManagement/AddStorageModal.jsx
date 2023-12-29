@@ -70,11 +70,9 @@ const AddStorageModal = props => {
             storageHotline.trim() !== "" &&
             storageHotlineError === true) {
             addStorage({
-                
                 TenDiemTapKet: storageName,
                 DiaDiem: storageLocation,
-                MaDiemTapKet: 1238,
-                Hotline: storageHotline,    
+                Hotline: storageHotline    
             })
         }
         else {

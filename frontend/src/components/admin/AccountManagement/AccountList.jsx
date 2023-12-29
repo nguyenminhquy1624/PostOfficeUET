@@ -1,22 +1,43 @@
 // import React from "react"
 import add_icon from "../../../assets/img/add.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "../../searchbar/SearchBar";
 import AccountCard from "./AccountCard";
 import AddStorageAccountModal from "../../../modal/accountManagement/AddStorageAccountModal";
 import AddTransactionAccountModal from "../../../modal/accountManagement/AddTransactionAccountModal";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa6";
+import axios from "axios";
 
 
 
 // import DeleteModal from "../../modal/DeleteModal";
 const AccountList = () => {
     
+    const [defaultAccountList, setDefaultAccountList] = useState([])
+    const [accountCount, setAccountCount] = useState(0)
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/api/account/all/")
+                console.log("get data: ", res.data)
+                setDefaultAccountList(res.data['users'])
+                if (res.data['users'].length > 0) {
+                    setAccountCount(res.data['users'][res.data['users'].length - 1].MaTaiKhoan)
+                }
+            } catch (error) {
+                console.log("error: ", error)
+            }
+        }
+        getData();
+    }, [])
     const getAccountList = (mode) => {
         const mode_type = mode ? 4 : 2
-        return JSON.parse(localStorage.getItem("Account")).filter (
+        return defaultAccountList.filter (
             account => account.LoaiTaiKhoan === mode_type
         )
+        // return JSON.parse(localStorage.getItem("Account")).filter (
+        //     account => account.LoaiTaiKhoan === mode_type
+        // )
     }
 
     const [isStorage, setIsStorage] = useState(true)
@@ -40,34 +61,80 @@ const AccountList = () => {
 
     }
 
-    const handleAddAccountInfo = (accountInfo) => {
-        const accountList = JSON.parse(localStorage.getItem("Account"))
-        localStorage.setItem("Account", JSON.stringify([...accountList, accountInfo]))
-        setAccountState(getAccountList(isStorage));
+    const handleAddAccountInfo = async (accountInfo) => {
+        console.log("accountInfo: ", accountInfo)
+        try {
+            let response = await axios.post(
+                "http://127.0.0.1:8000/api/account/register/", accountInfo
+            )
+            console.log("add data: ", response.data)
+            alert("Tạo dữ liệu mới thành công !!!")
+            window.location.reload();
+        } catch (error) {
+            console.log("add error: ", error)
+            alert("Tạo dữ liệu mới không thành công !!!")
+        }
         setShowAddForm(false)
+
+        // const accountList = JSON.parse(localStorage.getItem("Account"))
+        // localStorage.setItem("Account", JSON.stringify([...accountList, accountInfo]))
+        // setAccountState(getAccountList(isStorage));
+        // setShowAddForm(false)
     }
 
-    const handleEditAccountInfo = (updatedAccountInfo) => {
-        const accountList = JSON.parse(localStorage.getItem("Account"))
-        const newAccountState =accountList.map((accountInfo) => {
-            if (accountInfo.MaTaiKhoan === updatedAccountInfo.MaTaiKhoan) {
-                return updatedAccountInfo
-            }
-            else {
-                return accountInfo
-            }
-        })
-        localStorage.setItem("Account", JSON.stringify(newAccountState))
-        setAccountState(getAccountList(isStorage))
+    const handleEditAccountInfo = async (account_id, updatedAccountInfo) => {
+        
+        try {
+            console.log(`id: ${account_id}`)
+            console.log( 'update_data: ', updatedAccountInfo)
+            let response = await axios.put(
+                `http://127.0.0.1:8000/api/account/update/${account_id}/`,
+                updatedAccountInfo
+            )
+            console.log("edit data: ", response.data)
+            alert("Cập nhật dữ liệu thành công !!!")
+            window.location.reload();
+        } catch (error) {
+            console.log("edit error: ", error)
+            alert("Cập nhật dữ liệu không thành công !!!")
+        }
     }
+    //     const accountList = JSON.parse(localStorage.getItem("Account"))
+    //     const newAccountState =accountList.map((accountInfo) => {
+    //         if (accountInfo.MaTaiKhoan === updatedAccountInfo.MaTaiKhoan) {
+    //             return updatedAccountInfo
+    //         }
+    //         else {
+    //             return accountInfo
+    //         }
+    //     })
+    //     localStorage.setItem("Account", JSON.stringify(newAccountState))
+    //     setAccountState(getAccountList(isStorage))
+    // }
     
-    const deleteAccountInfo = (MaTaiKhoan) => {
-        const accountList = JSON.parse(localStorage.getItem("Account"))
-        const newAccountState = accountList.filter(
-            account => account.MaTaiKhoan !== MaTaiKhoan
-        )
-        localStorage.setItem("Account", JSON.stringify(newAccountState))
-        setAccountState(getAccountList(isStorage))
+    const deleteAccountInfo = async (MaTaiKhoan) => {
+        try {
+            let response = await axios.delete(
+                `http://127.0.0.1:8000/api/account/delete/${MaTaiKhoan}`
+            )
+            console.log("delete data: ",response.data)
+            // const newStorageState = defaultStorageState.filter(
+            //     storage => storage.MaDiemTapKet !== MaDiemTapKet
+            // )
+            // setDefaultStorageState(newStorageState)
+            alert("Xóa dữ liệu thành công !!!")
+            window.location.reload();
+        } catch (err) {
+            console.log("delete data: ", err)
+            alert("Xóa dữ liệu không thành công !!!")
+        }
+
+        // const accountList = JSON.parse(localStorage.getItem("Account"))
+        // const newAccountState = accountList.filter(
+        //     account => account.MaTaiKhoan !== MaTaiKhoan
+        // )
+        // localStorage.setItem("Account", JSON.stringify(newAccountState))
+        // setAccountState(getAccountList(isStorage))
     }
 
     const handleOpenAddFormClick = () => {
@@ -88,7 +155,7 @@ const AccountList = () => {
         // console.log("searchTerm: ", searchTerm)
         console.log("storageLeaderAccount: ", getAccountList(isStorage))
         const filteredAccountState = getAccountList(isStorage).filter(accountInfo => (
-            accountInfo.TenTaiKhoan.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            accountInfo.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
             accountInfo.HoVaTen.toLowerCase().includes(searchTerm.toLowerCase())
         ))
         console.log("filteredAccountList: ",filteredAccountState)
@@ -136,8 +203,16 @@ const AccountList = () => {
                     <img src={add_icon} />
                 </button>
             </div>
-            {isStorage ? <AddStorageAccountModal addAccountFunc={handleAddAccountInfo} closePageFunc={handleCloseAddFormClick} addFormProps={showAddForm}/> : 
-            <AddTransactionAccountModal addAccountFunc={handleAddAccountInfo} closePageFunc={handleCloseAddFormClick} addFormProps={showAddForm}/>}        
+            {isStorage ? <AddStorageAccountModal 
+            accountCountProps={accountCount}
+            addAccountFunc={handleAddAccountInfo} 
+            closePageFunc={handleCloseAddFormClick} 
+            addFormProps={showAddForm}/> : 
+            <AddTransactionAccountModal 
+            accountCountProps={accountCount}
+            addAccountFunc={handleAddAccountInfo} 
+            closePageFunc={handleCloseAddFormClick}
+            addFormProps={showAddForm}/>}        
         </div>
     );
 };

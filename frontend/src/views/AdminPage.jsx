@@ -6,13 +6,13 @@ import { useState } from 'react'
 import AccountList from '../components/admin/AccountManagement/AccountList'
 
 
-import { FaMapMarkerAlt } from "react-icons/fa";
-import { RiAccountBoxLine } from "react-icons/ri";
-import { LuLogOut } from "react-icons/lu";
-import { FaChartColumn } from "react-icons/fa6";
-import AdminNavbars from "../components/navbars/AdminNavbards";
-// import ProfileCard from "../components/Profile/ProfileCard";
-import Sidebar, { SidebarItem } from "../components/service/SlideBar";
+// import { FaMapMarkerAlt } from "react-icons/fa";
+// import { RiAccountBoxLine } from "react-icons/ri";
+// import { LuLogOut } from "react-icons/lu";
+// import { FaChartColumn } from "react-icons/fa6";
+// import AdminNavbars from "../components/navbars/AdminNavbards";
+// // import ProfileCard from "../components/Profile/ProfileCard";
+// import Sidebar, { SidebarItem } from "../components/service/SlideBar";
 
 const AdminPage = () => {
   const defaultTransactionStationList = [
@@ -157,7 +157,7 @@ if (localStorage.getItem("StorageStation") == null) {
 
 const navItems = [
   { link: "Quản lý Điểm tập kết", path: "StorageManagement", active: true},
-  { link: "Quản lý Điểm giao dịch", path: "TransactionManagement", active: true},
+  { link: "Quản lý Điểm giao dịch", path: "TransactionManagement", active: false},
   { link: "Quản lý tài khoản", path: "AccountManagement" , active: false},
   { link: "Thống kê hàng gửi/nhập", path: "LogisticStatistic" , active: false},];
 if (localStorage.getItem("adminActiveTab") == null) {
@@ -171,7 +171,7 @@ const handleTabClick = (value) => {
 }
   return (
     <div>
-      <IndexNavbars/>
+      <AdminNavbars/>
       <div className="md:flex md:flex-row">
         <LeftNavBar navItemsProps={navItems} changeTabFunc={handleTabClick} activeTabProps={activeTab}/>
         {activeTab === "TransactionManagement" && <TransactionList className="z-10"/>}

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import SearchBar from "../searchbar/SearchBar";
-import StorageCard from "./StorageCard";
-const StorageList = () => {
-
+import StorageCardSend from "./StorageCardSend";
+const StorageListSend = () => {
+  // const [userList, setUserList] = useState(
+  //   JSON.parse(localStorage.getItem("userData"))
+  // );
   const [orderList, setOrderList] = useState(JSON.parse(localStorage.getItem("Order")));
+  // console.log("StorageListSend: ", orderList)
   const handleEditOrderList = (updatedorderInfo) => {
     const editedOrderList = JSON.parse(localStorage.getItem("Order")).map((orderInfo) => {
       if (orderInfo.MaDonHang === updatedorderInfo.MaDonHang) {
@@ -13,7 +16,7 @@ const StorageList = () => {
           return orderInfo
       }
   })
-  localStorage.setItem("Order", JSON.stringify(editedOrderList))
+  localStorage.setItem("Order",JSON.stringify(editedOrderList))
   console.log(JSON.parse(localStorage.getItem("Order")))
   setOrderList(JSON.parse(localStorage.getItem("Order")))
   }
@@ -22,7 +25,7 @@ const StorageList = () => {
       <SearchBar />
       <div className="relative justify-items-center mx-10 mt-2 p-4">
         <h1 className="absolute bg-white m-2 px-2 -top-2 left-1/10 italic font-bold text-2xl text-primary">
-          QUẢN LÝ ĐƠN HÀNG NHẬN
+          QUẢN LÝ ĐƠN HÀNG GỬI
         </h1>
         <div
           id="AccountList"
@@ -34,7 +37,7 @@ const StorageList = () => {
               <li key={orderInfo.MaDonHang}>
                 <div>
                   {/* <Link to={`./${storageInfo.id}`}></Link>  */}
-                  <StorageCard orderProps={orderInfo} editOrderFunc={handleEditOrderList} key={orderInfo.MaDonHang} />
+                  <StorageCardSend orderProps={orderInfo} editOrderFunc={handleEditOrderList} key={orderInfo.MaDonHang} />
                 </div>
               </li>
             ))}
@@ -45,4 +48,4 @@ const StorageList = () => {
   );
 };
 
-export default StorageList;
+export default StorageListSend;

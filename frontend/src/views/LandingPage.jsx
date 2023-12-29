@@ -7,6 +7,18 @@ import IndexNavbars from '/src/components/navbars/IndexNavbars'
 
 
 const LandingPage = () => {
+  const MaKhachHangDefault = [
+    {
+      MaKhachHang: 1,
+    },
+    {
+      MaKhachHang: 2,
+    },
+    {
+      MaKhachHang: 3,
+    },
+  ];
+  localStorage.setItem("MaKhachHang", JSON.stringify(MaKhachHangDefault))
   return (
     <div>
       <IndexNavbars/>

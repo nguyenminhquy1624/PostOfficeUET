@@ -1,7 +1,8 @@
 import {PropTypes} from 'prop-types'
 // import map_img from "../assets/img/tmp_map.png"
 import close_img from "../../assets/img/close.png"
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import axios from 'axios'
 // import uuid from 'uuid'
 const EditTransactionAccountModal = props => {
     const accountInfo = props.accountProps
@@ -9,7 +10,20 @@ const EditTransactionAccountModal = props => {
     const closePage = props.closePageFunc
     let showEditForm = props.showEditFormProps
 
-    const transactionList = JSON.parse(localStorage.getItem("TransactionStation"))
+    // const transactionList = JSON.parse(localStorage.getItem("TransactionStation"))
+    const [transactionList, setTransactionList] = useState([])
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/diemgiaodich/all/")
+                console.log("get data: ", response.data)
+                setTransactionList(response.data['Diem Giao Dich'])
+            } catch (error) {
+                console.log("error: ", error)
+            }
+        }
+        getData();
+    }, [])
     const getTransaction = (MaDiemGiaoDich) => {
         const ans = transactionList.filter(transactionInfo => (transactionInfo.MaDiemGiaoDich === MaDiemGiaoDich))
         if (ans.length > 0)
@@ -17,13 +31,13 @@ const EditTransactionAccountModal = props => {
         else 
             return null
     }
-    const defaultTransactionName = getTransaction(accountInfo.MaDiemGiaoDich) ? getTransaction(accountInfo.MaDiemGiaoDich).TenDiemGiaoDich : "không có dữ liệu"
+    const defaultTransactionName = getTransaction(accountInfo.MaDiemGiaoDich) ? getTransaction(accountInfo.MaDiemGiaoDich).TenDiaDiemGiaoDich : "không có dữ liệu"
     const [accountName, setAccountName] = useState(accountInfo.HoVaTen)
     const [accountPhoneNumber, setAccountPhoneNumber] = useState(accountInfo.SoDienThoai)
-    const [accountEmail, setAccountEmail] = useState(accountInfo.Email)
+    const [accountEmail, setAccountEmail] = useState(accountInfo.email)
     const [transactionName, setTransactionName] = useState(defaultTransactionName)
     const [transactionCode, setTransactionCode] = useState(accountInfo.MaDiemGiaoDich)
-    
+    const [storageCode, setStorageCode] = useState(accountInfo.MaDiemTapKet)
     
    
     const accountNameRef = useRef(null)
@@ -91,6 +105,7 @@ const EditTransactionAccountModal = props => {
         event.preventDefault();
         setTransactionName(event.target.value)
         setTransactionCode(null)
+        setStorageCode(null)
     }
     const handleTransactionNameDown = event => {
         if (event.key === 'Enter') {
@@ -102,15 +117,15 @@ const EditTransactionAccountModal = props => {
 
     const handleTransactionInfoClick = (event, transactionInfo) => {
         event.preventDefault()
-        setTransactionName(transactionInfo.TenDiemGiaoDich)
+        setTransactionName(transactionInfo.TenDiaDiemGiaoDich)
         setTransactionCode(transactionInfo.MaDiemGiaoDich)
-
+        setStorageCode(transactionInfo.MaDiemTapKet)
     }
     
     // console.log(transactionList)
     const filteredTransactionList = transactionList.filter(transactionInfo =>  
         (transactionInfo.DiaDiem.toLowerCase().includes(transactionName.toLowerCase()) ||
-        transactionInfo.TenDiemGiaoDich.toLowerCase().includes(transactionName.toLowerCase()))
+        transactionInfo.TenDiaDiemGiaoDich.toLowerCase().includes(transactionName.toLowerCase()))
     );
     // console.log(filteredTransactionList)
     
@@ -132,15 +147,14 @@ const EditTransactionAccountModal = props => {
         accountEmail.trim() !== "" &&
         transactionName.trim() !== "" &&
         transactionCode !== null && accountPhoneNumberError && accountEmailError) {
-            editAccount({
-                MaTaiKhoan: accountInfo.MaTaiKhoan,
-                TenTaiKhoan: accountInfo.TenTaiKhoan,
+            editAccount(accountInfo.MaTaiKhoan,{
+                username: accountInfo.username,
                 HoVaTen: accountName,
                 SoDienThoai: accountPhoneNumber,
-                Email: accountEmail,
+                email: accountEmail,
                 LoaiTaiKhoan: 2,
-                MatKhau: "1",
-                MaDiemTapKet: null,   
+                password: accountInfo.password,
+                MaDiemTapKet: storageCode,   
                 MaDiemGiaoDich: transactionCode,
             })
         }
@@ -159,9 +173,10 @@ const EditTransactionAccountModal = props => {
         event.preventDefault()
         setAccountName(accountInfo.HoVaTen)
         setAccountPhoneNumber(accountInfo.SoDienThoai)
-        setAccountEmail(accountInfo.Email)
+        setAccountEmail(accountInfo.email)
         setTransactionName(defaultTransactionName)
         setTransactionCode(accountInfo.MaDiemGiaoDich)
+        setStorageCode(accountInfo.MaDiemTapKet)
     }
 
     const handleClosePage = (event) => {
@@ -198,7 +213,7 @@ const EditTransactionAccountModal = props => {
                             key={transactionInfo.MaDiemGiaoDich} 
                             className='m-1 rounded-md text-primary justify-start p-1 w-full border-b-2 cursor-pointer'
                             onClick={(e) => handleTransactionInfoClick(e, transactionInfo)}>
-                                <p className="">{transactionInfo.TenDiemGiaoDich}</p> 
+                                <p className="">{transactionInfo.TenDiaDiemGiaoDich}</p> 
                                 <p className='italic text-[10px]'>{transactionInfo.DiaDiem}</p>
                             </div>
                         ))}

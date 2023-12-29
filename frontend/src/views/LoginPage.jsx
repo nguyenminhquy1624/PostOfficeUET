@@ -5,24 +5,75 @@ import { fadeIn } from "../components/effect/variants";
 import { useNavigate } from "react-router-dom";
 import { Button } from 'flowbite-react';
 import { IoMdArrowRoundBack } from "react-icons/io";
-
+import axios  from "axios";
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("")
+
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("")
   // const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
   let navigate = useNavigate(); 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // email validation
+  const roles = [
+    { Id: "1", Name: "Lãnh đạo" },
+    { Id: "2", Name: "Trưởng điểm giao dịch" },
+    { Id: "3", Name: "Giao dịch viên" },
+    { Id: "4", Name: "Trưởng điểm tập kết" },
+    { Id: "5", Name: "Tập kết viên" },
+    { Id: "6", Name: "Khách hàng"}
+  ];
+
+  const validateLogin = (e) => {
+    e.preventDefault()
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address.");
-      return;
+      setError("Email chưa đúng định dạng");
+      return false;
     }
+    return true
+  }
+  const handleSubmit = async (e) => {
+    const check = validateLogin(e)
+    if (check) {
+      console.log("username: ", username)
+      console.log("Password: ", password);
+      console.log("Email: ", email);
+      console.log("role: ", role)
+
+      if (role >= 1 && role <= 5) {
+        let payload = {
+          username: username,
+          password: password,
+          LoaiTaiKhoan: role,
+          email: email,
+        }
+        try {
+          let response = await axios.post(
+            "http://127.0.0.1:8000/api/account/login/", payload
+          )
+          console.log(response.data)
+          console.log(JSON.parse(localStorage.getItem("access")))
+          alert("Đăng nhập thành công")
+          backToHome("/")
+          } catch (err) {
+            console.log(error)
+            alert("Đăng nhập không thành công")
+          }
+        }
+        else {
+          console.log("Chưa làm đăng nhập tài khoản khách hàng")
+          return
+        }
+      }
+    // email validation
+    // const emailRegex = /^\S+@\S+\.\S+$/;
+    // if (!emailRegex.test(email)) {
+    //   setError("Please enter a valid email address.");
+    //   return;
+    // }
 
     // password matching validation
     // if (password !== confirmPassword) {
@@ -37,28 +88,27 @@ const LoginPage = () => {
   
     
     // empty the input fields after submitting the form
-    setEmail("");
-    setPassword("");
-    // setConfirmPassword("");
-    setError("");
+
+    
     
     // only for admin
-    if (email == "admin@gmail.com" && password == '1') {
-      navigate('/admin');
-    }
-    else {
-      const accounts = JSON.parse(localStorage.getItem("accounts"))
-      const accountFind = accounts.find((account) => account.Email === email);
-      if (!accountFind) {
-        alert("This account is not existed in our system!")
-      }
-      else if (accountFind && accountFind.MatKhau === password) {
-        alert("Successfully login!")
-      }
-      else {
-        alert("Your email or password is incorrect!!")
-      }
-    }
+    // if (email == "admin@gmail.com" && password == '1') {
+    //   navigate('/admin');
+    // }
+    // else {
+    //   const accounts = JSON.parse(localStorage.getItem("accounts"))
+    //   const accountFind = accounts.find((account) => account.Email === email);
+    //   if (!accountFind) {
+    //     alert("This account is not existed in our system!")
+    //   }
+    //   else if (accountFind && accountFind.MatKhau === password) {
+    //     alert("Successfully login!")
+    //   }
+    //   else {
+    //     alert("Your email or password is incorrect!!")
+    //   }
+    // }
+
   };
   
   const backToHome = () => {
@@ -88,17 +138,17 @@ const LoginPage = () => {
               className="p-20 rounded-xl shadow-3xl"
             >
               {/* <!-- Email input --> */}
-              <h1>Nhập email</h1>
+              <h1>Nhập tên của tài khoản</h1>
               <div className="relative">
                 <input
-                  type="email"
-                  id="email"
+                  type="username"
+                  id="username"
                   required
                   className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
-                  placeholder="example@gmail.com"
+                  placeholder=""
                   autoComplete="off"
-                  value={email}
-                  onChange={(e) => {setEmail(e.target.value); console.log(email)}}
+                  value={username}
+                  onChange={(e) => {setUsername(e.target.value); console.log(username)}}
                 />
               </div>
               <h1>Nhập mật khẩu</h1>
@@ -117,6 +167,39 @@ const LoginPage = () => {
               <div className="pl-2 font-semibold text-red-500 py-2">
                 {error}
               </div>
+
+              <h1>Nhập enail của tài khoản </h1>
+              <div className="relative">
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
+                  placeholder="example@gmail.com"
+                  autoComplete="off"
+                  value={email}
+                  onChange={(e) => {setEmail(e.target.value); console.log(email)}}
+                />
+              </div>
+
+              <h1>Chọn vai trò</h1>
+              <div className="relative">
+                <select
+                  onChange={(e) => setRole(e.target.value)}
+                  id="role"
+                  className="input-field focus:outline-none w-full px-3 py-2 border-primary border rounded-md appearance-none text-primary m-2"
+                >
+                  <option value="" selected>
+                    Chọn vai trò
+                  </option>
+                  {roles.map((role) => (
+                    <option key={role.Id} value={role.Id}>
+                      {role.Name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {/* <!-- Remember me checkbox --> */}
               <div className="mb-6 flex items-center justify-between">
                 <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">

@@ -1,7 +1,8 @@
 import StorageStaffList from '../components/storageleader/StorageStaffList'
-import IndexNavbars from '/src/components/navbars/IndexNavbars'
+import AdminNavbars from '../../src/components/navbars/AdminNavbards'
 import LeftNavBar from '../components/service/LeftNavBar'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
 const StorageLeaderPage = () => {
   const defaultTransactionStationList = [
     {
@@ -103,9 +104,7 @@ const defaultAccountsList = [
     LoaiTaiKhoan: 4,
     MatKhau: "1",
     MaDiemTapKet: 1234,
-    MaDiemGiaoDich: null,
-    
-    
+    MaDiemGiaoDich: null,   
   },
   {
     MaTaiKhoan: 12322,
@@ -140,8 +139,6 @@ const defaultAccountsList = [
     MatKhau: "1",
     MaDiemTapKet: 1234,
     MaDiemGiaoDich: null,
-    
-    
   },
   {
     MaTaiKhoan: 234213,
@@ -152,8 +149,7 @@ const defaultAccountsList = [
     LoaiTaiKhoan: 5,
     MatKhau: "1",
     MaDiemTapKet: 1234,
-    MaDiemGiaoDich: null,
-    
+    MaDiemGiaoDich: null,    
   },
   {
     MaTaiKhoan: 234212,
@@ -166,8 +162,9 @@ const defaultAccountsList = [
     MaDiemTapKet: 1234,
     MaDiemGiaoDich: null,
   },
-
 ]
+
+
 
 // localStorage.clear();
 if (localStorage.getItem("Account") == null) {
@@ -194,7 +191,7 @@ const handleTabClick = (value) => {
 }
   return (
     <div>
-      <IndexNavbars/>
+      <AdminNavbars/>
       <div className="md:flex md:flex-row">
         <LeftNavBar navItemsProps={navItems} changeTabFunc={handleTabClick} activeTabProps={activeTab}/>
         {activeTab === "StaffManagement" && <StorageStaffList className="z-10"/>}

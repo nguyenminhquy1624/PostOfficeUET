@@ -13,7 +13,6 @@ const AccountCard = (props) => {
     const accountInfo = props.accountProps;
     const deleteAccount = props.deleteFunc;
     const isStorage = props.isStorageProps;
-
     const editAccount = props.editFunc
     // const handleDelete = (event, id) => {
     //     event.preventDefault()
@@ -43,8 +42,8 @@ const AccountCard = (props) => {
         setShowEditModal(false);
     };
 
-    const handleConfirmEdit = (editedAccountInfo) => {
-        editAccount(editedAccountInfo)
+    const handleConfirmEdit = (account_id ,editedAccountInfo) => {
+        editAccount(account_id, editedAccountInfo)
         setShowEditModal(false)
     }
 
@@ -56,9 +55,9 @@ const AccountCard = (props) => {
                     {accountInfo.HoVaTen}
                 </h1>
                 <p className="pb-2">
-                    Email: {accountInfo.Email}<br></br>
+                    Email: {accountInfo.email}<br></br>
                     Số điện thoại: {accountInfo.SoDienThoai}<br></br>
-                    Tên tài khoản: {accountInfo.TenTaiKhoan}<br></br>
+                    Tên tài khoản: {accountInfo.username}<br></br>
                 </p>
             </div>
             <div className="grid grid-flow-row">
